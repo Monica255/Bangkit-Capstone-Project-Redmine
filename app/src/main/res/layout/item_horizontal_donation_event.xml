@@ -15,45 +15,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_bloodType"
-                style="@style/HeaderTextBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="14dp"
-                android:textSize="40sp"
+            <ImageView
+                android:id="@+id/img_event"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="B" />
+                tools:src="@drawable/placeholder" />
 
             <TextView
-                android:id="@+id/tv_donorReqName"
+                android:id="@+id/tv_eventName"
                 style="@style/TitleTextBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="8dp"
                 android:maxLines="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_bloodType"
-                tools:text="Donor Req name" />
+                app:layout_constraintTop_toBottomOf="@id/img_event"
+                tools:text="Event name" />
 
             <TextView
-                android:id="@+id/tv_donorReqCity"
+                android:id="@+id/tv_eventTime"
                 style="@style/DescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:drawableLeft="@drawable/icon_map_pin_resize"
-                android:drawablePadding="4dp"
                 android:maxLines="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_donorReqName"
-                tools:text="Kota Denpasar" />
+                app:layout_constraintTop_toBottomOf="@id/tv_eventName"
+                tools:text="Buka setiap hari" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

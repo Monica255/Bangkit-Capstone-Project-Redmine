@@ -4,9 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="358dp"
+        android:layout_height="103dp"
         android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="15dp"
         android:elevation="20dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="5dp">
@@ -19,40 +23,52 @@
                 android:id="@+id/tv_bloodType"
                 style="@style/HeaderTextBold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="14dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="30dp"
+                android:gravity="center_vertical"
+                android:text="@string/b"
                 android:textSize="40sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="B" />
+                app:layout_constraintEnd_toEndOf="parent" />
+
 
             <TextView
                 android:id="@+id/tv_donorReqName"
                 style="@style/TitleTextBold"
-                android:layout_width="match_parent"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
                 android:maxLines="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_bloodType"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Donor Req name" />
+
+            <TextView
+                android:id="@+id/tv_donor_req_des"
+                style="@style/TitleText"
+                android:layout_width="270dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="8dp"
+                android:maxLines="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_donorReqName"
+                tools:text="Lagi butuh dua kantung darah untuk ayah saya dengan golongan darah B di rumah sakit Sanglah. Mohon bantuannyaDonor Req name" />
 
             <TextView
                 android:id="@+id/tv_donorReqCity"
                 style="@style/DescriptionText"
-                android:layout_width="match_parent"
+                android:layout_width="270dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:drawableLeft="@drawable/icon_map_pin_resize"
                 android:drawablePadding="4dp"
                 android:maxLines="1"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_donorReqName"
+                app:layout_constraintTop_toBottomOf="@id/tv_donor_req_des"
                 tools:text="Kota Denpasar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -77,6 +77,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/il_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

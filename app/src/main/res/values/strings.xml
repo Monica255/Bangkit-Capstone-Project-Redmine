@@ -81,16 +81,29 @@
     <string name="description">Description</string>
     <string name="contact_person">Contact Person</string>
 
+    <string name="you_can_not_donate">You can not donate yet. Make sure you fulfill all the requirements.</string>
     <string name="make_sure_meet_requirements">Make sure you meet the requirements before donating</string>
-    <string name="be_at_least_17">Be at least 17 years old</string>
-    <string name="be_healthy">Be in good health generally and feel well on the day of donation</string>
-    <string name="weight_atleast">Weigh at least 110 pounds</string>
-    <string name="if_received_vaccine">If you have received the COVID vaccine, please wait 3 days before attempting to donate</string>
     <string name="more_info">Click here for more information</string>
     <string name="yes_im_sure">Yes, I am sure</string>
+    <string name="copy">Copy</string>
+    <string name="call">Call</string>
+    <string name="whatsapp">Whatsapp</string>
+
+
+    <string name="requirements_list">
+        \n <li>Be at least 17 years old</li>
+        \n <li>Be in good health generally and feel well on the day of donation</li>
+        \n <li>Weigh at least 110 pounds</li>
+        \n <li>If you have received the COVID vaccine, please wait 3 days before attempting to donate</li>
+    </string>
+
+    <string name="requirements_list1">Be at least 17 years old</string>
+    <string name="requirements_list2">Be in good health generally and feel well on the day of donation</string>
+    <string name="requirements_list3">Weigh at least 110 pounds</string>
+    <string name="requirements_list4">If you have received the COVID vaccine, please wait 3 days before attempting to donate</string>
 
     <!-- donor events -->
-    <string name="donor_event">Donor Events</string>
+    <string name="donation_event">Donation Event</string>
     <string name="time">Time</string>
     <string name="place">Place</string>
 

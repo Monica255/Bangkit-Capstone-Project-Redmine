@@ -17,7 +17,6 @@ class SecondDonorDataFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("NAV","second fragment")
     }
 
     override fun onCreateView(

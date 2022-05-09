@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_can_donor"
+    app:startDestination="@id/canDonateBloodFragment">
+
+    <fragment
+        android:id="@+id/canDonateBloodFragment"
+        android:name="com.example.redminecapstoneproject.ui.detaildonorreq.CanDonateBloodFragment"
+        android:label="fragment_can_donate_blood"
+        tools:layout="@layout/fragment_can_donate_blood" >
+        <action
+            android:id="@+id/action_canDonateBloodFragment_to_donorReqContactFragment"
+            app:destination="@id/donorReqContactFragment"
+            app:popUpTo="@id/nav_can_donor" />
+    </fragment>
+    <fragment
+        android:id="@+id/donorReqContactFragment"
+        android:name="com.example.redminecapstoneproject.ui.detaildonorreq.DonorReqContactFragment"
+        android:label="fragment_donor_req_contact"
+        tools:layout="@layout/fragment_donor_req_contact" />
+</navigation>
