@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.donordata.SecondDonorDataFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+        <TextView
+            style="@style/HeaderTextBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:singleLine="false"
+            android:text="@string/halo" />
+
+        <TextView
+            style="@style/SubHeaderTextBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:clipToPadding="false"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:text="@string/city_residence" />
+
+
+        <TextView
+            style="@style/SubHeaderTextBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:clipToPadding="false"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:text="@string/have_you_donate" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:text="@string/you_can_only_donate" />
+
+
+        <RadioGroup
+            android:id="@+id/rg_bloodType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="28dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="28dp"
+            android:paddingBottom="10dp">
+
+            <RadioButton
+                android:layout_width="69dp"
+                android:layout_height="55dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/radio_selector"
+                android:button="@android:color/transparent"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:text="@string/yes"
+                android:textColor="@drawable/radio_text_selector" />
+
+            <RadioButton
+                android:layout_width="69dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/radio_selector"
+                android:button="@android:color/transparent"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:text="@string/no"
+                android:textColor="@drawable/radio_text_selector" />
+        </RadioGroup>
+
+        <TextView
+            style="@style/SubHeaderTextBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:clipToPadding="false"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:text="@string/have_you_had_covid" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
+            android:text="@string/you_can_only_donate_covid_ver" />
+
+
+        <RadioGroup
+            android:id="@+id/rg_rhesus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="28dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="28dp"
+            android:paddingBottom="10dp">
+
+            <RadioButton
+                android:layout_width="69dp"
+                android:layout_height="55dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/radio_selector"
+                android:button="@android:color/transparent"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:text="@string/yes"
+                android:textColor="@drawable/radio_text_selector" />
+
+            <RadioButton
+                android:layout_width="69dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="13dp"
+                android:layout_weight="1"
+                android:background="@drawable/radio_selector"
+                android:button="@android:color/transparent"
+                android:elevation="4dp"
+                android:gravity="center"
+                android:text="@string/no"
+                android:textColor="@drawable/radio_text_selector" />
+
+        </RadioGroup>
+
+
+        <Button
+            android:id="@+id/bt_finish"
+            android:layout_width="358dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="28dp"
+            android:backgroundTint="@color/blue"
+            android:text="@string/finish"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+
+</ScrollView>

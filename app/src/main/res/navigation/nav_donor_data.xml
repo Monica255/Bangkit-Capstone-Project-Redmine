@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_donor_data"
+    app:startDestination="@id/firstDonorDataFragment">
+
+    <fragment
+        android:id="@+id/firstDonorDataFragment"
+        android:name="com.example.redminecapstoneproject.ui.donordata.FirstDonorDataFragment"
+        android:label="fragment_first_donor_data"
+        tools:layout="@layout/fragment_first_donor_data" >
+        <action
+            android:id="@+id/action_firstDonorDataFragment_to_secondDonorDataFragment"
+            app:destination="@id/secondDonorDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secondDonorDataFragment"
+        android:name="com.example.redminecapstoneproject.ui.donordata.SecondDonorDataFragment"
+        android:label="fragment_second_donor_data"
+        tools:layout="@layout/fragment_second_donor_data" >
+    </fragment>
+</navigation>
