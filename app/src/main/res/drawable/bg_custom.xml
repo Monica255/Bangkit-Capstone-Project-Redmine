@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:gravity="top|left"
+        android:width="250dp"
+        android:height="238dp"
+        android:drawable="@drawable/bg_login_pic1_crop"
+        />
+
+    <item
+        android:gravity="bottom|right"
+        android:width="250dp"
+        android:height="275dp"
+        android:drawable="@drawable/bg_login_pic2_crop"
+        />
+    <item
+        android:drawable="@drawable/layer_blur"
+        />
+
+</layer-list>

@@ -111,15 +111,24 @@
     <string name="stand_by_donor">Stand-by-Donor</string>
     <string name="stand_by_donor_des">Only verified account can be a Stand-by-Donor. If you activate this feature, you will be an active blood donor and people can see you from the ‘Look from blood donor’ page</string>
     <string name="my_donor_req">My Donor Request</string>
+    <string name="language_setting">Language Setting</string>
+
     <string name="contact_us">Contact Us</string>
     <string name="about">About Redmine</string>
     <string name="sign_out">Sign Out</string>
 
-    <!-- detail user-->
-    <string name="detail_user">Detail User</string>
+    <!-- user detail -->
+    <string name="user_detail">User Detail</string>
     <string name="save">Save</string>
     <string name="verify_account">Verify account</string>
+    <string name="edit_password">Edit password</string>
     <string name="your_account_not_verified_yet">Your account is not verified yet. Please verified you accout in order to be able to donate blood</string>
+
+    <!-- donor detail -->
+
+    <string name="donor_detail">Donor Detail</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,6 +33,25 @@
             android:text="@string/city_residence" />
 
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_pick_city"
+            style="@style/cardViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp">
+
+            <TextView
+                style="@style/SubHeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:alpha="0.6"
+                android:text="@string/city"
+                android:textAlignment="center" />
+
+        </androidx.cardview.widget.CardView>
+
         <TextView
             style="@style/SubHeaderTextBold"
             android:layout_width="match_parent"
@@ -58,9 +78,9 @@
             android:layout_marginTop="10dp"
             android:clipToPadding="false"
             android:orientation="horizontal"
-            android:paddingStart="28dp"
+            android:paddingStart="15dp"
             android:paddingTop="10dp"
-            android:paddingEnd="28dp"
+            android:paddingEnd="13dp"
             android:paddingBottom="10dp">
 
             <RadioButton
@@ -117,7 +137,7 @@
             android:orientation="horizontal"
             android:paddingStart="28dp"
             android:paddingTop="10dp"
-            android:paddingEnd="28dp"
+            android:paddingEnd="13dp"
             android:paddingBottom="10dp">
 
             <RadioButton
@@ -150,7 +170,7 @@
 
         <Button
             android:id="@+id/bt_finish"
-            android:layout_width="358dp"
+            android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginStart="28dp"
             android:layout_marginTop="30dp"

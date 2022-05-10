@@ -47,6 +47,22 @@
     <style name="TitleTextBold" parent="TitleText">
         <item name="android:textStyle">bold</item>
     </style>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="28dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="28dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="5dp"
+    <style name="cardViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">28dp</item>
+        <item name="android:layout_marginEnd">28dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">5dp</item>
+    </style>
 
 
 

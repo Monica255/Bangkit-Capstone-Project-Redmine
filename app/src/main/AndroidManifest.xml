@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.redminecapstoneproject" >
-
+    package="com.example.redminecapstoneproject">
 
     <application
         android:allowBackup="true"
@@ -9,7 +8,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RedmineCapstoneProject" >
+        android:theme="@style/Theme.RedmineCapstoneProject">
+        <activity
+            android:name=".UserDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.detaildonorreq.DetailDonorRequestActivity"
             android:exported="true" />
@@ -29,10 +34,7 @@
             android:name=".ui.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.SignupActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.loginsignup.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".ui.donordata.DonorDataActivity"

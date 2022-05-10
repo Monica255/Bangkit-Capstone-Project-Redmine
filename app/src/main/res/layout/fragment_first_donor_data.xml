@@ -217,7 +217,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:paddingStart="28dp"
             android:paddingEnd="28dp">
@@ -228,12 +228,25 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number" />
 
-            <EditText
-                android:id="@+id/et_phoneNumber"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/il_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:outlineSpotShadowColor="@color/red" />
+                android:layout_marginTop="5dp"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@null"
+                app:errorIconTint="@color/red"
+                app:helperText=""
+                app:hintEnabled="false">
+                <EditText
+                    android:background="@android:color/transparent"
+                    android:id="@+id/et_phoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:outlineSpotShadowColor="@color/red" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
         <TextView

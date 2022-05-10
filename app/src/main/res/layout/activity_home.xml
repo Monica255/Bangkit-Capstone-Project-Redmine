@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,132 +7,168 @@
     android:layout_height="match_parent"
     tools:context=".ui.HomeActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/navigation"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="28dp">
+            android:layout_height="match_parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_profile"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/placeholder" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_hello"
-                style="@style/HeaderText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="Hello"
-                app:layout_constraintStart_toEndOf="@id/img_profile"
-                app:layout_constraintTop_toTopOf="@id/img_profile" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="28dp">
 
-            <TextView
-                style="@style/HeaderTextBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="Dimas Ari L."
-                app:layout_constraintStart_toEndOf="@id/img_profile"
-                app:layout_constraintTop_toBottomOf="@id/tv_hello" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_profile"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:src="@drawable/img_profile_placeholder_male" />
 
-        <TextView
-            style="@style/HeaderText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="28dp"
-            android:text="Did you know?"
-            android:textStyle="italic" />
+                    <TextView
+                        android:id="@+id/tv_email"
+                        style="@style/HeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Hello"
+                        app:layout_constraintStart_toEndOf="@id/img_profile"
+                        app:layout_constraintTop_toTopOf="@id/img_profile" />
 
-        <TextView
-            style="@style/HeaderTextBold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="28dp"
-            android:text="Setiap delapan detik, ada satu orang yang membutuhkan transfusi darah di Indonesia
+                    <TextView
+                        style="@style/HeaderTextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Dimas Ari L."
+                        app:layout_constraintStart_toEndOf="@id/img_profile"
+                        app:layout_constraintTop_toBottomOf="@id/tv_email" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    style="@style/HeaderText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="28dp"
+                    android:text="Did you know?"
+                    android:textStyle="italic" />
+
+                <TextView
+                    style="@style/HeaderTextBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="28dp"
+                    android:text="Setiap delapan detik, ada satu orang yang membutuhkan transfusi darah di Indonesia
 (Palang Merah Indonesia)" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="28dp"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/bt_donate_blood"
-                android:layout_width="164dp"
-                android:layout_height="164dp"
-                android:layout_marginEnd="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_donordarah">
-
-                <TextView
-                    style="@style/HeaderTextBold"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/donate_blood"
-                    android:textColor="@color/white" />
-            </RelativeLayout>
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="13dp"
+                    android:orientation="horizontal">
 
-            <RelativeLayout
+                    <androidx.cardview.widget.CardView
 
-                android:layout_width="164dp"
-                android:layout_height="164dp"
-                android:layout_marginStart="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_caridonor">
+                        android:id="@+id/bt_donate_blood"
+                        android:layout_width="0dp"
+                        android:layout_height="164dp"
+                        android:layout_margin="15dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="5dp">
 
-                <TextView
-                    style="@style/HeaderTextBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textAlignment="center"
-                    android:text="@string/look_for_donors"
-                    android:textColor="@color/white" />
-            </RelativeLayout>
-        </LinearLayout>
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_donate" />
 
-        <RelativeLayout
-            android:layout_width="358dp"
-            android:layout_height="164dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_donorreq">
+                        <TextView
+                            style="@style/HeaderTextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/donate_blood"
+                            android:textAlignment="center"
+                            android:textColor="@color/white" />
+                    </androidx.cardview.widget.CardView>
 
-            <TextView
-                style="@style/HeaderTextBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textAlignment="center"
-                android:text="@string/create_donor_req"
-                android:textColor="@color/white" />
-        </RelativeLayout>
-    </LinearLayout>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="164dp"
+                        android:layout_margin="15dp"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="12dp"
+
+                        app:cardElevation="5dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_lookfor_donor" />
+
+                        <TextView
+                            style="@style/HeaderTextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/look_for_donors"
+                            android:textAlignment="center"
+                            android:textColor="@color/white" />
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="164dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="28dp"
+                    android:layout_marginBottom="40sp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="5dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_donorreq" />
+
+                    <TextView
+                        style="@style/HeaderTextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/create_donor_req"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
@@ -140,8 +177,7 @@
         android:background="@color/white"
         app:itemIconTint="@drawable/bottom_nav_selector"
         app:itemTextColor="@drawable/bottom_nav_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_bottom_nav" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
