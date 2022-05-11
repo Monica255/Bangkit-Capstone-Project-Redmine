@@ -72,7 +72,7 @@
 
 
         <RadioGroup
-            android:id="@+id/rg_bloodType"
+            android:id="@+id/rg_have_you_donate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -129,7 +129,7 @@
 
 
         <RadioGroup
-            android:id="@+id/rg_rhesus"
+            android:id="@+id/rg_have_you_had_covid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

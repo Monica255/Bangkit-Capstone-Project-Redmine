@@ -10,7 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedmineCapstoneProject">
         <activity
-            android:name=".UserDetailActivity"
+            android:name=".ui.BloodDonorsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.DonorDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.ProfileActivity"

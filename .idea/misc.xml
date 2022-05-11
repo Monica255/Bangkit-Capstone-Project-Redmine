@@ -20,13 +20,15 @@
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/drawable/radio_selector.xml" value="0.1" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/drawable/radio_text_selector.xml" value="0.1" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_blood_donation.xml" value="0.10666666666666667" />
+        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_blood_donors.xml" value="0.4466666666666667" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_detail_donation_events.xml" value="0.16666666666666666" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_detail_donor_request.xml" value="0.16666666666666666" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_detail_donor_request2.xml" value="0.17552083333333332" />
-        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_donation_events.xml" value="0.14666666666666667" />
+        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_donation_events.xml" value="0.22" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_donor_data.xml" value="0.14666666666666667" />
+        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_donor_detail.xml" value="0.13333333333333333" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_donor_events.xml" value="0.17552083333333332" />
-        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_donor_request.xml" value="0.25" />
+        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_donor_request.xml" value="0.2937799043062201" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_home.xml" value="0.16666666666666666" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_login.xml" value="0.14666666666666667" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/activity_profile.xml" value="0.16666666666666666" />
@@ -43,8 +45,9 @@
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/item_horizontal_donation_event.xml" value="0.22" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/item_horizontal_donor_event.xml" value="0.3333333333333333" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/item_horizontal_donor_req.xml" value="0.5" />
+        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/item_vertical_blood_donors.xml" value="0.4466666666666667" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/item_vertical_donation_events.xml" value="0.11822916666666666" />
-        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/item_vertical_donor_req.xml" value="0.4466666666666667" />
+        <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/item_vertical_donor_req.xml" value="0.22" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/layout/iten_vertical_donation_events.xml" value="0.4095744680851064" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/menu/menu_bottom_nav.xml" value="0.17552083333333332" />
         <entry key="..\:/BANGKIT/RedmineCapstoneProject/app/src/main/res/menu/menu_botton_nav.xml" value="0.15989583333333332" />

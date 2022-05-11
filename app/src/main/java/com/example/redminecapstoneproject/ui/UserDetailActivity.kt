@@ -1,7 +1,8 @@
-package com.example.redminecapstoneproject
+package com.example.redminecapstoneproject.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.redminecapstoneproject.R
 
 class UserDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
