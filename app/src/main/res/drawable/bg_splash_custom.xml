@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:right="12dp"
+        android:bottom="54dp"
+        android:gravity="right|bottom"
+        android:width="218dp"
+        android:height="218dp"
+        android:drawable="@drawable/img_elipse2"
+        />
+    <item
+        android:width="308dp"
+        android:height="303dp"
+        android:drawable="@drawable/img_itemsplash2"
+        android:gravity="left|bottom" />
+
+    <item
+        android:width="132dp"
+        android:height="392dp"
+        android:drawable="@drawable/img_itemsplash2_1"
+        android:gravity="right"
+        android:top="107dp" />
+    <item
+        android:width="218dp"
+        android:height="218dp"
+        android:drawable="@drawable/img_elipse1"
+        android:left="17dp"
+        android:top="141dp" />
+    <item
+        android:width="181dp"
+        android:height="317dp"
+        android:right="165dp"
+        android:bottom="518dp"
+        android:drawable="@drawable/img_itemsplash1"
+        android:gravity="top|left" />
+
+    <item
+        android:drawable="@drawable/img_splash_transparent" />
+</layer-list>

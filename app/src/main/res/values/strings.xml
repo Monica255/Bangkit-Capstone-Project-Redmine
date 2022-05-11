@@ -52,7 +52,7 @@
     <!-- home -->
     <string name="donate_blood">Donate blood</string>
     <string name="look_for_donors">Look for blood donors</string>
-    <string name="create_donor_req">Create donor request</string>
+    <string name="create_donor_req">Create Donor Request</string>
     <string name="home">Home</string>
     <string name="chatbot">Chatbot</string>
     <string name="schedule">schedule</string>
@@ -76,7 +76,7 @@
     <string name="donor_req">Donor Request</string>
     <string name="posted_days_ago">Posted %s day(s) ago</string>
     <string name="patient_name">Patient Name</string>
-    <string name="number_blood_bag">Number of Blood Bags</string>
+    <string name="number_blood_bag">Number of Blood Bags Needed</string>
     <string name="location">Location</string>
     <string name="description">Description</string>
     <string name="contact_person">Contact Person</string>
@@ -131,6 +131,14 @@
     <!--look for blood donors-->
     <string name="only_verified_user">Only people with verified account will be shown in the list</string>
 
+    <!--create donor req-->
+    <string name="blood_bags">Blood bags</string>
+    <string name="hospital_name">Hospital Name</string>
+    <string name="contact_name">Contact name</string>
+    <string name="post">Post</string>
+
+    <!--blood donor details-->
+    <string name="note">Only people with verified accounts will be shown in the list of blood donors. We only show you Standby Donors, who are eligible to donate their blood. However, it is possible that the data has not been updated. So please contact them to confirm their availability and eligibility.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

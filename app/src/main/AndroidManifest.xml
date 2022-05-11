@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedmineCapstoneProject">
         <activity
+            android:name=".BloodDonorDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateDonorReqActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.BloodDonorsActivity"
             android:exported="false" />
         <activity
@@ -48,7 +54,8 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.donordata.SplashActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

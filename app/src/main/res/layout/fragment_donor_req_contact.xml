@@ -9,10 +9,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_can_donate_contact"
-        android:layout_width="358dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="12dp"
@@ -50,6 +50,7 @@
                     style="@style/TitleText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
                     android:layout_weight="10"
                     android:text="87761142589" />
 
@@ -65,13 +66,13 @@
             </LinearLayout>
 
             <Button
+                style="@style/TitleText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/blue"
                 android:drawableLeft="@drawable/icon_phone_rezize"
                 android:drawableTint="@color/white"
                 android:text="@string/call"
-                style="@style/TitleText"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 

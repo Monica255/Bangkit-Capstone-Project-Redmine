@@ -20,9 +20,11 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_banner"
-                android:layout_width="358dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:elevation="10dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginStart="28dp"
                 app:cardCornerRadius="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
