@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="@color/white"
-        android:paddingStart="28dp"
-        android:paddingEnd="28dp"
+        android:paddingStart="@dimen/margin_start_end"
+        android:paddingEnd="@dimen/margin_start_end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#a6ffffff"
+        android:background="#bfffffff"
         android:orientation="vertical"
         android:elevation="8dp"
         android:paddingBottom="20dp">
@@ -32,47 +32,36 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/il_email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/InputLayoutStyle"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/email"
-            app:errorEnabled="true"
-            app:errorIconDrawable="@null"
-            app:errorIconTint="@color/red"
-            app:helperText="">
+            android:hint="@string/email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/il_password"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/InputLayoutStyle"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/password"
-            app:errorEnabled="true"
-            app:errorIconDrawable="@null"
-            app:errorIconTint="@color/red"
-            app:helperText="">
+            android:hint="@string/password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
+            android:id="@+id/cb_see_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -80,29 +69,31 @@
             android:layout_marginEnd="20dp"
             android:text="@string/see_password" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_login"
-            style="@style/SubHeaderTextBold"
+            style="@style/SubHeaderText"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
             android:text="@string/login"
+            android:background="@drawable/btn_login_selector"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_google"
-            style="@style/SubHeaderText"
+            style="@style/TitleText"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/btn_white_selector"
             android:drawableLeft="@drawable/google_logo"
-            android:paddingTop="8dp"
+            android:layout_marginTop="10dp"
             android:paddingEnd="40dp"
+            android:paddingStart="15dp"
             android:text="@string/google"
             android:textAllCaps="false"
             android:textColor="#99000000" />
@@ -111,20 +102,20 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             android:background="@color/red" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_signUp"
-            style="@style/SubHeaderText"
+            style="@style/TitleText"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/btn_white_selector"
             android:text="@string/sign_up"
             android:textAllCaps="false"
             android:textColor="#99000000" />

@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
+            android:paddingStart="@dimen/margin_start_end"
+            android:paddingEnd="@dimen/margin_start_end"
             android:singleLine="false"
             android:text="@string/halo" />
 
@@ -28,24 +28,59 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="34dp"
             android:clipToPadding="false"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
+            android:paddingStart="@dimen/margin_start_end"
+            android:paddingEnd="@dimen/margin_start_end"
+            android:text="@string/province_residence" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_pick_province"
+            style="@style/cardViewStyle"
+            android:layout_marginStart="@dimen/margin_start_end"
+            android:layout_marginEnd="@dimen/margin_start_end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp">
+
+            <TextView
+                android:background="@drawable/cv_white_selector"
+                style="@style/SubHeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:alpha="0.6"
+                android:text="@string/province"
+                android:textAlignment="center" />
+
+        </androidx.cardview.widget.CardView>
+        <TextView
+            style="@style/SubHeaderTextBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/margin_start_end"
+            android:paddingEnd="@dimen/margin_start_end"
             android:text="@string/city_residence" />
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_pick_city"
             style="@style/cardViewStyle"
+            android:layout_marginStart="@dimen/margin_start_end"
+            android:layout_marginEnd="@dimen/margin_start_end"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="4dp">
 
             <TextView
+                android:background="@drawable/cv_white_selector"
                 style="@style/SubHeaderText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:alpha="0.6"
                 android:text="@string/city"
                 android:textAlignment="center" />
@@ -58,16 +93,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:clipToPadding="false"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
+            android:paddingStart="@dimen/margin_start_end"
+            android:paddingEnd="@dimen/margin_start_end"
             android:text="@string/have_you_donate" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
+            android:paddingStart="@dimen/margin_start_end"
+            android:paddingEnd="@dimen/margin_start_end"
             android:text="@string/you_can_only_donate" />
 
 
@@ -78,9 +113,9 @@
             android:layout_marginTop="10dp"
             android:clipToPadding="false"
             android:orientation="horizontal"
-            android:paddingStart="15dp"
+            android:paddingStart="@dimen/margin_start_end"
             android:paddingTop="10dp"
-            android:paddingEnd="13dp"
+            android:paddingEnd="@dimen/margin_start_end"
             android:paddingBottom="10dp">
 
             <RadioButton
@@ -99,7 +134,6 @@
                 android:layout_width="69dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="14dp"
-                android:layout_marginEnd="13dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
                 android:button="@android:color/transparent"
@@ -115,16 +149,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:clipToPadding="false"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
+            android:paddingStart="@dimen/margin_start_end"
+            android:paddingEnd="@dimen/margin_start_end"
             android:text="@string/have_you_had_covid" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
+            android:paddingStart="@dimen/margin_start_end"
+            android:paddingEnd="@dimen/margin_start_end"
             android:text="@string/you_can_only_donate_covid_ver" />
 
 
@@ -135,9 +169,9 @@
             android:layout_marginTop="10dp"
             android:clipToPadding="false"
             android:orientation="horizontal"
-            android:paddingStart="28dp"
+            android:paddingStart="@dimen/margin_start_end"
             android:paddingTop="10dp"
-            android:paddingEnd="13dp"
+            android:paddingEnd="@dimen/margin_start_end"
             android:paddingBottom="10dp">
 
             <RadioButton
@@ -156,7 +190,6 @@
                 android:layout_width="69dp"
                 android:layout_height="55dp"
                 android:layout_marginStart="14dp"
-                android:layout_marginEnd="13dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
                 android:button="@android:color/transparent"
@@ -172,12 +205,12 @@
             android:id="@+id/bt_finish"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="@dimen/margin_start_end"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginEnd="@dimen/margin_start_end"
             android:backgroundTint="@color/blue"
             android:text="@string/finish"
-            style="@style/SubHeaderTextBold"
+            style="@style/TitleText"
             android:textColor="@color/white"
             android:textAllCaps="false" />
     </LinearLayout>

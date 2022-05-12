@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/red" />
     <item
-        android:gravity="top|left"
-        android:width="250dp"
-        android:height="238dp"
-        android:drawable="@drawable/bg_login_pic1_crop"
-        />
+        android:drawable="@drawable/pattern1"
+
+        android:gravity="top|left" />
 
     <item
-        android:gravity="bottom|right"
-        android:width="250dp"
-        android:height="275dp"
-        android:drawable="@drawable/bg_login_pic2_crop"
-        />
+        android:drawable="@drawable/pattern1"
+
+        android:gravity="top|left" />
     <item
-        android:drawable="@drawable/layer_blur"
-        />
+        android:drawable="@drawable/plant1"
+        android:gravity="right|top" />
+    <item
+        android:drawable="@drawable/pattern2"
+        android:gravity="right|bottom" />
+    <item
+        android:drawable="@drawable/plant1"
+        android:gravity="right|top" />
+    <item
+        android:drawable="@drawable/plant2"
+
+        android:gravity="bottom|left" />
+
 
 </layer-list>

@@ -10,22 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedmineCapstoneProject">
         <activity
-            android:name=".BloodDonorDetailsActivity"
+            android:name=".ui.BloodDonorDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateDonorReqActivity"
+            android:name=".ui.CreateDonorReqActivity"
             android:exported="false" />
         <activity
             android:name=".ui.BloodDonorsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.DonorDetailActivity"
+            android:name=".ui.profile.DonorDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.UserDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.ProfileActivity"
+            android:name=".ui.profile.UserDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.detaildonorreq.DetailDonorRequestActivity"
@@ -37,7 +34,7 @@
             android:name=".ui.DonorRequestActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.DonorEventsActivity"
+            android:name=".ui.DonationEventsActivity"
             android:exported="true" />
         <activity
             android:name=".ui.BloodDonationActivity"
@@ -47,14 +44,16 @@
             android:exported="true" />
         <activity
             android:name=".ui.loginsignup.LoginActivity"
+            android:windowSoftInputMode="adjustPan"
+
             android:exported="true" />
         <activity
             android:name=".ui.donordata.DonorDataActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.donordata.SplashActivity"
-            android:exported="false"
+            android:name=".ui.SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
 
         <meta-data

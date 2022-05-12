@@ -38,7 +38,9 @@
     <string name="continuee">Continue</string>
 
     <string name="city_residence">City of Residence</string>
+    <string name="province_residence">Province of Residence</string>
     <string name="city">City</string>
+    <string name="province">Province</string>
     <string name="have_you_donate">Have you donated before in the last 3 months</string>
     <string name="you_can_only_donate">You can only donate 3 months after you last blood donation. Please specify the date if you have donated in the last 3 months</string>
     <string name="have_you_had_covid">Have you ever had Covid-19?</string>
@@ -122,7 +124,7 @@
     <string name="save">Save</string>
     <string name="verify_account">Verify account</string>
     <string name="edit_password">Edit password</string>
-    <string name="your_account_not_verified_yet">Your account is not verified yet. Please verified you accout in order to be able to donate blood</string>
+    <string name="your_account_not_verified_yet">Your account is not verified yet. Please verify you account in order to be able to donate blood</string>
 
     <!-- donor detail -->
 
@@ -134,12 +136,24 @@
     <!--create donor req-->
     <string name="blood_bags">Blood bags</string>
     <string name="hospital_name">Hospital Name</string>
-    <string name="contact_name">Contact name</string>
+    <string name="contact_name">Contact Name</string>
     <string name="post">Post</string>
 
     <!--blood donor details-->
     <string name="note">Only people with verified accounts will be shown in the list of blood donors. We only show you Standby Donors, who are eligible to donate their blood. However, it is possible that the data has not been updated. So please contact them to confirm their availability and eligibility.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email_required">Email is required</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="name_required">Name is requred</string>
+    <string name="password_required">Password is required</string>
+    <string name="pass_length">Password must be 6 characters long</string>
+    <string name="cpass_required">Confirm password is required</string>
+    <string name="pass_not_match">Password not match</string>
+    <string name="input_email">Please input your email</string>
+    <string name="input_pass">Please input your password</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="input_phone_number">Please input your phone number</string>
+    <string name="phone_number_length_invalid">Phone number length is invalid</string>
 
 </resources>

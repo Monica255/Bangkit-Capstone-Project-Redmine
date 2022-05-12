@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DonorDetailActivity">
-
+    tools:context=".ui.profile.DonorDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="@color/white"
-        android:paddingStart="28dp"
-        android:paddingEnd="28dp"
+        android:paddingStart="@dimen/margin_start_end"
+        android:paddingEnd="@dimen/margin_start_end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -36,21 +35,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/bt_back"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/bt_save"
             style="@style/SubHeaderTextBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="right"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
             android:text="@string/save"
             android:textColor="@color/red" />
 
-
     </androidx.appcompat.widget.Toolbar>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -66,8 +63,8 @@
                 android:id="@+id/layout_verified_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginEnd="@dimen/margin_start_end"
                 android:background="@color/blue"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/layout_unverified_account">
@@ -96,8 +93,8 @@
                     android:id="@+id/layout_unverified_account"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginStart="@dimen/margin_start_end"
+                    android:layout_marginEnd="@dimen/margin_start_end"
                     android:background="@color/red"
                     android:visibility="visible"
                     app:layout_constraintTop_toTopOf="parent">
@@ -116,23 +113,24 @@
                     style="@style/TitleText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="28dp"
+                    android:layout_marginStart="@dimen/margin_start_end"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginEnd="@dimen/margin_start_end"
                     android:layout_marginBottom="20sp"
                     android:text="@string/your_account_not_verified_yet"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/bt_verify_account" />
             </LinearLayout>
 
+            <!--gender-->
             <TextView
                 style="@style/SubHeaderTextBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:clipToPadding="false"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
+                android:paddingStart="@dimen/margin_start_end"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:text="@string/gender" />
 
             <RadioGroup
@@ -142,9 +140,9 @@
                 android:layout_marginTop="10dp"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
-                android:paddingStart="28dp"
+                android:paddingStart="@dimen/margin_start_end"
                 android:paddingTop="10dp"
-                android:paddingEnd="28dp"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:paddingBottom="10dp"
                 android:visibility="visible">
 
@@ -177,9 +175,9 @@
                 android:id="@+id/cv_gender_verified_account"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="@dimen/margin_start_end"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_marginBottom="10dp"
                 android:clickable="true"
                 android:elevation="5dp"
@@ -198,15 +196,15 @@
                     android:textColor="@color/white" />
             </androidx.cardview.widget.CardView>
 
-
+            <!--blood type-->
             <TextView
                 style="@style/SubHeaderTextBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:clipToPadding="false"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
+                android:paddingStart="@dimen/margin_start_end"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:text="@string/blood_type" />
 
             <RadioGroup
@@ -216,9 +214,9 @@
                 android:layout_marginTop="10dp"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
-                android:paddingStart="28dp"
+                android:paddingStart="@dimen/margin_start_end"
                 android:paddingTop="10dp"
-                android:paddingEnd="28dp"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:paddingBottom="10dp">
 
                 <RadioButton
@@ -262,7 +260,7 @@
                 <RadioButton
                     android:layout_width="69dp"
                     android:layout_height="69dp"
-                    android:layout_marginStart="13dp"
+                    android:layout_marginStart="14dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -272,14 +270,15 @@
                     android:textColor="@drawable/radio_text_selector" />
             </RadioGroup>
 
+            <!--rhesus-->
             <TextView
                 style="@style/SubHeaderTextBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:clipToPadding="false"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
+                android:paddingStart="@dimen/margin_start_end"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:text="@string/rhesus" />
 
             <RadioGroup
@@ -289,9 +288,9 @@
                 android:layout_marginTop="10dp"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
-                android:paddingStart="28dp"
+                android:paddingStart="@dimen/margin_start_end"
                 android:paddingTop="10dp"
-                android:paddingEnd="28dp"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:paddingBottom="10dp">
 
                 <RadioButton
@@ -333,24 +332,24 @@
 
             </RadioGroup>
 
+            <!--have you donate-->
             <TextView
                 style="@style/SubHeaderTextBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:clipToPadding="false"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
+                android:paddingStart="@dimen/margin_start_end"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:text="@string/have_you_donate" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
+                android:paddingStart="@dimen/margin_start_end"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:text="@string/you_can_only_donate" />
-
 
             <RadioGroup
                 android:id="@+id/rg_have_you_donate"
@@ -359,9 +358,9 @@
                 android:layout_marginTop="10dp"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
-                android:paddingStart="15dp"
+                android:paddingStart="@dimen/margin_start_end"
                 android:paddingTop="10dp"
-                android:paddingEnd="13dp"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:paddingBottom="10dp">
 
                 <RadioButton
@@ -380,7 +379,6 @@
                     android:layout_width="69dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="14dp"
-                    android:layout_marginEnd="13dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -390,24 +388,24 @@
                     android:textColor="@drawable/radio_text_selector" />
             </RadioGroup>
 
+            <!--have you had covid-->
             <TextView
                 style="@style/SubHeaderTextBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:clipToPadding="false"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
+                android:paddingStart="@dimen/margin_start_end"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:text="@string/have_you_had_covid" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:paddingStart="28dp"
-                android:paddingEnd="28dp"
+                android:paddingStart="@dimen/margin_start_end"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:text="@string/you_can_only_donate_covid_ver" />
-
 
             <RadioGroup
                 android:id="@+id/rg_have_you_had_covid"
@@ -417,9 +415,9 @@
                 android:layout_marginBottom="40dp"
                 android:clipToPadding="false"
                 android:orientation="horizontal"
-                android:paddingStart="28dp"
+                android:paddingStart="@dimen/margin_start_end"
                 android:paddingTop="10dp"
-                android:paddingEnd="13dp"
+                android:paddingEnd="@dimen/margin_start_end"
                 android:paddingBottom="10dp">
 
                 <RadioButton
@@ -438,7 +436,6 @@
                     android:layout_width="69dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="14dp"
-                    android:layout_marginEnd="13dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"

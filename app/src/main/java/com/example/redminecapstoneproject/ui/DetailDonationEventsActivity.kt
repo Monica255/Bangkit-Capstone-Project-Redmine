@@ -12,7 +12,12 @@ class DetailDonationEventsActivity : AppCompatActivity(),OnMapReadyCallback {
     private lateinit var binding: ActivityDetailDonationEventsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_donation_events)
+        binding= ActivityDetailDonationEventsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btBack.setOnClickListener {
+            finish()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
