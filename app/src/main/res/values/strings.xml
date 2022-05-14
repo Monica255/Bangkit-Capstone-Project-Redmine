@@ -41,13 +41,18 @@
     <string name="province_residence">Province of Residence</string>
     <string name="city">City</string>
     <string name="province">Province</string>
+    <string name="select_city">Select City</string>
+    <string name="select_province">Select Province</string>
     <string name="have_you_donate">Have you donated before in the last 3 months</string>
     <string name="you_can_only_donate">You can only donate 3 months after you last blood donation. Please specify the date if you have donated in the last 3 months</string>
     <string name="have_you_had_covid">Have you ever had Covid-19?</string>
     <string name="you_can_only_donate_covid_ver">You can only donate 3 months after you recover from Covid-19. Please specify the recovery date if you just recovered in the last 3 months</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="last_blood_donation">Last blood donation:</string>
+    <string name="pick_date">Pick date</string>
+    <string name="last_blood_donation">Last blood donation: %1$s %2$s %3$s</string>
+    <string name="label_last_blood_donation">Last blood donation</string>
+    <string name="recovery_date">Recovery date: %1$s %2$s %3$s</string>
     <string name="finish">Finish</string>
 
 
@@ -122,6 +127,7 @@
     <!-- user detail -->
     <string name="user_detail">User Detail</string>
     <string name="save">Save</string>
+    <string name="discard_changes">Discard changes</string>
     <string name="verify_account">Verify account</string>
     <string name="edit_password">Edit password</string>
     <string name="your_account_not_verified_yet">Your account is not verified yet. Please verify you account in order to be able to donate blood</string>
@@ -143,6 +149,8 @@
     <string name="note">Only people with verified accounts will be shown in the list of blood donors. We only show you Standby Donors, who are eligible to donate their blood. However, it is possible that the data has not been updated. So please contact them to confirm their availability and eligibility.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--helper text-->
     <string name="email_required">Email is required</string>
     <string name="invalid_email">Invalid email</string>
     <string name="name_required">Name is requred</string>
@@ -153,7 +161,21 @@
     <string name="input_email">Please input your email</string>
     <string name="input_pass">Please input your password</string>
     <string name="invalid_password">Invalid password</string>
-    <string name="input_phone_number">Please input your phone number</string>
-    <string name="phone_number_length_invalid">Phone number length is invalid</string>
+    <string name="input_phone_number"> Please input your phone number</string>
+    <string name="phone_number_length_invalid"> Phone number length is invalid</string>
+
+    <!--month text-->
+    <string name="jan">JAN</string>
+    <string name="feb">FEB</string>
+    <string name="mar">MAR</string>
+    <string name="apr">APR</string>
+    <string name="may">MAY</string>
+    <string name="jun">JUN</string>
+    <string name="jul">JUL</string>
+    <string name="aug">AUG</string>
+    <string name="sep">SEP</string>
+    <string name="oct">OCT</string>
+    <string name="nov">NOV</string>
+    <string name="des">DES</string>
 
 </resources>

@@ -35,25 +35,21 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_pick_province"
-            style="@style/cardViewStyle"
-            android:layout_marginStart="@dimen/margin_start_end"
-            android:layout_marginEnd="@dimen/margin_start_end"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/cardViewStyle.cardViewStyleFixed"
             app:cardCornerRadius="4dp">
 
             <TextView
-                android:background="@drawable/cv_white_selector"
-                style="@style/SubHeaderText"
+                android:id="@+id/tv_province"
+                style="@style/TitleText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_height="match_parent"
                 android:alpha="0.6"
-                android:text="@string/province"
-                android:textAlignment="center" />
+                android:background="@drawable/cv_white_selector"
+                android:gravity="center"
+                android:text="@string/province" />
 
         </androidx.cardview.widget.CardView>
+
         <TextView
             style="@style/SubHeaderTextBold"
             android:layout_width="match_parent"
@@ -67,23 +63,18 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_pick_city"
-            style="@style/cardViewStyle"
-            android:layout_marginStart="@dimen/margin_start_end"
-            android:layout_marginEnd="@dimen/margin_start_end"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/cardViewStyle.cardViewStyleFixed"
             app:cardCornerRadius="4dp">
 
             <TextView
-                android:background="@drawable/cv_white_selector"
-                style="@style/SubHeaderText"
+                android:id="@+id/tv_city"
+                style="@style/TitleText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:layout_height="match_parent"
                 android:alpha="0.6"
-                android:text="@string/city"
-                android:textAlignment="center" />
+                android:background="@drawable/cv_white_selector"
+                android:gravity="center"
+                android:text="@string/city" />
 
         </androidx.cardview.widget.CardView>
 
@@ -107,7 +98,7 @@
 
 
         <RadioGroup
-            android:id="@+id/rg_have_you_donate"
+            android:id="@+id/rg_have_you_donated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -119,8 +110,9 @@
             android:paddingBottom="10dp">
 
             <RadioButton
+                android:id="@+id/rb_haveDonate_yes"
                 android:layout_width="69dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginEnd="13dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -131,8 +123,9 @@
                 android:textColor="@drawable/radio_text_selector" />
 
             <RadioButton
+                android:id="@+id/rb_haveDonated_no"
                 android:layout_width="69dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginStart="14dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -142,6 +135,24 @@
                 android:text="@string/no"
                 android:textColor="@drawable/radio_text_selector" />
         </RadioGroup>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_pick_date_last_donate"
+            style="@style/cardViewStyle.cardViewStyleFixed"
+            android:visibility="gone"
+            app:cardCornerRadius="4dp">
+
+            <TextView
+                android:id="@+id/tv_date_last_donate"
+                style="@style/TitleText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.6"
+                android:background="@drawable/cv_white_selector"
+                android:gravity="center"
+                android:text="@string/pick_date" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             style="@style/SubHeaderTextBold"
@@ -161,7 +172,6 @@
             android:paddingEnd="@dimen/margin_start_end"
             android:text="@string/you_can_only_donate_covid_ver" />
 
-
         <RadioGroup
             android:id="@+id/rg_have_you_had_covid"
             android:layout_width="match_parent"
@@ -175,8 +185,10 @@
             android:paddingBottom="10dp">
 
             <RadioButton
+                android:id="@+id/rb_hadCovid_yes"
+                style="@style/TitleText"
                 android:layout_width="69dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginEnd="13dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -187,8 +199,9 @@
                 android:textColor="@drawable/radio_text_selector" />
 
             <RadioButton
+                android:id="@+id/rb_hadCovid_no"
                 android:layout_width="69dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginStart="14dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -200,9 +213,28 @@
 
         </RadioGroup>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_pick_date_recovery"
+            style="@style/cardViewStyle.cardViewStyleFixed"
+            android:visibility="gone"
+            app:cardCornerRadius="4dp">
+
+            <TextView
+                android:id="@+id/tv_date_recovery"
+                style="@style/TitleText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.6"
+                android:background="@drawable/cv_white_selector"
+                android:gravity="center"
+                android:text="@string/pick_date" />
+
+        </androidx.cardview.widget.CardView>
+
 
         <Button
             android:id="@+id/bt_finish"
+            style="@style/TitleText"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginStart="@dimen/margin_start_end"
@@ -210,9 +242,8 @@
             android:layout_marginEnd="@dimen/margin_start_end"
             android:backgroundTint="@color/blue"
             android:text="@string/finish"
-            style="@style/TitleText"
-            android:textColor="@color/white"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 

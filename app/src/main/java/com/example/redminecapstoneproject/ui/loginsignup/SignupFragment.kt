@@ -144,7 +144,7 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     private fun checkName() {
         val name = binding.etName.text.toString().trim()
         if (name.isEmpty()) {
-            isNameValid = true
+            isNameValid = false
             binding.ilName.error = getString(R.string.name_required)
         } else {
             isNameValid = true
@@ -152,6 +152,7 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     }
 
     private fun checkPass() {
+        val cpass = binding.etCpassword.text.toString().trim()
         val pass = binding.etPassword.text.toString().trim()
         if (pass.isEmpty()) {
             isPassValid = false
@@ -159,8 +160,13 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
         } else if (pass.length < 6) {
             isPassValid = false
             binding.ilPassword.error = getString(R.string.pass_length)
-        } else {
+        } else if (cpass != pass) {
+                iscPassValid = false
+                binding.ilCpassword.error = getString(R.string.pass_not_match)
+        }else {
             isPassValid = true
+            binding.ilCpassword.isErrorEnabled = false
+            binding.ilCpassword.error = ""
         }
     }
 
@@ -177,6 +183,7 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
 
         } else {
             iscPassValid = true
+
         }
     }
 

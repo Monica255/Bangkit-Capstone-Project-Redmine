@@ -48,7 +48,7 @@
             <RadioButton
                 android:id="@+id/rb_male"
                 android:layout_width="169dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -61,7 +61,7 @@
             <RadioButton
                 android:id="@+id/rb_female"
                 android:layout_width="169dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -174,7 +174,7 @@
             <RadioButton
                 android:id="@+id/rb_positive"
                 android:layout_width="69dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginEnd="13dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -187,7 +187,7 @@
             <RadioButton
                 android:id="@+id/rb_negative"
                 android:layout_width="69dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="13dp"
                 android:layout_weight="1"
@@ -201,7 +201,7 @@
             <RadioButton
                 android:id="@+id/rb_dont_know"
                 android:layout_width="69dp"
-                android:layout_height="55dp"
+                android:layout_height="@dimen/cv_width"
                 android:layout_marginStart="14dp"
                 android:layout_weight="1"
                 android:background="@drawable/radio_selector"
@@ -223,42 +223,53 @@
             android:paddingEnd="@dimen/margin_start_end"
             android:text="@string/phone_number" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
             android:paddingStart="@dimen/margin_start_end"
             android:paddingEnd="@dimen/margin_start_end">
 
             <TextView
+                android:id="@+id/code_phone_number"
                 style="@style/SubHeaderText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/number" />
+                android:text="@string/number"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/il_phone"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:errorIconTint="@color/red"
                 app:helperText=""
-                app:hintEnabled="false">
+                app:hintEnabled="false"
+                app:layout_constraintBaseline_toBaselineOf="@id/code_phone_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/code_phone_number">
 
                 <EditText
                     android:id="@+id/et_phoneNumber"
+                    style="@style/SubHeaderText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:background="@android:color/transparent"
                     android:inputType="number"
-                    android:outlineSpotShadowColor="@color/red" />
+                    android:outlineSpotShadowColor="@color/red"
+                    android:paddingStart="0dp"
+
+                    android:hint="@string/phone_number"
+                    android:textColor="@color/not_so_black"
+                    tools:text="87761142589" />
             </com.google.android.material.textfield.TextInputLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:layout_width="match_parent"

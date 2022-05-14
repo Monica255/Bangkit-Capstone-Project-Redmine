@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedmineCapstoneProject">
         <activity
+            android:name=".AlertDialogActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.BloodDonorDetailsActivity"
             android:exported="false" />
         <activity
@@ -20,10 +23,11 @@
             android:exported="false" />
         <activity
             android:name=".ui.profile.DonorDetailActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ui.profile.UserDetailActivity"
-            android:exported="false" />
+            android:configChanges="orientation"
+            android:exported="true" />
         <activity
             android:name=".ui.detaildonorreq.DetailDonorRequestActivity"
             android:exported="true" />
@@ -44,9 +48,8 @@
             android:exported="true" />
         <activity
             android:name=".ui.loginsignup.LoginActivity"
-            android:windowSoftInputMode="adjustPan"
-
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.donordata.DonorDataActivity"
             android:exported="true"

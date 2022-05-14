@@ -12,10 +12,12 @@ import com.example.redminecapstoneproject.databinding.FragmentProfileBinding
 import com.example.redminecapstoneproject.databinding.FragmentSignupBinding
 import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
 import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
+import com.example.redminecapstoneproject.ui.testing.UserDetail
 
 class ProfileFragment : Fragment(),View.OnFocusChangeListener {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

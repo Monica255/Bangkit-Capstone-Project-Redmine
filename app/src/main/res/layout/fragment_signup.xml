@@ -9,8 +9,9 @@
 
 
     <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="580dp"
         android:background="#bfffffff"
         android:elevation="8dp"
         android:orientation="vertical"

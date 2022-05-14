@@ -16,16 +16,31 @@ import www.sanju.motiontoast.MotionToast
 class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
     private var _binding: FragmentFirstDonorDataBinding? = null
     private val binding get() = _binding!!
-    private var isPhoneNumberValid: Boolean = false
-    private var isGenderValid: Boolean = false
-    private var isBloodTypeValid: Boolean = false
-    private var isRhesusValid: Boolean = false
+    private var isPhoneNumberValid= false
+    private var isGenderValid = false
+    get() {
+        checkGender()
+        return field
+    }
+    private var isBloodTypeValid = false
+        get() {
+            checkBloodType()
+            return field
+        }
+    private var isRhesusValid= false
+        get() {
+            checkRhesus()
+            return field
+        }
+    private var phoneNumber=""
+    private var gender=""
+    private var bloodType=""
+    private var rhesus=""
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.etPhoneNumber.onFocusChangeListener = this
-
         binding.btContinue.setOnClickListener { view ->
 
             if (isDataValid()) {
@@ -77,9 +92,6 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
 
     private fun isDataValid(): Boolean {
         binding.ilPhone.clearFocus()
-        checkGender()
-        checkBloodType()
-        checkRhesus()
         return isGenderValid && isBloodTypeValid && isRhesusValid && isPhoneNumberValid
     }
 
@@ -97,25 +109,21 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
 
     private fun checkGender() {
         val gender = binding.rgGender.checkedRadioButtonId
-        if (gender == -1) { // If any radio button checked from radio group
-            // Get the instance of radio button using id
+        if (gender == -1) {
             isGenderValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(gender)
             isGenderValid = true
-            // If no radio button checked in this radio group
         }
     }
 
     private fun checkBloodType() {
         val bloodType = binding.rgBloodType.checkedRadioButtonId
-        if (bloodType == -1) { // If any radio button checked from radio group
-            // Get the instance of radio button using id
+        if (bloodType == -1) {
             isBloodTypeValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(bloodType)
             isBloodTypeValid = true
-            // If no radio button checked in this radio group
         }
     }
 
