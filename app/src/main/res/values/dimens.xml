@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="margin_start_end">20dp</dimen>
-    <dimen name="margin_start_end_variant">12dp</dimen>
-    <dimen name="cv_width">45dp</dimen>
-
-</resources>
