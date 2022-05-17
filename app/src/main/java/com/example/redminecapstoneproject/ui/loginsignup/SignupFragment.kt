@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.findNavController
 import com.example.redminecapstoneproject.R
-import com.example.redminecapstoneproject.databinding.FragmentCanDonateBloodBinding
 import com.example.redminecapstoneproject.databinding.FragmentSignupBinding
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import www.sanju.motiontoast.MotionToast
@@ -22,9 +21,14 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
     private var isEmailValid: Boolean = false
+
     private var isNameValid: Boolean = false
+
     private var isPassValid: Boolean = false
+
     private var iscPassValid: Boolean = false
+
+
     lateinit var name: String
     private lateinit var email: String
     private lateinit var pass: String
@@ -37,6 +41,9 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
         binding.etPassword.onFocusChangeListener = this
         binding.etCpassword.onFocusChangeListener = this
 
+        clearAllFocus()
+
+        Log.d("TAG","is focused "+binding.etEmail.isFocused)
         binding.cbSeePassword.setOnClickListener {
             if (binding.cbSeePassword.isChecked) {
                 binding.etPassword.transformationMethod =
@@ -100,6 +107,16 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
 
     }
 
+    private fun clearAllFocus(){
+        binding.apply {
+            etName.clearFocus()
+            etEmail.clearFocus()
+            etPassword.clearFocus()
+            etCpassword.clearFocus()
+
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -118,12 +135,13 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     }
 
     private fun isDataValid(): Boolean {
-        binding.apply {
-            etEmail.clearFocus()
-            etName.clearFocus()
-            etPassword.clearFocus()
-            etCpassword.clearFocus()
-        }
+        clearAllFocus()
+       Log.d("TAG",isNameValid.toString())
+        Log.d("TAG",isEmailValid.toString())
+        Log.d("TAG",isPassValid.toString())
+        Log.d("TAG",iscPassValid.toString())
+
+
         return isNameValid && isEmailValid && isPassValid && iscPassValid
     }
 
@@ -154,6 +172,7 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     private fun checkPass() {
         val cpass = binding.etCpassword.text.toString().trim()
         val pass = binding.etPassword.text.toString().trim()
+
         if (pass.isEmpty()) {
             isPassValid = false
             binding.ilPassword.error = getString(R.string.password_required)
@@ -165,6 +184,8 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
                 binding.ilCpassword.error = getString(R.string.pass_not_match)
         }else {
             isPassValid = true
+            iscPassValid = true
+
             binding.ilCpassword.isErrorEnabled = false
             binding.ilCpassword.error = ""
         }
@@ -173,6 +194,9 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     private fun checkConfirmPass() {
         val cpass = binding.etCpassword.text.toString().trim()
         val pass = binding.etPassword.text.toString().trim()
+
+        Log.d("TAG","p  " +pass)
+        Log.d("TAG","cp " +cpass)
 
         if (cpass.isEmpty()) {
             iscPassValid = false

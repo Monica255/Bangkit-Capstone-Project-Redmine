@@ -6,13 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
-import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.databinding.FragmentProfileBinding
-import com.example.redminecapstoneproject.databinding.FragmentSignupBinding
 import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
 import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
-import com.example.redminecapstoneproject.ui.testing.UserDetail
 
 class ProfileFragment : Fragment(),View.OnFocusChangeListener {
     private var _binding: FragmentProfileBinding? = null

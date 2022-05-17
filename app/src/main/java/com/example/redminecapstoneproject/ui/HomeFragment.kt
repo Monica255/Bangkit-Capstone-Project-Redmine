@@ -6,11 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.databinding.FragmentHomeBinding
-import com.example.redminecapstoneproject.databinding.FragmentProfileBinding
-import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
-import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
+import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 
 
 class HomeFragment : Fragment() {

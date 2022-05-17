@@ -4,67 +4,131 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.redminecapstoneproject.ui.testing.UserDetail
+import com.example.redminecapstoneproject.ui.testing.UserData
+import com.example.redminecapstoneproject.ui.testing.AccountData
 import com.example.redminecapstoneproject.ui.testing.test
 import java.lang.Exception
+import java.time.LocalDate
 
 class UserDetailViewModel : ViewModel() {
     private var _provinces = test.generateLiveDummyProvince()
     var provinces: LiveData<List<String>> = _provinces
 
-    private var _cities = test.generateLiveDummyCity()
+    private var _cities = MutableLiveData<List<String>>()
     var cities: LiveData<List<String>> = _cities
 
     var searchProvinceQuery: String? = null
     var searchCityQuery: String? = null
 
-    private var _userDetail = test.generateLiveDummyUserDetail()
-    var userDetail: LiveData<UserDetail> = _userDetail
+    private var _userData = test.generateLiveDummyUserData()
+    var userData: LiveData<UserData> = _userData
+    //lateinit var InitialuserData: UserData
 
-    var _newUserDetail = MutableLiveData<UserDetail>()
+    var _newUserData = test.generateLiveDummyUserData()
 
-    private lateinit var tempUserDetail: UserDetail
+    private var _accountData = test.generateLiveDummyAccountData()
+    var accountData: LiveData<AccountData> = _accountData
+
+    var _newAccountData = test.generateLiveDummyAccountData()
 
 
-    fun isDataDifferent(): Boolean {
-        Log.d("TAG", "nud " + _newUserDetail.value)
-        Log.d("TAG", "ud  " + _userDetail.value)
-        val x = _newUserDetail.value != _userDetail.value
-        Log.d("TAG", x.toString())
-        return _newUserDetail.value != _userDetail.value
+    var temptLastDonateDate= test.generateLiveDummyUserData().value?.lastDonateDate
+    var temptRecoveryDate = test.generateLiveDummyUserData().value?.recoveryDate
+
+
+    fun isProvinceDif(): Boolean {
+        return userData.value?.province != _newUserData.value?.province
     }
 
+    fun getCities(province: String) {
+        _cities = test.generateLiveDummyCity(province)
+        cities = _cities
+    }
 
-    fun updateUserDetail(value: Any, tag: String) {
-        Log.d("TAG", _userDetail.value.toString())
+    fun isDataDifferent(): Boolean {
+        Log.d("TAG", "ad " + _accountData.value.toString())
+        Log.d("TAG", "nad" + _newAccountData.value.toString())
+
+        Log.d("TAG", "ud " + _userData.value.toString())
+        Log.d("TAG", "nud" + _newUserData.value.toString())
+        val x = _newUserData.value != _userData.value
+        val y = _newAccountData.value != _accountData.value
+        return x || y
+    }
+
+    fun updateUserDetail(vararg x:Pair<Any?, String>) {
+        Log.d("TAG","start update")
+        var tempAccountData: AccountData
+        var tempUserData: UserData
         try {
-            tempUserDetail = _newUserDetail.value!!
-            when (tag) {
-                "name" -> {
-                    tempUserDetail.name = value as String
-                }
-                "email" -> {
-                    tempUserDetail.email = value as String
+            tempAccountData = _newAccountData.value!!
+            tempUserData = _newUserData.value!!
+            for(item in x){
+                when (item.second) {
+                    "name" -> {
+                        tempAccountData.name = item.first as String
+                    }
+                    "email" -> {
+                        tempAccountData.email = item.first as String
 
-                }
-                "number" -> {
-                    tempUserDetail.phoneNumber = value as String
+                    }
+                    "gender" -> {
+                        tempUserData.gender = item.first as String
 
-                }
-                "province" -> {
-                    tempUserDetail.province = value as String
+                    }
+                    "bloodType" -> {
+                        tempUserData.bloodType = item.first as String
 
-                }
-                "city" -> {
-                    tempUserDetail.city = value as String
+                    }
+                    "rhesus" -> {
+                        tempUserData.rhesus = item.first as String
 
+                    }
+                    "number" -> {
+                        tempUserData.phoneNumber = item.first as String
+
+                    }
+                    "province" -> {
+                        tempUserData.province = item.first as String
+                        if (userData.value?.province != item.first) tempUserData.city = null else tempUserData.city=userData.value?.city
+                    }
+                    "city" -> {
+                        tempUserData.city = item.first as String
+
+                    }
+                    "haveDonated" -> {
+                        if(!(item.first as Boolean))tempUserData.lastDonateDate=null
+                        tempUserData.haveDonated = item.first as Boolean
+
+                    }
+                    "hadCovid" -> {
+                        if(!(item.first as Boolean))tempUserData.recoveryDate=null
+                        tempUserData.hadCovid = item.first as Boolean
+
+                    }
+                    "lastDonateDate" -> {
+                        tempUserData.lastDonateDate = item.first as LocalDate
+                        temptLastDonateDate = item.first as LocalDate
+
+                    }
+                    "recoveryDate" -> {
+                        tempUserData.recoveryDate = item.first as LocalDate
+                        temptRecoveryDate = item.first as LocalDate
+
+                    }
                 }
+
             }
-            _newUserDetail.value = tempUserDetail
+            _newUserData.value = tempUserData
+            _newAccountData.value = tempAccountData
+            Log.d("TAG","updated ud "+_newUserData.value )
+
+
         } catch (e: Exception) {
 
-
         }
+
+
 
 
     }

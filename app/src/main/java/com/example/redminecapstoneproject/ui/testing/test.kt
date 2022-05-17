@@ -51,21 +51,21 @@ object test {
     fun generateLiveDummyProvince(): MutableLiveData<List<String>> {
         val list =MutableLiveData<List<String>>()
         val newsList = ArrayList<String>()
-        newsList.add("Bali")
         for (i in 1..15) {
-            val province = "Ini ceritanya province ${i+1}"
+            val province = "Province name $i"
             newsList.add(province)
         }
         list.value=newsList
         return list
     }
 
-    fun generateLiveDummyCity(): MutableLiveData<List<String>>{
+    fun generateLiveDummyCity(province:String): MutableLiveData<List<String>>{
         val list =MutableLiveData<List<String>>()
         val newsList = ArrayList<String>()
-        newsList.add("Denpasar")
+        val p=province.replace("Province name","P")
+
         for (i in 1..15) {
-            val province = "Ini ceritanya city ${i+1}"
+            val province = "$p City name $i"
             newsList.add(province)
         }
         list.value=newsList
@@ -79,8 +79,8 @@ object test {
             "Dimas Ari Lumintang",
             "arilumintang@gmail.com",
             "87712345678",
-            "Bali",
-            "Denpasar"
+            "Province name 1",
+            "Province name 1"
         )
     }
 
@@ -91,8 +91,8 @@ object test {
                 "Dimas Ari Lumintang",
                 "arilumintang@gmail.com",
                 "87712345678",
-                "Bali",
-                "Denpasar"
+                "Province name 1",
+                "Province name 1"
             )
         )
     }
@@ -106,6 +106,34 @@ object test {
             true, false,
             LocalDate.of(2022, 5, 1),
             null
+        )
+    }
+
+
+    fun generateLiveDummyUserData(): MutableLiveData<UserData> {
+        return MutableLiveData(
+            UserData(
+                false,
+                "male",
+                "a",
+                "positive",
+                "87712345678",
+                "Province name 1",
+                "P 1 City name 1",
+                true, false,
+                LocalDate.of(2022, 5, 1),
+                null
+            )
+        )
+    }
+
+    fun generateLiveDummyAccountData(): MutableLiveData<AccountData> {
+        return MutableLiveData(
+            AccountData(
+                true,
+                "Dimas Ari Lumintang",
+                "arilumintang@gmail.com"
+            )
         )
     }
 
@@ -128,8 +156,9 @@ data class UserDetail(
     var email: String,
     var phoneNumber: String,
     var province: String,
-    var city: String
+    var city: String,
 )
+
 
 data class DonorDetail(
     val isVerified: Boolean,
@@ -142,3 +171,55 @@ data class DonorDetail(
     var recoveryDate: LocalDate? = null,
 
     )
+
+
+data class UserData(
+    val isVerified: Boolean,
+    var gender: String,
+    var bloodType: String,
+    var rhesus: String,
+    var phoneNumber: String,
+    var province: String,
+    var city: String?=null,
+    var haveDonated: Boolean,
+    var hadCovid: Boolean,
+    var lastDonateDate: LocalDate? = null,
+    var recoveryDate: LocalDate? = null,
+)
+
+data class AccountData(
+    val isVerified: Boolean,
+    var name: String,
+    var email: String,
+)
+
+
+data class DonorData(
+    var isVerified: Boolean=false,
+    var gender: String?=null,
+    var bloodType: String?=null,
+    var rhesus: String?=null,
+    var phoneNumber: String?=null,
+    var province: String?=null,
+    var city: String?=null,
+    var haveDonated: Boolean?=null,
+    var hadCovid: Boolean?=null,
+    var lastDonateDate: LocalDate? = null,
+    var recoveryDate: LocalDate? = null,
+    )
+
+
+/*
+data class DonorReq(
+    var patientName:String?=null,
+    var numberOfBloodBag:Int?=null,
+    var bloodType: String?=null,
+    var rhesus: String?=null,
+    var province: String?=null,
+    var city: String?=null,
+    var hospitalName:String?=null,
+    var description:String?=null,
+    var contactName:String?=null,
+    var phoneNumber: String?=null
+
+)*/

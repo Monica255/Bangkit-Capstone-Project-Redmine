@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CreateDonorReqActivity">
+    tools:context=".ui.createdonorreq.CreateDonorReqActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -239,6 +239,33 @@
 
             </RadioGroup>
 
+            <!--province of residence-->
+            <TextView
+                style="@style/SubHeaderTextBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_end"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:clipToPadding="false"
+                android:text="@string/province_residence" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_pick_province"
+
+                style="@style/cardViewStyle.cardViewStyleFixed">
+
+                <TextView
+                    style="@style/SubHeaderText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tv_province"
+                    android:alpha="0.6"
+                    android:gravity="center"
+                    android:text="@string/province" />
+
+            </androidx.cardview.widget.CardView>
+
             <!--city of residence-->
             <TextView
                 style="@style/SubHeaderTextBold"
@@ -259,7 +286,7 @@
                     style="@style/SubHeaderText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
+                    android:id="@+id/tv_city"
                     android:alpha="0.6"
                     android:gravity="center"
                     android:text="@string/city" />
@@ -322,6 +349,7 @@
                 android:layout_marginBottom="5dp"
                 app:counterEnabled="true"
                 app:counterMaxLength="200"
+                app:helperTextEnabled="true"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText

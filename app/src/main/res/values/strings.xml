@@ -153,7 +153,7 @@
     <!--helper text-->
     <string name="email_required">Email is required</string>
     <string name="invalid_email">Invalid email</string>
-    <string name="name_required">Name is requred</string>
+    <string name="name_required">Name is required</string>
     <string name="password_required">Password is required</string>
     <string name="pass_length">Password must be 6 characters long</string>
     <string name="cpass_required">Confirm password is required</string>
@@ -163,6 +163,10 @@
     <string name="invalid_password">Invalid password</string>
     <string name="input_phone_number"> Please input your phone number</string>
     <string name="phone_number_length_invalid"> Phone number length is invalid</string>
+    <string name="max_blood_bag">Maximum number of blood bag is 5</string>
+    <string name="hospital_name_required">Hospital name is required</string>
+    <string name="des_required">Description is required</string>
+    <string name="des_max_length">Description maximum length is 200</string>
 
     <!--month text-->
     <string name="jan">JAN</string>

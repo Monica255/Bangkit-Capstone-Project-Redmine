@@ -16,7 +16,7 @@
             android:name=".ui.BloodDonorDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.CreateDonorReqActivity"
+            android:name=".ui.createdonorreq.CreateDonorReqActivity"
             android:exported="false" />
         <activity
             android:name=".ui.BloodDonorsActivity"

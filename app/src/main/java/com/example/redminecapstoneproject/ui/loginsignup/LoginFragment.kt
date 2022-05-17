@@ -120,6 +120,7 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
         }
     }
 
+
     private fun checkPass() {
         val pass = binding.etPassword.text.toString().trim()
         if (pass.isEmpty()) {
