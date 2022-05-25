@@ -7,34 +7,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.redminecapstoneproject.R
+import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentFirstDonorDataBinding
 import www.sanju.motiontoast.MotionToast
 
 class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
+
     private var _binding: FragmentFirstDonorDataBinding? = null
     private val binding get() = _binding!!
-    private var isPhoneNumberValid= false
-    get(){
-        checkPhoneNumber()
-        return field
-    }
+    private var isPhoneNumberValid = false
+        get() {
+            checkPhoneNumber()
+            return field
+        }
 
     private var isGenderValid = false
-    get() {
-        checkGender()
-        return field
-    }
+        get() {
+            checkGender()
+            return field
+        }
     private var isBloodTypeValid = false
         get() {
             checkBloodType()
             return field
         }
-    private var isRhesusValid= false
+    private var isRhesusValid = false
         get() {
             checkRhesus()
             return field
@@ -44,13 +47,19 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
         super.onViewCreated(view, savedInstanceState)
         binding.etPhoneNumber.onFocusChangeListener = this
 
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        Log.d("TAG","view data created")
+
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]
+
+        binding.tvHello.text=getString(R.string.halo,donorDataViewModel.name)
 
         binding.btContinue.setOnClickListener { view ->
             if (isDataValid()) {
                 //donorDataViewModel.setData(isVerified = false,gender = gender,bloodType = bloodType,rhesus = rhesus,phoneNumber = phoneNumber)
-                Log.d("TAG",donorDataViewModel.donorData.toString())
+                Log.d("TAG", donorDataViewModel.donorData.toString())
                 view.findNavController()
                     .navigate(R.id.action_firstDonorDataFragment_to_secondDonorDataFragment)
             } else {
@@ -103,8 +112,11 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
     }
 
     private fun checkPhoneNumber() {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]
+        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         val selectedPhoneNumber = binding.etPhoneNumber.text.toString().trim()
         if (selectedPhoneNumber.isEmpty()) {
             isPhoneNumberValid = false
@@ -114,45 +126,51 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
             binding.ilPhone.error = getString(R.string.phone_number_length_invalid)
         } else
             isPhoneNumberValid = true
-            donorDataViewModel.donorData.phoneNumber=selectedPhoneNumber
+        donorDataViewModel.donorData.phoneNumber = selectedPhoneNumber
     }
 
     private fun checkGender() {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         val selectedGender = binding.rgGender.checkedRadioButtonId
         if (selectedGender == -1) {
             isGenderValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(selectedGender)
             isGenderValid = true
-            donorDataViewModel.donorData.gender=radio.text.toString().lowercase()
+            donorDataViewModel.donorData.gender = radio.text.toString().lowercase()
         }
     }
 
     private fun checkBloodType() {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         val selectedBloodType = binding.rgBloodType.checkedRadioButtonId
         if (selectedBloodType == -1) {
             isBloodTypeValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(selectedBloodType)
             isBloodTypeValid = true
-            donorDataViewModel.donorData.bloodType=radio.text.toString().lowercase()
+            donorDataViewModel.donorData.bloodType = radio.text.toString().lowercase()
         }
     }
 
     private fun checkRhesus() {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         val selectedRhesus = binding.rgRhesus.checkedRadioButtonId
         if (selectedRhesus == -1) {
             isRhesusValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(selectedRhesus)
             isRhesusValid = true
-            donorDataViewModel.donorData.rhesus=radio.text.toString().lowercase()
+            donorDataViewModel.donorData.rhesus = radio.text.toString().lowercase()
         }
     }
 

@@ -6,28 +6,58 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.redminecapstoneproject.R
+import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentSignupBinding
+import com.example.redminecapstoneproject.ui.HomeActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import www.sanju.motiontoast.MotionToast
+
 
 class SignupFragment : Fragment(), View.OnFocusChangeListener {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
+    private var counter2=0
+
+    /*private val loginSignupViewModel: LoginSignupViewModel by viewModels {
+        RepoViewModelFactory(requireActivity())
+    }*/
+
+
+    private var mAuth: FirebaseAuth? = null
+    private var mDb: FirebaseDatabase? = null
     private var isEmailValid: Boolean = false
+        get() {
+            checkEmail()
+            return field
+        }
 
     private var isNameValid: Boolean = false
+        get() {
+            checkName()
+            return field
+        }
 
     private var isPassValid: Boolean = false
+        get() {
+            checkPass()
+            return field
+        }
 
     private var iscPassValid: Boolean = false
-
+        get() {
+            checkConfirmPass()
+            return field
+        }
 
     lateinit var name: String
     private lateinit var email: String
@@ -35,15 +65,69 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mAuth = FirebaseAuth.getInstance()
+        mDb = FirebaseDatabase.getInstance()
         binding.etName.onFocusChangeListener = this
         binding.etEmail.onFocusChangeListener = this
         binding.etPassword.onFocusChangeListener = this
         binding.etCpassword.onFocusChangeListener = this
 
-        clearAllFocus()
 
-        Log.d("TAG","is focused "+binding.etEmail.isFocused)
+
+
+        clearAllFocus()
+        val loginSignupViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[LoginSignupViewModel::class.java]
+
+        loginSignupViewModel.message.observe(requireActivity()) {
+            makeToast(it.first, it.second)
+
+            /*if (!it.first) {
+                val intent = Intent(activity, DonorDataActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }*/
+        }
+
+        //val intent = Intent(activity, LoginActivity::class.java)
+        val intent2 = Intent(activity, DonorDataActivity::class.java)
+        //val intent3 = Intent(activity, HomeActivity::class.java)
+
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
+            if (fu == null) {
+                //startActivity(intent)
+            } else {
+                Log.d("TAG", "fu not null")
+                loginSignupViewModel.getUserAccountData().observe(requireActivity()) { value ->
+
+                    if (value == null) {
+                        /*Log.d("TAG", "first acc null data")
+                        counter2++
+                        if (counter2 > 1) {
+                        Log.d("TAG", "acc null")
+                        loginSignupViewModel.setUserAccountData()
+                        }*/
+                    } else {
+                        Log.d("TAG", "not null  " + value)
+
+                        intent2.putExtra("name", value.name)
+                        startActivity(intent2)
+
+                    }
+                }
+
+
+            }
+        }
+
+
+        Log.d("TAG", "is focused " + binding.etEmail.isFocused)
         binding.cbSeePassword.setOnClickListener {
             if (binding.cbSeePassword.isChecked) {
                 binding.etPassword.transformationMethod =
@@ -69,7 +153,7 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
                 name = binding.etName.text.toString().trim()
                 email = binding.etEmail.text.toString().trim()
                 pass = binding.etPassword.text.toString().trim()
-
+/*
                 MotionToast.Companion.createColorToast(
                     requireActivity(),
                     "Yey success 😍",
@@ -85,9 +169,11 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
 
                 val intent = Intent(activity, DonorDataActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+                startActivity(intent)*/
+                //registerAccount()
+                loginSignupViewModel.registerAccount(email, pass, name)
             } else {
-                if(!isFieldsEmpty()){
+                if (!isFieldsEmpty()) {
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
                         "Hey careful ",
@@ -107,7 +193,38 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
 
     }
 
-    private fun clearAllFocus(){
+    private fun makeToast(isError: Boolean, msg: String) {
+        if (isError) {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Ups",
+                msg,
+                MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    requireActivity(),
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        } else {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Yey success 😍",
+                msg,
+                MotionToast.TOAST_SUCCESS,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    requireActivity(),
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }
+    }
+
+
+    private fun clearAllFocus() {
         binding.apply {
             etName.clearFocus()
             etEmail.clearFocus()
@@ -120,26 +237,25 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     private fun isFieldsEmpty(): Boolean {
-        return binding.etEmail.text.toString().trim()==""
-                && binding.etPassword.text.toString().trim()==""
-                && binding.etName.text.toString().trim()==""
-                && binding.etCpassword.text.toString().trim()==""
+        return binding.etEmail.text.toString().trim() == ""
+                && binding.etPassword.text.toString().trim() == ""
+                && binding.etName.text.toString().trim() == ""
+                && binding.etCpassword.text.toString().trim() == ""
 
     }
 
     private fun isDataValid(): Boolean {
-        clearAllFocus()
-       Log.d("TAG",isNameValid.toString())
-        Log.d("TAG",isEmailValid.toString())
-        Log.d("TAG",isPassValid.toString())
-        Log.d("TAG",iscPassValid.toString())
+        //clearAllFocus()
+        Log.d("TAG", isNameValid.toString())
+        Log.d("TAG", isEmailValid.toString())
+        Log.d("TAG", isPassValid.toString())
+        Log.d("TAG", iscPassValid.toString())
 
 
         return isNameValid && isEmailValid && isPassValid && iscPassValid
@@ -180,9 +296,9 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
             isPassValid = false
             binding.ilPassword.error = getString(R.string.pass_length)
         } else if (cpass != pass) {
-                iscPassValid = false
-                binding.ilCpassword.error = getString(R.string.pass_not_match)
-        }else {
+            iscPassValid = false
+            binding.ilCpassword.error = getString(R.string.pass_not_match)
+        } else {
             isPassValid = true
             iscPassValid = true
 
@@ -195,8 +311,8 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
         val cpass = binding.etCpassword.text.toString().trim()
         val pass = binding.etPassword.text.toString().trim()
 
-        Log.d("TAG","p  " +pass)
-        Log.d("TAG","cp " +cpass)
+        Log.d("TAG", "p  " + pass)
+        Log.d("TAG", "cp " + cpass)
 
         if (cpass.isEmpty()) {
             iscPassValid = false

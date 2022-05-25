@@ -61,7 +61,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/il_patient_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/InputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
@@ -95,7 +95,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/il_number_of_blood_needed"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/InputLayoutStyle"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
@@ -252,11 +252,11 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_pick_province"
-
+                app:cardCornerRadius="4dp"
                 style="@style/cardViewStyle.cardViewStyleFixed">
 
                 <TextView
-                    style="@style/SubHeaderText"
+                    style="@style/TitleText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/tv_province"
@@ -279,11 +279,11 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_pick_city"
-
+                app:cardCornerRadius="4dp"
                 style="@style/cardViewStyle.cardViewStyleFixed">
 
                 <TextView
-                    style="@style/SubHeaderText"
+                    style="@style/TitleText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/tv_city"
@@ -306,7 +306,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/il_hospital_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/InputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
@@ -340,7 +340,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/il_description"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/InputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"
@@ -350,6 +350,7 @@
                 app:counterEnabled="true"
                 app:counterMaxLength="200"
                 app:helperTextEnabled="true"
+                app:errorIconDrawable="@null"
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -373,7 +374,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/il_contact_name"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/InputLayoutStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_start_end"

@@ -6,13 +6,16 @@ import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
+import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityUserDetailBinding
-import com.example.redminecapstoneproject.ui.testing.AccountData
-import com.example.redminecapstoneproject.ui.testing.UserData
+import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
+import www.sanju.motiontoast.MotionToast
 
 class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     private lateinit var binding: ActivityUserDetailBinding
@@ -53,7 +56,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             binding.tvCity.alpha = 1F
         }
 
-    private lateinit var accountData: AccountData
+    private lateinit var accountData: RegisAccountDataRoom
 
     private fun newDialog(title: String): CustomDialogFragment {
         val dialog = CustomDialogFragment()
@@ -68,29 +71,36 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val userDetailViewModel =
-            ViewModelProvider(this)[UserDetailViewModel::class.java]
-
+        val userDetailViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[UserDetailViewModel::class.java]
         binding.etName.onFocusChangeListener = this
         binding.etEmail.onFocusChangeListener = this
         binding.etPhoneNumber.onFocusChangeListener = this
 
         userDetailViewModel.userData.observe(this) {
             //userDetailViewModel.InitialuserData = it
-            setData(it)
+            Log.d("TAG", "usedData " + it.toString())
+
             if (userDetailViewModel._newUserData.value == null) {
                 userDetailViewModel._newUserData.value = newUserData(it)
                 //userDetailViewModel.tempUserData = newUserData(it)
             }
+            Log.d("TAG", userDetailViewModel._newUserData.value.toString())
+            if (userDetailViewModel._newUserData.value != null) setData(it)
+
         }
 
         userDetailViewModel.accountData.observe(this) {
             accountData = it
-            setData(it)
-            /*if (userDetailViewModel._newAccountData.value == null) {
+
+            if (userDetailViewModel._newAccountData.value == null) {
                 userDetailViewModel._newAccountData.value = newAccountData(it)
                 //userDetailViewModel.tempAccountData = newAccountData(it)
-            }*/
+            }
+            Log.d("TAG", userDetailViewModel._newAccountData.value.toString())
+            if (userDetailViewModel._newAccountData.value != null) setData(it)
         }
 
 
@@ -102,16 +112,30 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             setButtonSaveEnable(userDetailViewModel.isDataDifferent())
         }
 
+        userDetailViewModel.message.observe(this) {
+            makeToast(it.first, it.second)
+        }
+
         binding.etName.addTextChangedListener {
-            userDetailViewModel.updateUserDetail(Pair(binding.etName.text.toString(), "name"))
+            userDetailViewModel.updateAccountDataRoom(Pair(binding.etName.text.toString(), "name"))
         }
 
         binding.etEmail.addTextChangedListener {
-            userDetailViewModel.updateUserDetail(Pair(binding.etEmail.text.toString(), "email"))
+            userDetailViewModel.updateAccountDataRoom(
+                Pair(
+                    binding.etEmail.text.toString(),
+                    "email"
+                )
+            )
         }
 
         binding.etPhoneNumber.addTextChangedListener {
-            userDetailViewModel.updateUserDetail(Pair(binding.etPhoneNumber.text.toString(), "number"))
+            userDetailViewModel.updateDonorDataRoom(
+                Pair(
+                    binding.etPhoneNumber.text.toString(),
+                    "number"
+                )
+            )
         }
 
         binding.cvPickProvince.setOnClickListener {
@@ -133,7 +157,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
         binding.btBack.setOnClickListener {
-            finish()
+            if (userDetailViewModel.isDataDifferent()) {
+                showConfirmDialog("back", userDetailViewModel)
+            } else onBackPressed()
+            //finish()
         }
 
 
@@ -146,12 +173,12 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             binding.btSave.alpha = 1F
             binding.btDiscard.visibility = View.VISIBLE
             Log.d("TAG", "data dif n valid")
-        } else if(x){
+        } else if (x) {
             binding.btSave.isEnabled = false
             binding.btSave.alpha = 0.5F
             binding.btDiscard.visibility = View.VISIBLE
             Log.d("TAG", "data dif n invalid")
-        }else{
+        } else {
             binding.btSave.isEnabled = false
             binding.btSave.alpha = 0.5F
             binding.btDiscard.visibility = View.GONE
@@ -160,13 +187,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     private fun setData(user: Any) {
-        if(user is UserData){
+        if (user is DonorDataRoom) {
             binding.apply {
                 ilPhone.editText?.setText(user.phoneNumber)
-                province = user.province
-                city = user.city?: ""
+                province = user.province ?: "Province"
+                city = user.city ?: "City"
             }
-        }else if(user is AccountData){
+        } else if (user is RegisAccountDataRoom) {
             binding.apply {
                 ilName.editText?.setText(user.name)
                 ilEmail.editText?.setText(user.email)
@@ -175,8 +202,9 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     }
 
-    private fun newUserData(x: UserData): UserData {
-        return UserData(
+    private fun newUserData(x: DonorDataRoom): DonorDataRoom {
+        return DonorDataRoom(
+            x.uid,
             x.isVerified,
             x.gender,
             x.bloodType,
@@ -191,8 +219,9 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         )
     }
 
-    private fun newAccountData(x: AccountData): AccountData {
-        return AccountData(
+    private fun newAccountData(x: RegisAccountDataRoom): RegisAccountDataRoom {
+        return RegisAccountDataRoom(
+            x.uid,
             x.isVerified,
             x.name,
             x.email
@@ -234,10 +263,12 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     private fun checkCity() {
-        val userDetailViewModel =
-            ViewModelProvider(this)[UserDetailViewModel::class.java]
+        val userDetailViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[UserDetailViewModel::class.java]
         val city = userDetailViewModel._newUserData.value?.city
-        isCityValid = city!=null
+        isCityValid = city != null
     }
 
     private fun setPhoneErrorText() {
@@ -260,6 +291,9 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
             builder.setTitle(getString(R.string.discard_changes))
             builder.setMessage("Are you sure you want to discard any changes?")
+        }else if (x == "back") {
+            builder.setTitle(getString(R.string.unsaved_changes))
+            builder.setMessage("Are you sure you want to leave without saving?")
         }
 
 
@@ -268,25 +302,31 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
         builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
             if (x == "discard") {
-                //vm.tempUserData=vm.InitialuserData
-                Log.d("TAG","ds "+vm.accountData.value.toString())
-                vm.userData.value?.let {
-                    vm._newUserData.value = newUserData(it)
-                    Log.d("TAG","renew ud "+vm._newUserData.value)
-                    setData(it) }
-                vm.accountData.value?.let {
-                    vm._newAccountData.value = newAccountData(it)
-                    setData(it) }
-
+                resetTemptData(vm)
                 binding.btDiscard.visibility = View.GONE
-
                 setButtonSaveEnable(false)
-            } else {val userDetailViewModel =
-                ViewModelProvider(this)[UserDetailViewModel::class.java]
+            } else if (x == "back") {
+                resetTemptData(vm)
+                setButtonSaveEnable(false)
+                onBackPressed()
+            } else {
+                val userDetailViewModel = ViewModelProvider(
+                    this,
+                    RepoViewModelFactory.getInstance(this)
+                )[UserDetailViewModel::class.java]
 
+                userDetailViewModel._newUserData.value?.let {
+                    userDetailViewModel.saveUserDonorData(
+                        it
+                    )
+                }
+                userDetailViewModel._newAccountData.value?.let {
+                    userDetailViewModel.saveUserAccountData(
+                        it
+                    )
+                }
+                setButtonSaveEnable(false)
                 //save data
-                Log.d("TAG","sv ud "+userDetailViewModel.userData.value.toString())
-                Log.d("TAG","sv nud "+userDetailViewModel._newUserData.value.toString())
 
             }
 
@@ -298,6 +338,49 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
         builder.show()
     }
+
+    private fun resetTemptData(vm: UserDetailViewModel) {
+        vm.userData.value?.let {
+            vm._newUserData.value = newUserData(it)
+            Log.d("TAG", "renew ud " + vm._newUserData.value)
+            setData(it)
+        }
+        vm.accountData.value?.let {
+            vm._newAccountData.value = newAccountData(it)
+            setData(it)
+        }
+    }
+
+    private fun makeToast(isError: Boolean, msg: String) {
+        if (isError) {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Ups",
+                msg,
+                MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    this,
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        } else {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Yey success 😍",
+                msg,
+                MotionToast.TOAST_SUCCESS,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    this,
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }
+    }
+
 
     override fun onFocusChange(v: View?, isFocused: Boolean) {
         if (v != null) {

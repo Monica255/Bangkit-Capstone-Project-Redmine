@@ -34,13 +34,15 @@ class CustomDialogFragment() : DialogFragment() {
     private var listItemsProvince = listOf<String>()
     private var listItemsCity = listOf<String>()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userDetailViewModel =
-            ViewModelProvider(requireActivity())[UserDetailViewModel::class.java]
 
-
+        val userDetailViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[UserDetailViewModel::class.java]
 
         userDetailViewModel.provinces.observe(requireActivity()) {
             listItemsProvince = it
@@ -120,10 +122,18 @@ class CustomDialogFragment() : DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
-        val userDetailViewModel =
-            ViewModelProvider(requireActivity())[UserDetailViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]
+        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val userDetailViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[UserDetailViewModel::class.java]
+
+        val createDonorReqViewModel =
+            ViewModelProvider(requireActivity())[CreateDonorReqViewModel::class.java]
 
         val builder = AlertDialog.Builder(requireActivity())
         val inflater = layoutInflater
@@ -142,8 +152,16 @@ class CustomDialogFragment() : DialogFragment() {
         rv = dialogView.findViewById(R.id.rv_alert_dialog)
 
         when (activity) {
+            is UserDetailActivity -> {
+                userDetailViewModel._newUserData.value?.let { it.province?.let { it1 ->
+                    userDetailViewModel.getCities(
+                        it1
+                    )
+                } }
+            }
             is DonorDataActivity -> {
                 if (title == "Select City") {
+                    Log.d("TAG","dialog city "+donorDataViewModel.donorData.province)
                     if (donorDataViewModel.donorData.province == null) {
                         tvWarning.visibility = View.VISIBLE
                         rv.visibility = View.GONE
@@ -159,8 +177,22 @@ class CustomDialogFragment() : DialogFragment() {
                     }
                 }
             }
-            is UserDetailActivity -> {
-                userDetailViewModel._newUserData.value?.let { userDetailViewModel.getCities(it.province) }
+            is CreateDonorReqActivity -> {
+                if (title == "Select City") {
+                    if (createDonorReqViewModel.donorReq.province == null) {
+                        tvWarning.visibility = View.VISIBLE
+                        rv.visibility = View.GONE
+                    } else if (createDonorReqViewModel.donorReq.province != null) {
+                        tvWarning.visibility = View.GONE
+                        rv.visibility = View.VISIBLE
+                        try {
+                            userDetailViewModel.getCities(createDonorReqViewModel.donorReq.province!!)
+
+                        } catch (e: Exception) {
+                            Log.e("ERROR", "Error message: $e")
+                        }
+                    }
+                }
             }
         }
 
@@ -182,12 +214,21 @@ class CustomDialogFragment() : DialogFragment() {
         items: List<String>?
 
     ) {
-        val userDetailViewModel =
-            ViewModelProvider(requireActivity())[UserDetailViewModel::class.java]
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
-        val createDonorReqViewModel =
-            ViewModelProvider(requireActivity())[CreateDonorReqViewModel::class.java]
+        val userDetailViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[UserDetailViewModel::class.java]
+
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]
+
+        val createDonorReqViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[CreateDonorReqViewModel::class.java]
+
         val mAdapter = AlertDialogAdapter(items)
         rv.adapter = mAdapter
 
@@ -205,11 +246,12 @@ class CustomDialogFragment() : DialogFragment() {
                                     text = "City"
                                     alpha = 0.6F
                                     donorDataViewModel.donorData.province = data
+                                    Log.d("TAG","dialog "+donorDataViewModel.donorData.province )
                                 }
                             }
                         }
                         is UserDetailActivity -> {
-                            userDetailViewModel.updateUserDetail(Pair(data, "province"))
+                            userDetailViewModel.updateDonorDataRoom(Pair(data, "province"))
                             tvCity.apply {
                                 if (userDetailViewModel.isProvinceDif()) {
                                     Log.d("TAG", userDetailViewModel.isProvinceDif().toString())
@@ -225,12 +267,12 @@ class CustomDialogFragment() : DialogFragment() {
                         }
                         is CreateDonorReqActivity -> {
                             tvCity.apply {
-                                //if (data != createDonorReqViewModel.donorReq.province) {
-                                    //createDonorReqViewModel.donorReq.city = null
+                                if (data != createDonorReqViewModel.donorReq.province) {
+                                    createDonorReqViewModel.donorReq.city = null
                                     text = "City"
                                     alpha = 0.6F
-                                    //createDonorReqViewModel.donorReq.province = data
-                                //}
+                                    createDonorReqViewModel.donorReq.province = data
+                                }
                             }
                         }
                     }
@@ -249,10 +291,10 @@ class CustomDialogFragment() : DialogFragment() {
                             donorDataViewModel.donorData.city = data
                         }
                         is UserDetailActivity -> {
-                            userDetailViewModel.updateUserDetail(Pair(data, "city"))
+                            userDetailViewModel.updateDonorDataRoom(Pair(data, "city"))
                         }
                         is CreateDonorReqActivity -> {
-                            //createDonorReqViewModel.donorReq.city = data
+                            createDonorReqViewModel.donorReq.city = data
                         }
                     }
 

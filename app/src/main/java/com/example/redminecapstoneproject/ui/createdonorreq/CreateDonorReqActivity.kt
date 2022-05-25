@@ -1,16 +1,23 @@
 package com.example.redminecapstoneproject.ui.createdonorreq
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.RadioButton
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.databinding.ActivityCreateDonorReqBinding
+import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataViewModel
+import www.sanju.motiontoast.MotionToast
 
-class CreateDonorReqActivity : AppCompatActivity() {
+class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
     private lateinit var binding: ActivityCreateDonorReqBinding
+    private var arg = Bundle()
     private var isPatientNameValid: Boolean = false
         get() {
             checkPatientName()
@@ -42,10 +49,25 @@ class CreateDonorReqActivity : AppCompatActivity() {
             return field
         }
     private var isHospitalNameValid = false
-
+        get() {
+            checkHospitalName()
+            return field
+        }
     private var isDescriptionValid = false
+        get() {
+            checkDescription()
+            return field
+        }
     private var isContactNameValid = false
+        get() {
+            checkContactName()
+            return field
+        }
     private var isPhoneNumberValid = false
+        get() {
+            checkPhoneNumber()
+            return field
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +79,57 @@ class CreateDonorReqActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.btPost.setOnClickListener {
+            if (isDataValid()) {
+                MotionToast.Companion.createColorToast(
+                    this,
+                    "Yey success 😍",
+                    "Donor request is successfully posted!",
+                    MotionToast.TOAST_SUCCESS,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(
+                        this,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
 
+                finish()
+            } else {
+                if (!isFieldsEmpty()) {
+                    MotionToast.Companion.createColorToast(
+                        this,
+                        "Hey careful ",
+                        "Please enter you data correctly",
+                        MotionToast.TOAST_WARNING,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.SHORT_DURATION,
+                        ResourcesCompat.getFont(
+                            this,
+                            www.sanju.motiontoast.R.font.helvetica_regular
+                        )
+                    )
+                }
+            }
+        }
+
+        binding.cvPickProvince.setOnClickListener {
+            newDialog("Select Province")
+        }
+
+        binding.cvPickCity.setOnClickListener {
+            newDialog("Select City")
+        }
+    }
+
+    private fun newDialog(title: String, isProvinceNotNull: Boolean = false): CustomDialogFragment {
+        val dialog = CustomDialogFragment()
+        dialog.show(this.supportFragmentManager, "mDialog")
+        arg.putString("title", title)
+        //arg.putBoolean("isProvinceNotNull", isProvinceNotNull)
+        dialog.arguments
+        dialog.arguments = arg
+        return dialog
     }
 
     private fun isFieldsEmpty(): Boolean {
@@ -93,10 +165,10 @@ class CreateDonorReqActivity : AppCompatActivity() {
         val name = binding.etPatientName.text.toString().trim()
         if (name.isEmpty()) {
             isPatientNameValid = false
-            binding.ilPatientName.error = getString(R.string.name_required)
+            if(!isFieldsEmpty())binding.ilPatientName.error = getString(R.string.name_required)
         } else {
             isPatientNameValid = true
-            //createDonorReqViewModel.donorReq.patientName = name
+            createDonorReqViewModel.donorReq.patientName = name
         }
     }
 
@@ -106,13 +178,13 @@ class CreateDonorReqActivity : AppCompatActivity() {
         val number = binding.etNumberOfBloodNeeded.text.toString().trim()
         if (number.isEmpty()) {
             isNumberOfBloodBagValid = false
-            binding.ilNumberOfBloodNeeded.error = getString(R.string.name_required)
+            if(!isFieldsEmpty())binding.ilNumberOfBloodNeeded.error = getString(R.string.name_required)
         } else if (number.toInt() > 5) {
             isNumberOfBloodBagValid = false
-            binding.ilNumberOfBloodNeeded.error = getString(R.string.max_blood_bag)
+            if(!isFieldsEmpty())binding.ilNumberOfBloodNeeded.error = getString(R.string.max_blood_bag)
         } else {
             isNumberOfBloodBagValid = true
-            //createDonorReqViewModel.donorReq.phoneNumber = number
+            createDonorReqViewModel.donorReq.phoneNumber = number
         }
     }
 
@@ -125,7 +197,7 @@ class CreateDonorReqActivity : AppCompatActivity() {
         } else {
             val radio: RadioButton = this.findViewById(selectedBloodType)
             isBloodTypeValid = true
-            //createDonorReqViewModel.donorReq.bloodType = radio.text.toString().lowercase()
+            createDonorReqViewModel.donorReq.bloodType = radio.text.toString().lowercase()
         }
     }
 
@@ -138,7 +210,7 @@ class CreateDonorReqActivity : AppCompatActivity() {
         } else {
             val radio: RadioButton = this.findViewById(selectedRhesus)
             isRhesusValid = true
-            //createDonorReqViewModel.donorReq.rhesus = radio.text.toString().lowercase()
+            createDonorReqViewModel.donorReq.rhesus = radio.text.toString().lowercase()
         }
     }
 
@@ -148,10 +220,10 @@ class CreateDonorReqActivity : AppCompatActivity() {
         val name = binding.etHospitalName.text.toString().trim()
         if (name.isEmpty()) {
             isHospitalNameValid = false
-            binding.ilHospitalName.error = getString(R.string.hospital_name_required)
+            if(!isFieldsEmpty())binding.ilHospitalName.error = getString(R.string.hospital_name_required)
         } else {
             isHospitalNameValid = true
-            //createDonorReqViewModel.donorReq.hospitalName = name
+            createDonorReqViewModel.donorReq.hospitalName = name
         }
     }
 
@@ -161,13 +233,13 @@ class CreateDonorReqActivity : AppCompatActivity() {
         val selectedPhoneNumber = binding.etDescription.text.toString().trim()
         if (selectedPhoneNumber.isEmpty()) {
             isDescriptionValid = false
-            binding.ilDescription.error = getString(R.string.des_required)
+            if(!isFieldsEmpty())binding.ilDescription.error = getString(R.string.des_required)
         } else if (selectedPhoneNumber.length > 200) {
             isDescriptionValid = false
-            binding.ilDescription.error = getString(R.string.des_max_length)
+            if(!isFieldsEmpty())binding.ilDescription.error = getString(R.string.des_max_length)
         } else
             isDescriptionValid = true
-        //createDonorReqViewModel.donorReq.description = selectedPhoneNumber
+        createDonorReqViewModel.donorReq.description = selectedPhoneNumber
 
     }
 
@@ -177,10 +249,10 @@ class CreateDonorReqActivity : AppCompatActivity() {
         val name = binding.etContactName.text.toString().trim()
         if (name.isEmpty()) {
             isContactNameValid = false
-            binding.ilContactName.error = getString(R.string.name_required)
+            if(!isFieldsEmpty())binding.ilContactName.error = getString(R.string.name_required)
         } else {
             isContactNameValid = true
-            //createDonorReqViewModel.donorReq.contactName = name
+            createDonorReqViewModel.donorReq.contactName = name
         }
     }
 
@@ -190,12 +262,82 @@ class CreateDonorReqActivity : AppCompatActivity() {
         val selectedPhoneNumber = binding.etPhoneNumber.text.toString().trim()
         if (selectedPhoneNumber.isEmpty()) {
             isPhoneNumberValid = false
-            binding.ilPhone.error = getString(R.string.input_phone_number)
+            if(!isFieldsEmpty())binding.ilPhone.error = getString(R.string.input_phone_number)
         } else if (selectedPhoneNumber.length < 9) {
             isPhoneNumberValid = false
-            binding.ilPhone.error = getString(R.string.phone_number_length_invalid)
+            if(!isFieldsEmpty())binding.ilPhone.error = getString(R.string.phone_number_length_invalid)
         } else
             isPhoneNumberValid = true
-        //createDonorReqViewModel.donorReq.phoneNumber = selectedPhoneNumber
+        createDonorReqViewModel.donorReq.phoneNumber = selectedPhoneNumber
+    }
+
+    private fun clearAllError(){
+        binding.ilPatientName.isErrorEnabled = false
+        binding.ilPatientName.error = ""
+        binding.ilNumberOfBloodNeeded.isErrorEnabled = false
+        binding.ilNumberOfBloodNeeded.error = ""
+        binding.ilHospitalName.isErrorEnabled = false
+        binding.ilHospitalName.error = ""
+        binding.ilDescription.isErrorEnabled = false
+        binding.ilDescription.error = ""
+        binding.ilContactName.isErrorEnabled = false
+        binding.ilContactName.error = ""
+        binding.ilPhone.isErrorEnabled = false
+        binding.ilPhone.error = ""
+    }
+
+    override fun onFocusChange(v: View?, isFocused: Boolean) {
+        if (v != null) {
+            when (v.id) {
+                R.id.et_patientName -> {
+                    if (isFocused) {
+                        binding.ilPatientName.isErrorEnabled = false
+                        binding.ilPatientName.error = ""
+                    } else {
+                        checkPatientName()
+                    }
+                }
+                R.id.et_number_of_blood_needed -> {
+                    if (isFocused) {
+                        binding.ilNumberOfBloodNeeded.isErrorEnabled = false
+                        binding.ilNumberOfBloodNeeded.error = ""
+                    } else {
+                        checkNumberOfBloodBag()
+                    }
+                }
+                R.id.et_hospital_name -> {
+                    if (isFocused) {
+                        binding.ilHospitalName.isErrorEnabled = false
+                        binding.ilHospitalName.error = ""
+                    } else {
+                        checkHospitalName()
+                    }
+                }
+                R.id.et_description -> {
+                    if (isFocused) {
+                        binding.ilDescription.isErrorEnabled = false
+                        binding.ilDescription.error = ""
+                    } else {
+                        checkDescription()
+                    }
+                }
+                R.id.et_contact_name -> {
+                    if (isFocused) {
+                        binding.ilContactName.isErrorEnabled = false
+                        binding.ilContactName.error = ""
+                    } else {
+                        checkContactName()
+                    }
+                }
+                R.id.et_phoneNumber -> {
+                    if (isFocused) {
+                        binding.ilPhone.isErrorEnabled = false
+                        binding.ilPhone.error = ""
+                    } else {
+                        checkPhoneNumber()
+                    }
+                }
+            }
+        }
     }
 }

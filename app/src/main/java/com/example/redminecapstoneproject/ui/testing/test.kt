@@ -1,6 +1,9 @@
 package com.example.redminecapstoneproject.ui.testing
 
 import androidx.lifecycle.MutableLiveData
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
 object test {
@@ -188,9 +191,24 @@ data class UserData(
 )
 
 data class AccountData(
-    val isVerified: Boolean,
+    var isVerified: Boolean,
     var name: String,
     var email: String,
+)
+
+data class RegisAccountData(
+    var isVerified: Boolean?,
+    var name: String?,
+    var email: String?,
+)
+
+@Entity
+data class RegisAccountDataRoom(
+    @PrimaryKey
+    var uid:String,
+    var isVerified: Boolean?,
+    var name: String?,
+    var email: String?,
 )
 
 
@@ -208,9 +226,49 @@ data class DonorData(
     var recoveryDate: LocalDate? = null,
     )
 
+@Entity
+data class DonorDataRoom(
+    @PrimaryKey
+    @ColumnInfo(name = "uid")
+    var uid:String,
+    @ColumnInfo(name = "isVerified")
+    var isVerified: Boolean=false,
+    @ColumnInfo(name = "gender")
+    var gender: String?=null,
+    @ColumnInfo(name = "bloodType")
+    var bloodType: String?=null,
+    @ColumnInfo(name = "rhesus")
+    var rhesus: String?=null,
+    @ColumnInfo(name = "phoneNumber")
+    var phoneNumber: String?=null,
+    @ColumnInfo(name = "province")
+    var province: String?=null,
+    @ColumnInfo(name = "city")
+    var city: String?=null,
+    @ColumnInfo(name = "haveDonated")
+    var haveDonated: Boolean?=null,
+    @ColumnInfo(name = "hadCovid")
+    var hadCovid: Boolean?=null,
+    @ColumnInfo(name = "lastDonateDate")
+    var lastDonateDate: String? = null,
+    @ColumnInfo(name = "recoveryDate")
+    var recoveryDate: String? = null,
+)
 
-/*
-data class DonorReq(
+data class DonorRequest(
+    var patientName:String?=null,
+    var numberOfBloodBag:Int?=null,
+    var bloodType: String?=null,
+    var rhesus: String?=null,
+    var province: String?=null,
+    var city: String?=null,
+    var hospitalName:String?=null,
+    var description:String?=null,
+    var contactName:String?=null,
+    var phoneNumber: String?=null
+)
+
+/*data class DonorReq(
     var patientName:String?=null,
     var numberOfBloodBag:Int?=null,
     var bloodType: String?=null,

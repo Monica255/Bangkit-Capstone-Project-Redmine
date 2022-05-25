@@ -2,6 +2,8 @@ package com.example.redminecapstoneproject.ui.donordata
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityDonorDataBinding
 
 
@@ -12,18 +14,17 @@ class DonorDataActivity : AppCompatActivity() {
         binding = ActivityDonorDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val donorDataViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[DonorDataViewModel::class.java]
 
         val mFragmentManager = supportFragmentManager
         val mFirstDonorDataFragment = FirstDonorDataFragment()
         val fragment =
             mFragmentManager.findFragmentByTag(FirstDonorDataFragment::class.java.simpleName)
-        /*if (fragment !is FirstDonorDataFragment) {
-            Log.d("MyFlexibleFragment", "Fragment Name :" + FirstDonorDataFragment::class.java.simpleName)
-            mFragmentManager
-                .beginTransaction()
-                .add(R.id.frame_container, mFirstDonorDataFragment, FirstDonorDataFragment::class.java.simpleName)
-                .commit()
-        }*/
+
+        donorDataViewModel.name= intent.getStringExtra("name").toString()
 
         binding.btBack.setOnClickListener {
             onBackPressed()

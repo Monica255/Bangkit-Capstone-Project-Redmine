@@ -1,7 +1,9 @@
 package com.example.redminecapstoneproject.helper
 
 import android.content.Context
+import android.util.Log
 import com.example.redminecapstoneproject.R
+import java.time.LocalDate
 import java.time.Month
 
 object helperDate {
@@ -39,6 +41,29 @@ object helperDate {
             Month.DECEMBER-> 12
             else -> -1
         }
+    }
+
+    fun canDonateAgain(lastBloodDonation:LocalDate):LocalDate{
+        return LocalDate.of(lastBloodDonation.year,lastBloodDonation.month+3,lastBloodDonation.dayOfMonth)
+    }
+
+    fun dateToString(data:LocalDate,c: Context):String{
+        return c.resources.getString(
+            R.string.date_format,
+            toMonthFormat(data.month.toString(), c),
+            data.dayOfMonth.toString(),
+            data.year.toString()
+        )
+    }
+
+    fun stringToDate(data:String):LocalDate{
+        Log.d("TAG","Date "+data)
+        val x=data.split("-")
+        return LocalDate.of(
+            x[0].toInt(),
+            x[1].toInt(),
+            x[2].toInt()
+        )
     }
 
 }

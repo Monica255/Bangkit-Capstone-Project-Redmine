@@ -53,6 +53,7 @@
     <string name="last_blood_donation">Last blood donation: %1$s %2$s %3$s</string>
     <string name="label_last_blood_donation">Last blood donation</string>
     <string name="recovery_date">Recovery date: %1$s %2$s %3$s</string>
+    <string name="date_format">%1$s/%2$s/%3$s</string>
     <string name="finish">Finish</string>
 
 
@@ -128,6 +129,7 @@
     <string name="user_detail">User Detail</string>
     <string name="save">Save</string>
     <string name="discard_changes">Discard changes</string>
+    <string name="unsaved_changes">Unsaved changes</string>
     <string name="verify_account">Verify account</string>
     <string name="edit_password">Edit password</string>
     <string name="your_account_not_verified_yet">Your account is not verified yet. Please verify you account in order to be able to donate blood</string>
@@ -181,5 +183,6 @@
     <string name="oct">OCT</string>
     <string name="nov">NOV</string>
     <string name="des">DES</string>
+    <string name="default_web_client_id_2">258219025820-3k9ujvcg1l9ag047uij8397miod3qr7e.apps.googleusercontent.com</string>
 
 </resources>

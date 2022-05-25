@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
+import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentSecondDonorDataBinding
 import com.example.redminecapstoneproject.helper.helperDate
 import com.example.redminecapstoneproject.ui.HomeActivity
@@ -48,8 +51,11 @@ class SecondDonorDataFragment : Fragment() {
         }
 
     private fun setData() {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]
+        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         if (donorDataViewModel.donorData.province != null) {
             binding.tvProvince.apply {
                 text = donorDataViewModel.donorData.province
@@ -118,8 +124,12 @@ class SecondDonorDataFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setData()
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]            //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+
+        binding.tvHello.text=getString(R.string.halo,donorDataViewModel.name)
 
         binding.cvPickDateLastDonate.setOnClickListener {
             showDatePicker("last donate")
@@ -166,14 +176,25 @@ class SecondDonorDataFragment : Fragment() {
             binding.cvPickDateRecovery.visibility = View.GONE
         }
 
-        binding.btFinish.setOnClickListener {
-            val donorDataViewModel =
-                ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
-            if (isDataValid()) {
-                Log.d("TAG","valid "+donorDataViewModel.donorData.toString())
+        donorDataViewModel.message.observe(requireActivity()){
+            makeToast(it.first,it.second)
+
+            if(!it.first){
                 val intent = Intent(activity, HomeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+            }
+        }
+
+        binding.btFinish.setOnClickListener {
+            val donorDataViewModel = ViewModelProvider(
+                requireActivity(),
+                RepoViewModelFactory.getInstance(requireActivity())
+            )[DonorDataViewModel::class.java]                //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+            if (isDataValid()) {
+                Log.d("TAG","valid "+donorDataViewModel.donorData.toString())
+                donorDataViewModel.setUserDonorData(donorDataViewModel.donorData)
+
             } else {
                 if (!isFieldsEmpty()) {
                     MotionToast.Companion.createColorToast(
@@ -193,6 +214,36 @@ class SecondDonorDataFragment : Fragment() {
 
         }
     }
+    private fun makeToast(isError: Boolean, msg: String) {
+        if (isError) {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Ups",
+                msg,
+                MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    requireActivity(),
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        } else {
+            MotionToast.Companion.createColorToast(
+                requireActivity(),
+                "Yey success 😍",
+                msg,
+                MotionToast.TOAST_SUCCESS,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    requireActivity(),
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }
+    }
+
 
     private fun isFieldsEmpty(): Boolean {
         return binding.tvProvince.text.toString().trim() == "Province"
@@ -214,8 +265,10 @@ class SecondDonorDataFragment : Fragment() {
 
 
     private fun checkHaveDonated() {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]            //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         val haveDonated = binding.rgHaveYouDonated.checkedRadioButtonId
         if (haveDonated == -1) {
             isHaveDonatedValid = false
@@ -234,8 +287,10 @@ class SecondDonorDataFragment : Fragment() {
     }
 
     private fun checkHadCovid() {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]            //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         val hadCovid = binding.rgHaveYouHadCovid.checkedRadioButtonId
         if (hadCovid == -1) {
             isHadCovidValid = false
@@ -263,8 +318,10 @@ class SecondDonorDataFragment : Fragment() {
     }
 
     private fun showDatePicker(dateFor: String) {
-        val donorDataViewModel =
-            ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]            //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
 
         val c = Calendar.getInstance()
         var showYear = c.get(Calendar.YEAR)

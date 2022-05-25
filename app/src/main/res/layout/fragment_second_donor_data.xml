@@ -13,6 +13,7 @@
         android:paddingBottom="20dp">
 
         <TextView
+            android:id="@+id/tv_hello"
             style="@style/HeaderTextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
