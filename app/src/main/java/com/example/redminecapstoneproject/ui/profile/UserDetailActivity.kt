@@ -1,5 +1,7 @@
 package com.example.redminecapstoneproject.ui.profile
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -9,10 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityUserDetailBinding
+import com.example.redminecapstoneproject.helper.helperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import www.sanju.motiontoast.MotionToast
@@ -57,6 +61,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
     private lateinit var accountData: RegisAccountDataRoom
+    private var isVerified:Boolean?=null
+    private var isVerified2:Boolean?=null
 
     private fun newDialog(title: String): CustomDialogFragment {
         val dialog = CustomDialogFragment()
@@ -80,20 +86,28 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         binding.etPhoneNumber.onFocusChangeListener = this
 
         userDetailViewModel.userData.observe(this) {
-            //userDetailViewModel.InitialuserData = it
-            Log.d("TAG", "usedData " + it.toString())
+            if(isVerified!=it.isVerified && isVerified!=null){
+                userDetailViewModel._newUserData.value = newUserData(it)
+
+            }
+            isVerified=it.isVerified
 
             if (userDetailViewModel._newUserData.value == null) {
                 userDetailViewModel._newUserData.value = newUserData(it)
-                //userDetailViewModel.tempUserData = newUserData(it)
-            }
+                userDetailViewModel.getCities(
+                    helperUserDetail.getProvinceID(it.province.toString())
+                )            }
             Log.d("TAG", userDetailViewModel._newUserData.value.toString())
             if (userDetailViewModel._newUserData.value != null) setData(it)
 
         }
 
         userDetailViewModel.accountData.observe(this) {
-            accountData = it
+            if(isVerified2!=it.isVerified && isVerified2!=null){
+                userDetailViewModel._newAccountData.value = newAccountData(it)
+
+            }
+            isVerified2=it.isVerified
 
             if (userDetailViewModel._newAccountData.value == null) {
                 userDetailViewModel._newAccountData.value = newAccountData(it)
@@ -115,6 +129,9 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         userDetailViewModel.message.observe(this) {
             makeToast(it.first, it.second)
         }
+
+
+
 
         binding.etName.addTextChangedListener {
             userDetailViewModel.updateAccountDataRoom(Pair(binding.etName.text.toString(), "name"))
@@ -190,16 +207,56 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         if (user is DonorDataRoom) {
             binding.apply {
                 ilPhone.editText?.setText(user.phoneNumber)
-                province = user.province ?: "Province"
+                province = user.province?.let { helperUserDetail.getProvinceName(it) } ?: "Province"
                 city = user.city ?: "City"
+                user.gender?.let { setAvatar(it) }
             }
         } else if (user is RegisAccountDataRoom) {
+
+            val states = arrayOf(
+                intArrayOf(android.R.attr.state_enabled),
+            )
+
+            val colors = intArrayOf(
+                R.color.green
+            )
+
             binding.apply {
                 ilName.editText?.setText(user.name)
                 ilEmail.editText?.setText(user.email)
+                ilEmail.helperText = "You cant edit this field"
+                ilEmail.editText?.setTextColor(resources.getColor(R.color.not_so_black, theme))
+                ilEmail.setHelperTextColor(ColorStateList(states, colors))
+
+                if (user.isVerified == true) {
+                    layoutVerifiedAccount.visibility = View.VISIBLE
+                    layoutUnverifiedAccount.visibility = View.GONE
+                    layoutVerifyAccount.visibility = View.GONE
+                    etName.isEnabled = false
+                    ilName.helperText = "You cant edit this field"
+                    ilName.editText?.setTextColor(resources.getColor(R.color.not_so_black, theme))
+                    ilName.setHelperTextColor(ColorStateList(states, colors))
+                } else {
+                    layoutVerifiedAccount.visibility = View.GONE
+                    layoutUnverifiedAccount.visibility = View.VISIBLE
+                    layoutVerifyAccount.visibility = View.VISIBLE
+                    etName.isEnabled = true
+                    ilName.helperText = ""
+                }
             }
         }
 
+    }
+
+    private fun setAvatar(data: String) {
+        val x: Int =
+            if (data == "male") R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female
+        Glide.with(this)
+            .load(x)
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.placeholder)
+            .fallback(R.drawable.ic_launcher_foreground)
+            .into(binding.imgProfile)
     }
 
     private fun newUserData(x: DonorDataRoom): DonorDataRoom {
@@ -224,7 +281,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             x.uid,
             x.isVerified,
             x.name,
-            x.email
+            x.email,
+            x.otpCode
         )
     }
 
@@ -291,7 +349,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
             builder.setTitle(getString(R.string.discard_changes))
             builder.setMessage("Are you sure you want to discard any changes?")
-        }else if (x == "back") {
+        } else if (x == "back") {
             builder.setTitle(getString(R.string.unsaved_changes))
             builder.setMessage("Are you sure you want to leave without saving?")
         }

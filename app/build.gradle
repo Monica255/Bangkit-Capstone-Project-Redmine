@@ -20,9 +20,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASEURL", "\"https://us-central1-redmine-350506.cloudfunctions.net/expressAPI/\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASEURL", "\"https://us-central1-redmine-350506.cloudfunctions.net/expressAPI/\""
         }
     }
     compileOptions {
@@ -100,6 +104,11 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.4.2'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
 
 }

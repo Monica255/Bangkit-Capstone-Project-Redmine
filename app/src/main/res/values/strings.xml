@@ -82,7 +82,8 @@
 
     <!-- donor request -->
     <string name="donor_req">Donor Request</string>
-    <string name="posted_days_ago">Posted %s day(s) ago</string>
+    <string name="posted_days_ago">Posted %s days ago</string>
+    <string name="posted">Posted %s</string>
     <string name="patient_name">Patient Name</string>
     <string name="number_blood_bag">Number of Blood Bags Needed</string>
     <string name="location">Location</string>
@@ -185,4 +186,8 @@
     <string name="des">DES</string>
     <string name="default_web_client_id_2">258219025820-3k9ujvcg1l9ag047uij8397miod3qr7e.apps.googleusercontent.com</string>
 
+    <!--otp-->
+    <string name="email_verification">Email Verification</string>
+    <string name="we_have_sent_you_the_code">We have sent the code to your email</string>
+    <string name="please_input_bellow">Please input it bellow</string>
 </resources>

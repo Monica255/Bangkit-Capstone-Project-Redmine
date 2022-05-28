@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.redminecapstoneproject.databinding.ItemVerticalAlertDialogBinding
+import com.example.redminecapstoneproject.ui.testing.City
+import com.example.redminecapstoneproject.ui.testing.Province
 
-class AlertDialogAdapter(private val list: List<String>?):
+class AlertDialogAdapter(private val list: List<Any>?):
     RecyclerView.Adapter<AlertDialogAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -15,8 +17,14 @@ class AlertDialogAdapter(private val list: List<String>?):
 
     class ListViewHolder(private var binding: ItemVerticalAlertDialogBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: String) {
-            binding.tvText.text=data
+        fun bind(data: Any) {
+            if(data is Province){
+                binding.tvText.text=data.provName.replaceFirstChar(Char::titlecase)
+
+            }else if(data is City){
+                binding.tvText.text=data.cityName.replaceFirstChar(Char::titlecase)
+
+            }
         }
     }
 
@@ -36,7 +44,7 @@ class AlertDialogAdapter(private val list: List<String>?):
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: String)
+        fun onItemClicked(data: Any)
     }
     override fun getItemCount(): Int=list?.size?:0
 }

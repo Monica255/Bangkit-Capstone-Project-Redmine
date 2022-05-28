@@ -32,7 +32,7 @@
                         android:id="@+id/img_profile"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:src="@drawable/img_profile_placeholder_male"
+                        android:src="@drawable/placeholder"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

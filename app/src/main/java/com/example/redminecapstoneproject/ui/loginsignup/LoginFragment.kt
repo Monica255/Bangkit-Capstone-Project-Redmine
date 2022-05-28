@@ -20,6 +20,7 @@ import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentLoginBinding
 import com.example.redminecapstoneproject.ui.HomeActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
+import com.example.redminecapstoneproject.ui.otp.OtpActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -134,13 +135,13 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
             if (activity != null) makeToast(it.first, it.second)
         }
 
-        val intent = Intent(activity, LoginActivity::class.java)
+        //val intent = Intent(activity, LoginActivity::class.java)
         val intent2 = Intent(activity, DonorDataActivity::class.java)
         val intent3 = Intent(activity, HomeActivity::class.java)
+        val intent4 = Intent(activity, OtpActivity::class.java)
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+
 
 
         loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
@@ -150,7 +151,7 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
                 Log.d("TAG", "fu not null")
 
                 if (activity != null) {
-                    loginSignupViewModel.getUserAccountData().observe(requireActivity()) { value ->
+                    loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) { value ->
 
                         if (value == null) {
                             Log.d("TAG", "first acc null data")
@@ -159,22 +160,33 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
                                 Log.d("TAG", "acc null")
                                 loginSignupViewModel.setUserAccountData()
                             }
+                        }else if(value.otpCode==null){
+                            Log.d("TAG","lg otp null")
+                            intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent4)
                         } else {
                             Log.d("TAG", "not null  " + value)
-                            loginSignupViewModel.getUserDonorData().observe(requireActivity()) {
-
+                            loginSignupViewModel.getUserDonorDataDb().observe(requireActivity()) {
+                                //Log.d("TAG","sp "+it.toString())
                                 if (it == null) {
-                                    /*Log.d("TAG", "first null data")
+                                    Log.d("TAG", "first null data")
                                     counter++
                                     if(counter>1){
                                         Log.d("TAG","null data")
-                                        counter=0*/
+                                        counter=0
+                                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     intent2.putExtra("name", value.name)
                                     startActivity(intent2)
-                                    //}
+                                    }
                                 } else {
+                                    Log.d("TAG","going home")
+                                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     startActivity(intent3)
+                                    if (activity != null) {
+                                        Log.d("TAG","login finish")
 
+                                        activity?.finish()
+                                    }
                                 }
                             }
                         }

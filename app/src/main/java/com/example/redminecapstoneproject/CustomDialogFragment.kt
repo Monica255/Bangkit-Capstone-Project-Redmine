@@ -15,12 +15,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.redminecapstoneproject.adapter.AlertDialogAdapter
+import com.example.redminecapstoneproject.helper.helperUserDetail
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqViewModel
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataViewModel
 import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
 import com.example.redminecapstoneproject.ui.profile.UserDetailViewModel
+import com.example.redminecapstoneproject.ui.testing.City
+import com.example.redminecapstoneproject.ui.testing.Province
 import java.lang.Exception
 
 class CustomDialogFragment() : DialogFragment() {
@@ -34,6 +37,10 @@ class CustomDialogFragment() : DialogFragment() {
     private var listItemsProvince = listOf<String>()
     private var listItemsCity = listOf<String>()
 
+    private var mListItemsProvince = mutableListOf<Province>()
+    private var mListItemsCity = mutableListOf<City>()
+
+    var tempProvID = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,7 +51,7 @@ class CustomDialogFragment() : DialogFragment() {
             RepoViewModelFactory.getInstance(requireActivity())
         )[UserDetailViewModel::class.java]
 
-        userDetailViewModel.provinces.observe(requireActivity()) {
+        /*userDetailViewModel.provinces.observe(requireActivity()) {
             listItemsProvince = it
             if (title == "Select Province") {
                 if (userDetailViewModel.searchProvinceQuery != null) {
@@ -54,20 +61,43 @@ class CustomDialogFragment() : DialogFragment() {
                     setAlertDialogAdapter(title, listItemsProvince)
                 }
             }
-        }
+        }*/
 
-        userDetailViewModel.cities
-            .observe(requireActivity()) {
-                listItemsCity = it
-                if (title == "Select City") {
-                    if (userDetailViewModel.searchCityQuery != null) {
-                        sv.setQuery(userDetailViewModel.searchCityQuery, false)
+        userDetailViewModel.mProvince.observe(requireActivity()) {
+            //Log.d("DONATION","prov "+it.toString())
+            if (it != null) {
+
+                if (title == "Select Province") {
+                    mListItemsProvince = it.toMutableList()
+                    if (userDetailViewModel.searchProvinceQuery != null) {
+                        sv.setQuery(userDetailViewModel.searchProvinceQuery, false)
                         setSearcedData(
-                            userDetailViewModel.searchCityQuery!!,
+                            userDetailViewModel.searchProvinceQuery!!,
                             userDetailViewModel
                         )
                     } else {
-                        setAlertDialogAdapter(title, listItemsCity)
+                        setAlertDialogAdapter(title, mListItemsProvince)
+                    }
+                }
+            }
+        }
+
+        if (title == "Select City") {
+        userDetailViewModel.mCity
+            .observe(requireActivity()) {
+                Log.d("DATA", "mcity " + it.toString())
+                if (it != null) {
+
+                        mListItemsCity = it.toMutableList()
+                        if (userDetailViewModel.searchCityQuery != null) {
+                            sv.setQuery(userDetailViewModel.searchCityQuery, false)
+                            setSearcedData(
+                                userDetailViewModel.searchCityQuery!!,
+                                userDetailViewModel
+                            )
+                        } else {
+                            if (isAdded) setAlertDialogAdapter(title, mListItemsCity)
+                        }
                     }
                 }
             }
@@ -94,23 +124,25 @@ class CustomDialogFragment() : DialogFragment() {
 
     }
 
+
     private fun setSearcedData(query: String, vm: UserDetailViewModel) {
-        val filteredList = ArrayList<String>()
+        val filteredList = ArrayList<Any>()
 
         if (title == "Select Province") {
             vm.searchProvinceQuery = query
-            for (item in listItemsProvince) {
-                if (item.contains(query, true)) filteredList.add(item)
+            for (item in mListItemsProvince) {
+                if (item.provName.contains(query, true)) filteredList.add(item)
             }
         } else {
             vm.searchCityQuery = query
-            for (item in listItemsCity) {
-                if (item.contains(query, true)) filteredList.add(item)
+            for (item in mListItemsCity) {
+                if (item.cityName.contains(query, true)) filteredList.add(item)
             }
         }
 
-        setAlertDialogAdapter(title, filteredList)
+        if (isAdded) setAlertDialogAdapter(title, filteredList)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,6 +151,7 @@ class CustomDialogFragment() : DialogFragment() {
     ): View? {
         return layoutInflater.inflate(R.layout.fragment_custom_dialog, null)
     }
+
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -132,13 +165,17 @@ class CustomDialogFragment() : DialogFragment() {
             RepoViewModelFactory.getInstance(requireActivity())
         )[UserDetailViewModel::class.java]
 
-        val createDonorReqViewModel =
-            ViewModelProvider(requireActivity())[CreateDonorReqViewModel::class.java]
+        val createDonorReqViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[CreateDonorReqViewModel::class.java]
 
         val builder = AlertDialog.Builder(requireActivity())
         val inflater = layoutInflater
         dialogView = inflater.inflate(R.layout.fragment_custom_dialog, null)
         builder.setView(dialogView)
+
+        mListItemsCity.clear()
 
         arguments?.getString("title")?.let {
             title = it
@@ -153,27 +190,30 @@ class CustomDialogFragment() : DialogFragment() {
 
         when (activity) {
             is UserDetailActivity -> {
-                userDetailViewModel._newUserData.value?.let { it.province?.let { it1 ->
-                    userDetailViewModel.getCities(
-                        it1
-                    )
-                } }
+                //to do
+                if (title == "Select City") {
+                    userDetailViewModel._newUserData.value?.let {
+                        it.province?.let { it1 ->
+                            userDetailViewModel.getCities(
+                                helperUserDetail.getProvinceID(it1)
+                            )
+                        }
+                    }
+                }
             }
             is DonorDataActivity -> {
                 if (title == "Select City") {
-                    Log.d("TAG","dialog city "+donorDataViewModel.donorData.province)
+                    Log.d("TAG", "dialog city " + donorDataViewModel.donorData.province)
                     if (donorDataViewModel.donorData.province == null) {
                         tvWarning.visibility = View.VISIBLE
                         rv.visibility = View.GONE
                     } else if (donorDataViewModel.donorData.province != null) {
                         tvWarning.visibility = View.GONE
                         rv.visibility = View.VISIBLE
-                        try {
-                            userDetailViewModel.getCities(donorDataViewModel.donorData.province!!)
+                        userDetailViewModel.getCities(
+                            helperUserDetail.getProvinceID(donorDataViewModel.donorData.province.toString())
+                        )
 
-                        } catch (e: Exception) {
-                            Log.e("ERROR", "Error message: $e")
-                        }
                     }
                 }
             }
@@ -185,12 +225,9 @@ class CustomDialogFragment() : DialogFragment() {
                     } else if (createDonorReqViewModel.donorReq.province != null) {
                         tvWarning.visibility = View.GONE
                         rv.visibility = View.VISIBLE
-                        try {
-                            userDetailViewModel.getCities(createDonorReqViewModel.donorReq.province!!)
-
-                        } catch (e: Exception) {
-                            Log.e("ERROR", "Error message: $e")
-                        }
+                        userDetailViewModel.getCities(
+                            helperUserDetail.getProvinceID(createDonorReqViewModel.donorReq.province.toString())
+                        )
                     }
                 }
             }
@@ -211,9 +248,10 @@ class CustomDialogFragment() : DialogFragment() {
 
     private fun setAlertDialogAdapter(
         title: String,
-        items: List<String>?
+        items: List<Any>?
 
     ) {
+        var stringItems = ArrayList<String>()
         val userDetailViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
@@ -229,29 +267,49 @@ class CustomDialogFragment() : DialogFragment() {
             RepoViewModelFactory.getInstance(requireActivity())
         )[CreateDonorReqViewModel::class.java]
 
+
         val mAdapter = AlertDialogAdapter(items)
         rv.adapter = mAdapter
 
         mAdapter.setOnItemClickCallback(object : AlertDialogAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: String) {
-                if (title == "Select Province") {
+            override fun onItemClicked(data: Any) {
+                if (data is Province) {
                     val tvCity: TextView = requireActivity().findViewById(R.id.tv_city)
 
 
                     when (activity) {
                         is DonorDataActivity -> {
                             tvCity.apply {
-                                if (data != donorDataViewModel.donorData.province) {
+                                if (helperUserDetail.toProvNameID(
+                                        data.provName,
+                                        data.provId.toString()
+                                    ) != donorDataViewModel.donorData.province
+                                ) {
                                     donorDataViewModel.donorData.city = null
                                     text = "City"
                                     alpha = 0.6F
-                                    donorDataViewModel.donorData.province = data
-                                    Log.d("TAG","dialog "+donorDataViewModel.donorData.province )
+                                    donorDataViewModel.donorData.province =
+                                        helperUserDetail.toProvNameID(
+                                            data.provName,
+                                            data.provId.toString()
+                                        )
                                 }
                             }
+
+                            userDetailViewModel.getCities(
+                                helperUserDetail.getProvinceID(donorDataViewModel.donorData.province.toString())
+                            )
                         }
                         is UserDetailActivity -> {
-                            userDetailViewModel.updateDonorDataRoom(Pair(data, "province"))
+                            userDetailViewModel.updateDonorDataRoom(
+                                Pair(
+                                    helperUserDetail.toProvNameID(
+                                        data.provName,
+                                        data.provId.toString()
+                                    ), "province"
+                                )
+                            )
+                            //userDetailViewModel.provinceId = data.provId
                             tvCity.apply {
                                 if (userDetailViewModel.isProvinceDif()) {
                                     Log.d("TAG", userDetailViewModel.isProvinceDif().toString())
@@ -264,43 +322,56 @@ class CustomDialogFragment() : DialogFragment() {
                                 }
 
                             }
+
                         }
                         is CreateDonorReqActivity -> {
                             tvCity.apply {
-                                if (data != createDonorReqViewModel.donorReq.province) {
+                                if (helperUserDetail.toProvNameID(
+                                        data.provName,
+                                        data.provId.toString()
+                                    ) != createDonorReqViewModel.donorReq.province
+                                ) {
                                     createDonorReqViewModel.donorReq.city = null
                                     text = "City"
                                     alpha = 0.6F
-                                    createDonorReqViewModel.donorReq.province = data
+                                    createDonorReqViewModel.donorReq.province =
+                                        helperUserDetail.toProvNameID(
+                                            data.provName,
+                                            data.provId.toString()
+                                        )
                                 }
                             }
+
+                            userDetailViewModel.getCities(
+                                helperUserDetail.getProvinceID(createDonorReqViewModel.donorReq.province.toString())
+                            )
                         }
                     }
 
 
                     val tv: TextView = requireActivity().findViewById(R.id.tv_province)
                     tv.apply {
-                        text = data
+                        text = data.provName
                         alpha = 1F
                     }
 
                     dismiss()
-                } else {
+                } else if (data is City) {
                     when (activity) {
                         is DonorDataActivity -> {
-                            donorDataViewModel.donorData.city = data
+                            donorDataViewModel.donorData.city = data.cityName
                         }
                         is UserDetailActivity -> {
-                            userDetailViewModel.updateDonorDataRoom(Pair(data, "city"))
+                            userDetailViewModel.updateDonorDataRoom(Pair(data.cityName, "city"))
                         }
                         is CreateDonorReqActivity -> {
-                            createDonorReqViewModel.donorReq.city = data
+                            createDonorReqViewModel.donorReq.city = data.cityName
                         }
                     }
 
                     val tv: TextView = requireActivity().findViewById(R.id.tv_city)
                     tv.apply {
-                        text = data
+                        text = data.cityName
                         alpha = 1F
                     }
                     dismiss()

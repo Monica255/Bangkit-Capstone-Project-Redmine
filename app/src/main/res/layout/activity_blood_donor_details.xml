@@ -11,18 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="@color/white"
-        android:paddingStart="@dimen/margin_start_end"
+        android:paddingStart="@dimen/margin_start_toolbar"
         android:paddingEnd="@dimen/margin_start_end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_back"
-            android:layout_width="36dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:backgroundTint="@color/red"
             android:drawableTop="@drawable/bt_back_arrow"
-            android:paddingTop="2dp"
+            android:paddingTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -146,6 +147,29 @@
                         android:background="@drawable/textview_style"
                         android:padding="15dp"
                         android:text="Dimas Ari Lumintang" />
+
+                    <!--city-->
+                    <TextView
+                        style="@style/TitleTextBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="20dp"
+                        android:maxLines="1"
+                        android:text="@string/province" />
+
+                    <TextView
+                        android:id="@+id/tv_donor_province"
+                        style="@style/TitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/textview_style"
+                        android:padding="15dp"
+                        android:text="Bali" />
 
                     <!--city-->
                     <TextView

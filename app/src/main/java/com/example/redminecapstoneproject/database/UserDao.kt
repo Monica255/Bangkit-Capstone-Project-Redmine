@@ -2,9 +2,7 @@ package com.example.redminecapstoneproject.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.redminecapstoneproject.ui.testing.DonorData
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
-import com.example.redminecapstoneproject.ui.testing.RegisAccountData
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 
 @Dao

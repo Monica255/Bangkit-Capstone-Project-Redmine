@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.blooddonation.BloodDonorsActivity">
+    tools:context=".ui.mydonorreq.MyDonorReqActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -32,7 +32,7 @@
             android:id="@+id/tv_toolbarTitle"
             style="@style/HeaderTextBold"
             android:layout_marginStart="25dp"
-            android:text="@string/look_for_donors"
+            android:text="@string/my_donor_req"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/bt_back"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,29 +40,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <RelativeLayout
-        android:id="@+id/layout_only_verified_account"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="@dimen/margin_start_end"
-        android:layout_marginEnd="@dimen/margin_start_end"
-        android:background="@color/blue"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-        <TextView
-            style="@style/TitleTextBold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:text="@string/only_verified_user"
-            android:textColor="@color/white"
-
-
-            />
-    </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatButton
 
@@ -76,7 +53,7 @@
         android:text="@string/filter"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_only_verified_account" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_blood_donors"
         android:layout_width="match_parent"
@@ -85,7 +62,7 @@
         android:layout_marginEnd="@dimen/margin_start_end_variant"
         android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/bt_filter"
-        tools:listitem="@layout/item_vertical_blood_donors" />
+        tools:listitem="@layout/item_vertical_donor_req" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

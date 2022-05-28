@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.BloodDonationActivity">
+    tools:context=".ui.blooddonation.BloodDonationActivity">
 
 
     <ScrollView
@@ -90,6 +90,7 @@
                         app:layout_constraintTop_toBottomOf="@id/label_last_blood_donation" />
 
                     <TextView
+                        android:id="@+id/last_blood_donation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
@@ -98,6 +99,7 @@
                         app:layout_constraintBaseline_toBaselineOf="@id/label_last_blood_donation" />
 
                     <TextView
+                        android:id="@+id/can_donate_again"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
@@ -211,18 +213,19 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="@color/white"
-        android:paddingStart="@dimen/margin_start_end"
+        android:paddingStart="@dimen/margin_start_toolbar"
         android:paddingEnd="@dimen/margin_start_end"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_back"
-            android:layout_width="36dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:backgroundTint="@color/red"
             android:drawableTop="@drawable/bt_back_arrow"
-            android:paddingTop="2dp"
+            android:paddingTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

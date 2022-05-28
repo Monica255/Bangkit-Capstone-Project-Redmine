@@ -14,6 +14,7 @@ import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityDonorDetailBinding
 import com.example.redminecapstoneproject.helper.helperDate
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import www.sanju.motiontoast.MotionToast
 import java.time.LocalDate
 import java.util.*
@@ -32,6 +33,8 @@ class DonorDetailActivity : AppCompatActivity() {
             return field
         }
 
+    private var isVerified:Boolean?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDonorDetailBinding.inflate(layoutInflater)
@@ -42,8 +45,11 @@ class DonorDetailActivity : AppCompatActivity() {
         )[UserDetailViewModel::class.java]
 
         userDetailViewModel.userData.observe(this) {
-            //userDetail = it
+            if(isVerified!=it.isVerified && isVerified!=null){
+                userDetailViewModel._newUserData.value = newUserData(it)
 
+            }
+            isVerified=it.isVerified
             if (userDetailViewModel._newUserData.value == null) {
                 userDetailViewModel._newUserData.value = newUserData(it)
             }
@@ -186,14 +192,14 @@ class DonorDetailActivity : AppCompatActivity() {
 
 
         binding.btBack.setOnClickListener {
-            if(userDetailViewModel.isDataDifferent()){
-                showConfirmDialog("back",userDetailViewModel)
-            }else onBackPressed()
+            if (userDetailViewModel.isDataDifferent()) {
+                showConfirmDialog("back", userDetailViewModel)
+            } else onBackPressed()
             //finish()
         }
 
         binding.btSave.setOnClickListener {
-            showConfirmDialog("save",userDetailViewModel)
+            showConfirmDialog("save", userDetailViewModel)
         }
     }
 
@@ -268,16 +274,21 @@ class DonorDetailActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun setData(user: DonorDataRoom) {
         binding.apply {
             if (user.isVerified) {
                 rgGenderUnverified.visibility = View.GONE
                 cvGenderVerifiedAccount.visibility = View.VISIBLE
                 tvGenderVerifiedAccount.text = user.gender
+                layoutVerifiedAccount.visibility = View.VISIBLE
+                llayoutUnverifiedAccount.visibility = View.GONE
             } else {
                 rgGenderUnverified.visibility = View.VISIBLE
                 cvGenderVerifiedAccount.visibility = View.GONE
-
+                layoutVerifiedAccount.visibility = View.GONE
+                llayoutUnverifiedAccount.visibility = View.VISIBLE
                 rgGenderUnverified.check(if (user.gender == "male") R.id.rb_male else R.id.rb_female)
             }
 
@@ -291,7 +302,7 @@ class DonorDetailActivity : AppCompatActivity() {
                 }
             )
 
-            rgRhesus.check(if (user.rhesus == "positive") R.id.rb_positive else R.id.rb_negative)
+            rgRhesus.check(if (user.rhesus == "positive") R.id.rb_positive else if (user.rhesus == "negative") R.id.rb_negative else R.id.rb_dont_know)
 
             if (user.haveDonated == true) {
                 rgHaveYouDonated.check(R.id.rb_haveDonate_yes)

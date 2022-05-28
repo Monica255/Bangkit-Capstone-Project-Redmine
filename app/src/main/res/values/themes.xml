@@ -60,6 +60,7 @@
         <item name="errorEnabled">true</item>
         <item name="errorIconDrawable">@null</item>
         <item name="helperTextEnabled">true</item>
+        <item name="helperTextTextColor">@color/red</item>
         <item name="colorError">@color/blue</item>
     </style>
 

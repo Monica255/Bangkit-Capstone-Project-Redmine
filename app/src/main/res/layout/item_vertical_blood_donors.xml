@@ -52,10 +52,10 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_bloodType"
                 app:layout_constraintStart_toEndOf="@id/img_profile"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Donor Req name" />
+                tools:text="Blood donors' name" />
 
             <TextView
-                android:id="@+id/tv_donorCity"
+                android:id="@+id/tv_donor_location"
                 style="@style/DescriptionText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 app:layout_constraintEnd_toStartOf="@id/tv_bloodType"
                 app:layout_constraintStart_toStartOf="@id/tv_donor_name"
                 app:layout_constraintTop_toBottomOf="@id/tv_donor_name"
-                tools:text="Kota Denpasar" />
+                tools:text="Kota Denpasar, Bali" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

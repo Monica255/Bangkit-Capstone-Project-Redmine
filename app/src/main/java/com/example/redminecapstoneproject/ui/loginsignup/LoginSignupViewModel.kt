@@ -1,6 +1,7 @@
 package com.example.redminecapstoneproject.ui.loginsignup
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.redminecapstoneproject.repository.Repository
 import com.google.firebase.auth.FirebaseUser
@@ -17,10 +18,17 @@ class LoginSignupViewModel(private val provideRepository: Repository) :ViewModel
 
 
     @JvmName("getUserAccountData1")
-    fun getUserAccountData() =provideRepository.getUserAccountDataDb()
+    fun getUserAccountDataDb() =provideRepository.getUserAccountDataDb()
 
     @JvmName("getUserDonorData1")
-    fun getUserDonorData()=provideRepository.getUserDonorDataDb()
+    fun getUserDonorDataDb()=provideRepository.getUserDonorDataDb()
+
+
+    fun getUserAccountData() =provideRepository.getUserAccountData()
+
+
+    fun getUserDonorData()=provideRepository.getUserDonorData()
+
 
     fun registerAccount(email:String,pass:String,name:String) {
         provideRepository.registerAccount(email,pass,name)
@@ -33,4 +41,7 @@ class LoginSignupViewModel(private val provideRepository: Repository) :ViewModel
     fun firebaseAuthWithGoogle(idToken:String)=provideRepository.firebaseAuthWithGoogle(idToken)
 
     fun setUserAccountData(name:String="Redminer")=provideRepository.setUserAccountData(name)
+
+
+
 }

@@ -13,8 +13,15 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
     private var _provinces = test.generateLiveDummyProvince()
     var provinces: LiveData<List<String>> = _provinces
 
+    var mProvince=provideRepository.listProvinces
+    var mCity=provideRepository.listCities
+
+    var provinceId:Int=0
+
     private var _cities = MutableLiveData<List<String>>()
     var cities: LiveData<List<String>> = _cities
+
+
 
     var searchProvinceQuery: String? = null
     var searchCityQuery: String? = null
@@ -39,6 +46,7 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
     init {
         _newUserData.value = _userData.value
         _newAccountData.value = _accountData.value
+        provideRepository.getProvinces()
         //Log.d("TAG",)
     }
 
@@ -50,17 +58,18 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
         return userData.value?.province != _newUserData.value?.province
     }
 
-    fun getCities(province: String) {
-        _cities = test.generateLiveDummyCity(province)
-        cities = _cities
+    fun getCities(id: Int) {
+        /*_cities = test.generateLiveDummyCity(province)
+        cities = _cities*/
+        provideRepository.getCities(id)
     }
 
     fun isDataDifferent(): Boolean {
         Log.d("TAG", "ad " + _accountData.value.toString())
         Log.d("TAG", "nad" + _newAccountData.value.toString())
 
-        Log.d("TAG", "ud " + _userData.value.toString())
-        Log.d("TAG", "nud" + _newUserData.value.toString())
+        Log.d("DD", "ud " + _userData.value.toString())
+        Log.d("DD", "nud" + _newUserData.value.toString())
         val x = _newUserData.value != _userData.value
         val y = _newAccountData.value != _accountData.value
         return x || y

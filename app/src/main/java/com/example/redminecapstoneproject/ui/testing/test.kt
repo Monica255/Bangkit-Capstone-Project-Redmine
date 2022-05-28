@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
+import java.sql.Timestamp
 import java.time.LocalDate
 
 object test {
@@ -196,10 +198,35 @@ data class AccountData(
     var email: String,
 )
 
+data class TempAccountData(
+    var uid: String?=null,
+    var isVerified: Boolean?=null,
+    var name: String?=null,
+    var email: String?=null,
+    var otpCode:String?=null
+)
+
+data class TempDonorData(
+    var uid: String?=null,
+    var isVerified: Boolean?=null,
+    var gender: String?=null,
+    var bloodType: String?=null,
+    var rhesus: String?=null,
+    var phoneNumber: String?=null,
+    var province: String?=null,
+    var city: String?=null,
+    var haveDonated: Boolean?=null,
+    var hadCovid: Boolean?=null,
+    var lastDonateDate: String? = null,
+    var recoveryDate: String? = null,
+)
+
 data class RegisAccountData(
+    var uid: String?=null,
     var isVerified: Boolean?,
     var name: String?,
     var email: String?,
+    var otpCode:String?=null
 )
 
 @Entity
@@ -209,6 +236,7 @@ data class RegisAccountDataRoom(
     var isVerified: Boolean?,
     var name: String?,
     var email: String?,
+    var otpCode:String?=null
 )
 
 
@@ -256,6 +284,7 @@ data class DonorDataRoom(
 )
 
 data class DonorRequest(
+    var uid: String?=null,
     var patientName:String?=null,
     var numberOfBloodBag:Int?=null,
     var bloodType: String?=null,
@@ -265,7 +294,9 @@ data class DonorRequest(
     var hospitalName:String?=null,
     var description:String?=null,
     var contactName:String?=null,
-    var phoneNumber: String?=null
+    var phoneNumber: String?=null,
+    var time:String?=null,
+    var timestamp: Long?=null
 )
 
 /*data class DonorReq(
@@ -281,3 +312,38 @@ data class DonorRequest(
     var phoneNumber: String?=null
 
 )*/
+
+data class BloodDonors(
+    var uid:String?=null,
+    var name:String?=null,
+    var province: String?=null,
+    var city: String?=null,
+    var gender:String?=null,
+    var bloodType: String?=null,
+    var rhesus: String?=null,
+    var phoneNumber: String?=null
+)
+
+data class ProvinceResponse(
+    val success:Boolean,
+    val data:List<Province>
+)
+
+data class CityResponse(
+    val success:Boolean,
+    val data:List<City>
+)
+
+data class Province(
+    @SerializedName("prov_id")
+    val provId:Int,
+    @SerializedName("prov_name")
+    val provName:String
+)
+
+data class City(
+    @SerializedName("nama_provinsi")
+    val provinceName:String,
+    @SerializedName("nama_kota")
+    val cityName:String
+)

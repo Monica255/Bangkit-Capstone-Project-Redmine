@@ -16,8 +16,8 @@ import androidx.navigation.findNavController
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentSignupBinding
-import com.example.redminecapstoneproject.ui.HomeActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
+import com.example.redminecapstoneproject.ui.otp.OtpActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import www.sanju.motiontoast.MotionToast
@@ -94,6 +94,7 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
         //val intent = Intent(activity, LoginActivity::class.java)
         val intent2 = Intent(activity, DonorDataActivity::class.java)
         //val intent3 = Intent(activity, HomeActivity::class.java)
+        val intent4 = Intent(activity, OtpActivity::class.java)
 
         // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -104,7 +105,7 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
                 //startActivity(intent)
             } else {
                 Log.d("TAG", "fu not null")
-                loginSignupViewModel.getUserAccountData().observe(requireActivity()) { value ->
+                loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) { value ->
 
                     if (value == null) {
                         /*Log.d("TAG", "first acc null data")
@@ -113,9 +114,11 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
                         Log.d("TAG", "acc null")
                         loginSignupViewModel.setUserAccountData()
                         }*/
-                    } else {
+                    } else if(value.otpCode==null){
+                        intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent4)
+                    }else {
                         Log.d("TAG", "not null  " + value)
-
                         intent2.putExtra("name", value.name)
                         startActivity(intent2)
 

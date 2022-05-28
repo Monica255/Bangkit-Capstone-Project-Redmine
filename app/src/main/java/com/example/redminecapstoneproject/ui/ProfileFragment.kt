@@ -5,31 +5,31 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentProfileBinding
+import com.example.redminecapstoneproject.helper.helperBloodDonors
 import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
+import com.example.redminecapstoneproject.ui.mydonorreq.MyDonorReqActivity
 import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
 import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
-import com.example.redminecapstoneproject.ui.testing.AccountData
-import com.example.redminecapstoneproject.ui.testing.DonorData
-import com.example.redminecapstoneproject.ui.testing.RegisAccountData
-import com.google.firebase.auth.FirebaseAuth
+import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import java.time.LocalDate
 
 class ProfileFragment : Fragment(), View.OnFocusChangeListener {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private var userAccountData: RegisAccountData? = null
-    private var userDonorData: DonorData? = null
+    private var userAccountData: RegisAccountDataRoom? = null
+    private var userDonorData: DonorDataRoom? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,44 +47,43 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
 
         loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
             if (fu == null) {
-                startActivity(intent)
+                if(isAdded)startActivity(intent)
             }
         }
 
-        loginSignupViewModel.getUserDonorData().observe(requireActivity()) {
+        loginSignupViewModel.getUserDonorDataDb().observe(requireActivity()) {
             if (it != null) {
-                val data =
+                /*val data =
                     DonorData(
-                        it?.isVerified,
-                        it?.gender,
-                        it?.bloodType,
-                        it?.rhesus,
-                        it?.phoneNumber,
-                        it?.province,
-                        it?.city,
-                        it?.haveDonated,
-                        it?.hadCovid,
-                        if (it?.lastDonateDate != null) helperDate.stringToDate(it.lastDonateDate!!) else null,
-                        if (it?.recoveryDate != null) helperDate.stringToDate(it.recoveryDate!!) else null
-
-
-                    )
-                userDonorData = data
+                        it.isVerified,
+                        it.gender,
+                        it.bloodType,
+                        it.rhesus,
+                        it.phoneNumber,
+                        it.province,
+                        it.city,
+                        it.haveDonated,
+                        it.hadCovid,
+                        if (it.lastDonateDate != null) helperDate.stringToDate(it.lastDonateDate!!) else null,
+                        if (it.recoveryDate != null) helperDate.stringToDate(it.recoveryDate!!) else null
+                    )*/
+                userDonorData = it
                 Log.d("TAG", userDonorData.toString())
-                setData(userDonorData,requireActivity())
+                if(activity!=null)setData(userDonorData,requireActivity())
+
             }
         }
 
         //userAccountData = loginSignupViewModel.userAccountData.value!!
-        setData(userDonorData,requireContext())
+        if(isAdded){ setData(userDonorData, requireActivity()) }
 
 
-        loginSignupViewModel.getUserAccountData().observe(requireActivity()) {
+        loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) {
             if (it != null) {
                 val data =
-                    RegisAccountData(it?.isVerified, it?.name, it?.email)
+                    RegisAccountDataRoom(it.uid,it.isVerified, it.name, it.email,it.otpCode)
                 userAccountData = data
-                setData(userAccountData,requireContext())
+                if(isAdded){ setData(userAccountData, requireActivity()) }
             }
 
         }
@@ -93,37 +92,52 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
     @SuppressLint("StringFormatMatches")
     private fun setData(data: Any?,c:Context) {
         Log.d("TAG", data.toString())
-        when (data) {
-            is RegisAccountData -> {
-                binding.tvName.text = (data.name).toString()
-                binding.tvEmail.text = (data.email).toString()
-                binding.tvVerifyState.text =
-                    if ((data.isVerified) as Boolean) c.resources.getString(R.string.verified_account) else getString(
-                        R.string.unverified_account
-                    )
-            }
-            is DonorData -> {
-                if (data.lastDonateDate != null) {
-                    binding.lastBloodDonation.text = getString(
-                        R.string.date_format,
-                        data.lastDonateDate!!.month,
-                        data.lastDonateDate!!.dayOfMonth,
-                        data.lastDonateDate!!.year
-                    )
+        if(data!=null){
+            when (data) {
+                is RegisAccountDataRoom -> {
+                    binding.tvName.text = (data.name).toString()
+                    binding.tvEmail.text = (data.email).toString()
+                    binding.tvVerifyState.text =
+                        if ((data.isVerified) as Boolean) c.resources.getString(R.string.verified_account) else getString(
+                            R.string.unverified_account
+                        )
+                }
+                is DonorDataRoom -> {
+                    data.gender?.let { setAvatar(it) }
+                    val mLastBloodDOnation=if (data.lastDonateDate != null) helperDate.stringToDate(data.lastDonateDate!!) else null
+                    if (mLastBloodDOnation!= null) {
+                        binding.lastBloodDonation.text = getString(
+                            R.string.date_format,
+                            mLastBloodDOnation.month,
+                            mLastBloodDOnation.dayOfMonth,
+                            mLastBloodDOnation.year
+                        )
 
-                    val x: LocalDate = helperDate.canDonateAgain(data.lastDonateDate!!)
-                    binding.canDonateAgain.text = getString(
-                        R.string.date_format,
-                        x.month,
-                        x.dayOfMonth,
-                        x.year
-                    )
-                } else {
-                    binding.lastBloodDonation.text = "--"
-                    binding.canDonateAgain.text = "--"
+                        val x: LocalDate = helperDate.canDonateAgain(mLastBloodDOnation)
+                        binding.canDonateAgain.text = getString(
+                            R.string.date_format,
+                            x.month,
+                            x.dayOfMonth,
+                            x.year
+                        )
+                    } else {
+                        binding.lastBloodDonation.text = "--"
+                        binding.canDonateAgain.text = "--"
+                    }
+
+                    binding.tvBloodType.text=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
                 }
             }
         }
+    }
+    private fun setAvatar(data: String) {
+        val x: Int =if(data=="male")R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female
+        Glide.with(this)
+            .load(x)
+            .placeholder(R.drawable.placeholder)
+            .error(R.drawable.placeholder)
+            .fallback(R.drawable.ic_launcher_foreground)
+            .into(binding.imgProfile)
     }
 
     private fun setAction() {
@@ -140,7 +154,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         }
 
         binding.cvMyDonorReq.setOnClickListener {
-
+            startActivity(Intent(activity, MyDonorReqActivity::class.java))
         }
 
         binding.cvLanguageSetting.setOnClickListener {
@@ -158,13 +172,14 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         binding.cvSignOut.setOnClickListener {
             loginSignupViewModel.signOut()
         }
+
     }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val view = binding.root
         return view

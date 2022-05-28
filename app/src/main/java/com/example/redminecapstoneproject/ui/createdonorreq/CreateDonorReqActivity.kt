@@ -10,10 +10,19 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
+import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityCreateDonorReqBinding
+import com.example.redminecapstoneproject.helper.helperDate
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataViewModel
+import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.DonorRequest
+import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
+import com.google.firebase.auth.FirebaseAuth
 import www.sanju.motiontoast.MotionToast
+import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.util.*
 
 class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
     private lateinit var binding: ActivityCreateDonorReqBinding
@@ -24,7 +33,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             return field
         }
     private var isNumberOfBloodBagValid: Boolean = false
-        get(){
+        get() {
             checkNumberOfBloodBag()
             return field
         }
@@ -69,30 +78,57 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             return field
         }
 
+    init {
+
+
+        //createDonorReqViewModel.donorReq.uid=FirebaseAuth.getInstance().currentUser?.uid
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateDonorReqBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val createDonorReqViewModel =
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
+
+
+        createDonorReqViewModel.message.observe(this){
+            makeToast(it.first,it.second)
+        }
 
         binding.btBack.setOnClickListener {
+            createDonorReqViewModel.getDonorReq()
             finish()
         }
 
         binding.btPost.setOnClickListener {
-            if (isDataValid()) {
-                MotionToast.Companion.createColorToast(
-                    this,
-                    "Yey success 😍",
-                    "Donor request is successfully posted!",
-                    MotionToast.TOAST_SUCCESS,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(
-                        this,
-                        www.sanju.motiontoast.R.font.helvetica_regular
-                    )
+            /*val x=DonorRequest("uid","name",2,"ab","positive","bali","denpasar","sanglah","des","mon","123")
+
+            x.uid=FirebaseAuth.getInstance().currentUser?.uid
+            x.time= helperDate.getCurrentTime()
+
+            x.timestamp="-${ System.currentTimeMillis() }".toLong()
+
+            FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
+                createDonorReqViewModel.postDonorReq(x,
+                    it1
                 )
+            }*/
+            if (isDataValid()) {
+                createDonorReqViewModel.donorReq.uid=FirebaseAuth.getInstance().currentUser?.uid
+                createDonorReqViewModel.donorReq.time=helperDate.getCurrentTime()
+                createDonorReqViewModel.donorReq.timestamp="-${ System.currentTimeMillis() }".toLong()
+
+                FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
+                    createDonorReqViewModel.postDonorReq(createDonorReqViewModel.donorReq,
+                        it1
+                    )
+                }
 
                 finish()
             } else {
@@ -121,6 +157,41 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             newDialog("Select City")
         }
     }
+
+
+
+
+
+    private fun makeToast(isError: Boolean, msg: String) {
+        if (isError) {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Ups",
+                msg,
+                MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    this,
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        } else {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Yey success 😍",
+                msg,
+                MotionToast.TOAST_SUCCESS,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    this,
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }
+    }
+
 
     private fun newDialog(title: String, isProvinceNotNull: Boolean = false): CustomDialogFragment {
         val dialog = CustomDialogFragment()
@@ -161,11 +232,14 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkPatientName() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val name = binding.etPatientName.text.toString().trim()
         if (name.isEmpty()) {
             isPatientNameValid = false
-            if(!isFieldsEmpty())binding.ilPatientName.error = getString(R.string.name_required)
+            if (!isFieldsEmpty()) binding.ilPatientName.error = getString(R.string.name_required)
         } else {
             isPatientNameValid = true
             createDonorReqViewModel.donorReq.patientName = name
@@ -174,14 +248,19 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkNumberOfBloodBag() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val number = binding.etNumberOfBloodNeeded.text.toString().trim()
         if (number.isEmpty()) {
             isNumberOfBloodBagValid = false
-            if(!isFieldsEmpty())binding.ilNumberOfBloodNeeded.error = getString(R.string.name_required)
+            if (!isFieldsEmpty()) binding.ilNumberOfBloodNeeded.error =
+                getString(R.string.name_required)
         } else if (number.toInt() > 5) {
             isNumberOfBloodBagValid = false
-            if(!isFieldsEmpty())binding.ilNumberOfBloodNeeded.error = getString(R.string.max_blood_bag)
+            if (!isFieldsEmpty()) binding.ilNumberOfBloodNeeded.error =
+                getString(R.string.max_blood_bag)
         } else {
             isNumberOfBloodBagValid = true
             createDonorReqViewModel.donorReq.phoneNumber = number
@@ -190,7 +269,10 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkBloodType() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val selectedBloodType = binding.rgBloodType.checkedRadioButtonId
         if (selectedBloodType == -1) {
             isBloodTypeValid = false
@@ -203,7 +285,10 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkRhesus() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val selectedRhesus = binding.rgRhesus.checkedRadioButtonId
         if (selectedRhesus == -1) {
             isRhesusValid = false
@@ -216,11 +301,15 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkHospitalName() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val name = binding.etHospitalName.text.toString().trim()
         if (name.isEmpty()) {
             isHospitalNameValid = false
-            if(!isFieldsEmpty())binding.ilHospitalName.error = getString(R.string.hospital_name_required)
+            if (!isFieldsEmpty()) binding.ilHospitalName.error =
+                getString(R.string.hospital_name_required)
         } else {
             isHospitalNameValid = true
             createDonorReqViewModel.donorReq.hospitalName = name
@@ -229,14 +318,17 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkDescription() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val selectedPhoneNumber = binding.etDescription.text.toString().trim()
         if (selectedPhoneNumber.isEmpty()) {
             isDescriptionValid = false
-            if(!isFieldsEmpty())binding.ilDescription.error = getString(R.string.des_required)
+            if (!isFieldsEmpty()) binding.ilDescription.error = getString(R.string.des_required)
         } else if (selectedPhoneNumber.length > 200) {
             isDescriptionValid = false
-            if(!isFieldsEmpty())binding.ilDescription.error = getString(R.string.des_max_length)
+            if (!isFieldsEmpty()) binding.ilDescription.error = getString(R.string.des_max_length)
         } else
             isDescriptionValid = true
         createDonorReqViewModel.donorReq.description = selectedPhoneNumber
@@ -245,11 +337,14 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkContactName() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val name = binding.etContactName.text.toString().trim()
         if (name.isEmpty()) {
             isContactNameValid = false
-            if(!isFieldsEmpty())binding.ilContactName.error = getString(R.string.name_required)
+            if (!isFieldsEmpty()) binding.ilContactName.error = getString(R.string.name_required)
         } else {
             isContactNameValid = true
             createDonorReqViewModel.donorReq.contactName = name
@@ -258,20 +353,24 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun checkPhoneNumber() {
         val createDonorReqViewModel =
-            ViewModelProvider(this)[CreateDonorReqViewModel::class.java]
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
         val selectedPhoneNumber = binding.etPhoneNumber.text.toString().trim()
         if (selectedPhoneNumber.isEmpty()) {
             isPhoneNumberValid = false
-            if(!isFieldsEmpty())binding.ilPhone.error = getString(R.string.input_phone_number)
+            if (!isFieldsEmpty()) binding.ilPhone.error = getString(R.string.input_phone_number)
         } else if (selectedPhoneNumber.length < 9) {
             isPhoneNumberValid = false
-            if(!isFieldsEmpty())binding.ilPhone.error = getString(R.string.phone_number_length_invalid)
+            if (!isFieldsEmpty()) binding.ilPhone.error =
+                getString(R.string.phone_number_length_invalid)
         } else
             isPhoneNumberValid = true
         createDonorReqViewModel.donorReq.phoneNumber = selectedPhoneNumber
     }
 
-    private fun clearAllError(){
+    private fun clearAllError() {
         binding.ilPatientName.isErrorEnabled = false
         binding.ilPatientName.error = ""
         binding.ilNumberOfBloodNeeded.isErrorEnabled = false

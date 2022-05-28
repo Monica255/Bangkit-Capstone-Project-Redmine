@@ -7,19 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentHomeBinding
+import com.example.redminecapstoneproject.ui.blooddonation.BloodDonationActivity
+import com.example.redminecapstoneproject.ui.blooddonation.BloodDonorsActivity
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
-import com.example.redminecapstoneproject.ui.testing.AccountData
-import com.example.redminecapstoneproject.ui.testing.DonorData
-import com.example.redminecapstoneproject.ui.testing.RegisAccountData
+import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private var userAccountData: RegisAccountData? = null
+    private var userAccountData: RegisAccountDataRoom? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,7 +33,7 @@ class HomeFragment : Fragment() {
         )[LoginSignupViewModel::class.java]
 
 
-        binding.btDonateBlood.setOnClickListener { view->
+        binding.btDonateBlood.setOnClickListener { view ->
             startActivity(Intent(activity, BloodDonationActivity::class.java))
         }
 
@@ -43,20 +46,43 @@ class HomeFragment : Fragment() {
 
         }
 
-        loginSignupViewModel.getUserAccountData().observe(requireActivity()) {
-            val data =
-                RegisAccountData(it?.isVerified, it?.name, it?.email)
-            userAccountData = data
-            setData(userAccountData)
+        loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) {
+            if(it!=null){
+                val data =
+                    RegisAccountDataRoom(it.uid,it?.isVerified, it?.name, it?.email, it?.otpCode)
+                userAccountData = data
+                setData(userAccountData)
+            }
 
         }
+
+        loginSignupViewModel.getUserDonorDataDb().observe(requireActivity()) {
+            if(it!=null){
+                val data =
+                    DonorDataRoom(uid = it.uid, gender = it.gender)
+                setAvatar(data)
+            }
+        }
+
 
     }
 
-    private fun setData(data:RegisAccountData?){
-        if(data!=null){
-            binding.tvName.text=data.name
+    private fun setData(data: RegisAccountDataRoom?) {
+        binding.tvName.text = data?.name
+    }
+
+    private fun setAvatar(data: DonorDataRoom) {
+        val x: Int =if(data.gender=="male")R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female
+
+        if(isAdded){
+            Glide.with(this)
+                .load(x)
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
+                .fallback(R.drawable.ic_launcher_foreground)
+                .into(binding.imgProfile)
         }
+
     }
 
     override fun onCreateView(
