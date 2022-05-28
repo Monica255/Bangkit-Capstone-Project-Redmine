@@ -40,7 +40,7 @@ class BloodDonorsActivity : AppCompatActivity() {
                             )
                         }
                         setAdapter(listValidDOnors)
-                        Log.d("DONATION",listValidDOnors.toString())
+                        Log.d("DONATION",it.toString())
                     }
                 }
             }

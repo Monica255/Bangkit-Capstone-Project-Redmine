@@ -70,9 +70,10 @@ class Repository(
             FirebaseDatabase.getInstance("https://redmine-350506-default-rtdb.asia-southeast1.firebasedatabase.app").reference
     }
 
-    fun getMyDonoReq(){
-        val donorReqs= ArrayList<DonorRequest>()
-        dbRef?.child("donor_req")?.orderByChild("uid")?.equalTo(FirebaseAuth.getInstance().currentUser?.uid)
+    fun getMyDonoReq() {
+        val donorReqs = ArrayList<DonorRequest>()
+        dbRef?.child("donor_req")?.orderByChild("uid")
+            ?.equalTo(FirebaseAuth.getInstance().currentUser?.uid)
             ?.addValueEventListener(object : ValueEventListener {
 
 
@@ -82,12 +83,11 @@ class Repository(
                             val donorReq = i.getValue(DonorRequest::class.java)
                             if (donorReq != null) {
                                 donorReqs.add(donorReq)
-                                _donorReq.value=donorReqs
+                                _donorReq.value = donorReqs
                             }
                         }
 
-                        Log.d("DONATION", "dr "+donorReqs.toString())
-
+                        Log.d("DONATION", "dr " + donorReqs.toString())
 
 
                     }
@@ -99,8 +99,8 @@ class Repository(
             })
     }
 
-    fun getDonorReqDes(){
-        val donorReqs= ArrayList<DonorRequest>()
+    fun getDonorReqDes() {
+        val donorReqs = ArrayList<DonorRequest>()
         dbRef?.child("donor_req")?.orderByChild("timestamp")
             ?.addValueEventListener(object : ValueEventListener {
 
@@ -114,8 +114,7 @@ class Repository(
                             }
                         }
 
-                        Log.d("DONATION", "dr "+donorReqs.toString())
-
+                        Log.d("DONATION", "dr " + donorReqs.toString())
 
 
                     }
@@ -127,15 +126,15 @@ class Repository(
             })
     }
 
-    fun postDonorReq(data:DonorRequest,uid:String){
+    fun postDonorReq(data: DonorRequest, uid: String) {
 
-            mDb?.getReference("donor_req")
+        mDb?.getReference("donor_req")
             ?.child(helperDate.getDonorReqRef(uid))?.setValue(data)
             ?.addOnCompleteListener {
                 if (it.isSuccessful) {
                     _isLoading.value = false
                     _message.value = Pair(false, "Donor request is successfully posted!")
-                    Log.d("DONATION","msg "+_message.value.toString())
+                    Log.d("DONATION", "msg " + _message.value.toString())
                 } else {
                     _isLoading.value = false
                     _message.value = Pair(true, "Failed to post donor request")
@@ -144,7 +143,7 @@ class Repository(
             }
     }
 
-    fun getProvinces(){
+    fun getProvinces() {
         _isLoading.value = true
         val api = ApiConfig.getApiService().getProvince()
 
@@ -158,7 +157,7 @@ class Repository(
                     val responseBody = response.body()
                     if (responseBody != null) {
                         _listProvinces.value = responseBody.data
-                        Log.d("DONATION","p "+responseBody.toString())
+                        Log.d("DONATION", "p " + responseBody.toString())
                     }
                     //_message.value = responseBody?.message.toString()
 
@@ -175,7 +174,7 @@ class Repository(
         })
     }
 
-    fun getCities(id:Int){
+    fun getCities(id: Int) {
         _isLoading.value = true
         val api = ApiConfig.getApiService().getCities(id)
 
@@ -223,13 +222,12 @@ class Repository(
                         }
 
 
-                        _validAccUsers.value=verifiedAccUsers
+                        _validAccUsers.value = verifiedAccUsers
                         /*FirebaseAuth.getInstance().currentUser?.let {
                             _validUsers.value=helperBloodDonors.toValidBloodDonorsList(verifiedAccUsers,verifiedDonorDataUsers,
                                 it.uid)
                         }*/
-                        Log.d("DONATION", "v acc "+verifiedAccUsers.toString())
-
+                        Log.d("DONATION", "v acc " + verifiedAccUsers.toString())
 
 
                     }
@@ -242,8 +240,7 @@ class Repository(
     }
 
 
-
-    fun getAllVerifiedDonorDataUsers(){
+    fun getAllVerifiedDonorDataUsers() {
         val verifiedDonorDataUsers = ArrayList<TempDonorData>()
         //var userAccountData: HashMap<String, Any>?
         dbRef?.child("users_data")?.orderByChild("verified")?.equalTo(true)
@@ -258,10 +255,10 @@ class Repository(
                                 verifiedDonorDataUsers.add(verifiedUser)
                             }
                         }
-                        _validDonorDataUsers.value=verifiedDonorDataUsers
-                        Log.d("DONATION", "repo dd "+verifiedDonorDataUsers.toString())
+                        _validDonorDataUsers.value = verifiedDonorDataUsers
+                        Log.d("DONATION", "repo dd " + verifiedDonorDataUsers.toString())
 
-                    }else{
+                    } else {
                         Log.d("DONATION", "no data")
 
                     }
@@ -330,14 +327,46 @@ class Repository(
 
     }
 
+    fun test(){
+        val x=ProvinceResponse(
+            true,
+            listOf<Province>(Province(1,"aaa"),Province(1,"aaa"))
+
+        )
+        FirebaseDatabase.getInstance("https://redmine-350506-default-rtdb.asia-southeast1.firebasedatabase.app")
+            .getReference("tessss")
+            .child(FirebaseAuth.getInstance().currentUser!!.uid).setValue(x)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    _isLoading.value = false
+                    /*executorService.execute {
+                        userRoomDatabase.userDao().insertAccountData(accData)
+                    }*/
+
+                    //getUserAccountData()
+
+                    //_message.value = Pair(false, "Your account data is successfully saved!")
+
+                } else {
+                    _isLoading.value = false
+                    val errorUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+                    FirebaseAuth.getInstance().signOut()
+                    errorUser?.delete()
+                    //_message.value = Pair(true, "Failed to register user")
+
+                }
+            }
+
+    }
+
+
     fun setUserAccountData(
         name: String = "Redminer",
         otpCode: String? = null,
-        isVerified: Boolean = false
+        isVerified: Boolean?=null
     ) {
         val accData = RegisAccountDataRoom(
-            FirebaseAuth.getInstance().currentUser?.uid.toString(),
-            isVerified,
+            FirebaseAuth.getInstance().currentUser?.uid.toString(),isVerified,
             FirebaseAuth.getInstance().currentUser?.displayName ?: name,
             FirebaseAuth.getInstance().currentUser?.email,
             otpCode
@@ -348,9 +377,11 @@ class Repository(
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     _isLoading.value = false
-                    executorService.execute {
+                    /*executorService.execute {
                         userRoomDatabase.userDao().insertAccountData(accData)
-                    }
+                    }*/
+
+                    getUserAccountData()
 
                     //_message.value = Pair(false, "Your account data is successfully saved!")
 
@@ -480,9 +511,8 @@ class Repository(
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
                         _isLoading.value = false
-
-
-                        executorService.execute { userRoomDatabase.userDao().insertDonorData(user) }
+                        getUserDonorData()
+                        //executorService.execute { userRoomDatabase.userDao().insertDonorData(user) }
                         _message.value = Pair(false, "Your user data is successfully saved!")
 
                     } else {
@@ -525,7 +555,7 @@ class Repository(
 
 
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("DATA","changed")
+                    Log.d("DATA", "changed")
                     if (snapshot.exists()) {
                         var uid = ""
                         var isVerified = false
@@ -549,7 +579,7 @@ class Repository(
                         }
                         executorService.execute {
                             userRoomDatabase.userDao().insertAccountData(
-                                RegisAccountDataRoom(uid, isVerified, name, email, otpCode)
+                                RegisAccountDataRoom(uid, isVerified,name, email, otpCode)
                             )
                         }
 
@@ -626,23 +656,25 @@ class Repository(
                             }
 
                         }
+                        var x = DonorDataRoom(
+                            uid,
+                            isVerified,
+                            gender,
+                            bloodType,
+                            rhesus,
+                            phoneNumber,
+                            province,
+                            city,
+                            haveDonated,
+                            hadCovid,
+                            lastDonateDate,
+                            recoveryDate
+                        )
+
 
                         executorService.execute {
                             userRoomDatabase.userDao().insertDonorData(
-                                DonorDataRoom(
-                                    uid,
-                                    isVerified,
-                                    gender,
-                                    bloodType,
-                                    rhesus,
-                                    phoneNumber,
-                                    province,
-                                    city,
-                                    haveDonated,
-                                    hadCovid,
-                                    lastDonateDate,
-                                    recoveryDate
-                                )
+                                x
                             )
                         }
                         /*_userDonorData.value = DonorData(
@@ -658,20 +690,22 @@ class Repository(
                             lastDonateDate,
                             recoveryDate
                         )*/
-                        Log.d("DATA", "repo " + DonorDataRoom(
-                            uid,
-                            isVerified,
-                            gender,
-                            bloodType,
-                            rhesus,
-                            phoneNumber,
-                            province,
-                            city,
-                            haveDonated,
-                            hadCovid,
-                            lastDonateDate,
-                            recoveryDate
-                        ).toString())
+                        Log.d(
+                            "DATA", "repo " + DonorDataRoom(
+                                uid,
+                                isVerified,
+                                gender,
+                                bloodType,
+                                rhesus,
+                                phoneNumber,
+                                province,
+                                city,
+                                haveDonated,
+                                hadCovid,
+                                lastDonateDate,
+                                recoveryDate
+                            ).toString()
+                        )
 
                     }
                 }

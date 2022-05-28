@@ -81,7 +81,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) {
             if (it != null) {
                 val data =
-                    RegisAccountDataRoom(it.uid,it.isVerified, it.name, it.email,it.otpCode)
+                    RegisAccountDataRoom(it.uid, it.isVerified,it.name, it.email,it.otpCode)
                 userAccountData = data
                 if(isAdded){ setData(userAccountData, requireActivity()) }
             }
@@ -97,10 +97,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
                 is RegisAccountDataRoom -> {
                     binding.tvName.text = (data.name).toString()
                     binding.tvEmail.text = (data.email).toString()
-                    binding.tvVerifyState.text =
-                        if ((data.isVerified) as Boolean) c.resources.getString(R.string.verified_account) else getString(
-                            R.string.unverified_account
-                        )
+
                 }
                 is DonorDataRoom -> {
                     data.gender?.let { setAvatar(it) }
@@ -124,7 +121,10 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
                         binding.lastBloodDonation.text = "--"
                         binding.canDonateAgain.text = "--"
                     }
-
+                    binding.tvVerifyState.text =
+                        if ((data.isVerified)) c.resources.getString(R.string.verified_account) else getString(
+                            R.string.unverified_account
+                        )
                     binding.tvBloodType.text=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
                 }
             }

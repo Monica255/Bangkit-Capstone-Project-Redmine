@@ -85,6 +85,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         binding.etEmail.onFocusChangeListener = this
         binding.etPhoneNumber.onFocusChangeListener = this
 
+
         userDetailViewModel.userData.observe(this) {
             if(isVerified!=it.isVerified && isVerified!=null){
                 userDetailViewModel._newUserData.value = newUserData(it)
@@ -103,12 +104,12 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
         userDetailViewModel.accountData.observe(this) {
-            if(isVerified2!=it.isVerified && isVerified2!=null){
+            /*if(isVerified2!=it.isVerified && isVerified2!=null){
                 userDetailViewModel._newAccountData.value = newAccountData(it)
 
             }
             isVerified2=it.isVerified
-
+*/
             if (userDetailViewModel._newAccountData.value == null) {
                 userDetailViewModel._newAccountData.value = newAccountData(it)
                 //userDetailViewModel.tempAccountData = newAccountData(it)
@@ -204,29 +205,19 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     private fun setData(user: Any) {
+        val states = arrayOf(
+            intArrayOf(android.R.attr.state_enabled),
+        )
+
+        val colors = intArrayOf(
+            R.color.green
+        )
         if (user is DonorDataRoom) {
             binding.apply {
                 ilPhone.editText?.setText(user.phoneNumber)
                 province = user.province?.let { helperUserDetail.getProvinceName(it) } ?: "Province"
                 city = user.city ?: "City"
                 user.gender?.let { setAvatar(it) }
-            }
-        } else if (user is RegisAccountDataRoom) {
-
-            val states = arrayOf(
-                intArrayOf(android.R.attr.state_enabled),
-            )
-
-            val colors = intArrayOf(
-                R.color.green
-            )
-
-            binding.apply {
-                ilName.editText?.setText(user.name)
-                ilEmail.editText?.setText(user.email)
-                ilEmail.helperText = "You cant edit this field"
-                ilEmail.editText?.setTextColor(resources.getColor(R.color.not_so_black, theme))
-                ilEmail.setHelperTextColor(ColorStateList(states, colors))
 
                 if (user.isVerified == true) {
                     layoutVerifiedAccount.visibility = View.VISIBLE
@@ -243,6 +234,17 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
                     etName.isEnabled = true
                     ilName.helperText = ""
                 }
+            }
+        } else if (user is RegisAccountDataRoom) {
+
+            binding.apply {
+                ilName.editText?.setText(user.name)
+                ilEmail.editText?.setText(user.email)
+                ilEmail.helperText = "You cant edit this field"
+                ilEmail.editText?.setTextColor(resources.getColor(R.color.not_so_black, theme))
+                ilEmail.setHelperTextColor(ColorStateList(states, colors))
+
+
             }
         }
 

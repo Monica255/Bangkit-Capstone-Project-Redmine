@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
         loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) {
             if(it!=null){
                 val data =
-                    RegisAccountDataRoom(it.uid,it?.isVerified, it?.name, it?.email, it?.otpCode)
+                    RegisAccountDataRoom(it.uid, it.isVerified,it?.name, it?.email, it?.otpCode)
                 userAccountData = data
                 setData(userAccountData)
             }

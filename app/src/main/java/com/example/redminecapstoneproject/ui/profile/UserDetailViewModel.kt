@@ -10,17 +10,8 @@ import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import com.example.redminecapstoneproject.ui.testing.test
 
 class UserDetailViewModel(private val provideRepository: Repository) : ViewModel() {
-    private var _provinces = test.generateLiveDummyProvince()
-    var provinces: LiveData<List<String>> = _provinces
-
     var mProvince=provideRepository.listProvinces
     var mCity=provideRepository.listCities
-
-    var provinceId:Int=0
-
-    private var _cities = MutableLiveData<List<String>>()
-    var cities: LiveData<List<String>> = _cities
-
 
 
     var searchProvinceQuery: String? = null
@@ -37,6 +28,7 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
 
     var _newAccountData = MutableLiveData<RegisAccountDataRoom>()
 
+    fun tes()=provideRepository.test()
 
     var temptLastDonateDate = provideRepository.getUserDonorDataDb().value?.lastDonateDate
     var temptRecoveryDate = provideRepository.getUserDonorDataDb().value?.recoveryDate

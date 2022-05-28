@@ -8,7 +8,6 @@ import java.time.LocalDate
 
 class DonorDataViewModel(private val provideRepository:Repository):ViewModel() {
     var donorData=DonorData()
-    var provinceId:Int=0
 
     var tempLastDonateDate:LocalDate?=null
     var tempRecoveryDate:LocalDate?=null

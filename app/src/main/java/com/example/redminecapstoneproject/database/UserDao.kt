@@ -24,4 +24,11 @@ interface UserDao {
 
     @Query("DELETE FROM DonorDataRoom WHERE uid= :uid")
     fun deleteDonorData(uid:String)
+
+    @Query("SELECT * FROM RegisAccountDataRoom WHERE uid= :uid")
+    fun getAccountData2(uid:String):RegisAccountDataRoom
+
+    @Query("SELECT * FROM DonorDataRoom WHERE uid= :uid")
+    fun getDonorData2(uid:String):DonorDataRoom
+
 }

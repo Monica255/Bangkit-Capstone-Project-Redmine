@@ -117,11 +117,12 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
                     } else if(value.otpCode==null){
                         intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent4)
+                        activity?.finish()
                     }else {
                         Log.d("TAG", "not null  " + value)
                         intent2.putExtra("name", value.name)
                         startActivity(intent2)
-
+                        activity?.finish()
                     }
                 }
 
