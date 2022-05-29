@@ -1,10 +1,12 @@
 package com.example.redminecapstoneproject.ui.testing
 
+import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 import java.sql.Timestamp
 import java.time.LocalDate
 
@@ -39,6 +41,7 @@ data class TempDonorData(
 )
 
 @Entity
+@Parcelize
 data class RegisAccountDataRoom(
     @PrimaryKey
     var uid:String,
@@ -46,7 +49,7 @@ data class RegisAccountDataRoom(
     var name: String?,
     var email: String?,
     var otpCode:String?=null
-)
+):Parcelable
 
 
 data class DonorData(
@@ -64,6 +67,7 @@ data class DonorData(
     )
 
 @Entity
+@Parcelize
 data class DonorDataRoom(
     @PrimaryKey
     @ColumnInfo(name = "uid")
@@ -90,8 +94,10 @@ data class DonorDataRoom(
     var lastDonateDate: String? = null,
     @ColumnInfo(name = "recoveryDate")
     var recoveryDate: String? = null,
-)
+):Parcelable
 
+
+@Parcelize
 data class DonorRequest(
     var uid: String?=null,
     var patientName:String?=null,
@@ -106,9 +112,9 @@ data class DonorRequest(
     var phoneNumber: String?=null,
     var time:String?=null,
     var timestamp: Long?=null
-)
+):Parcelable
 
-
+@Parcelize
 data class BloodDonors(
     var uid:String?=null,
     var name:String?=null,
@@ -118,7 +124,7 @@ data class BloodDonors(
     var bloodType: String?=null,
     var rhesus: String?=null,
     var phoneNumber: String?=null
-)
+):Parcelable
 
 data class ProvinceResponse(
     val success:Boolean,

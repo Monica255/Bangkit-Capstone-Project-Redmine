@@ -1,11 +1,13 @@
 package com.example.redminecapstoneproject.ui.blooddonation
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.redminecapstoneproject.repository.Repository
 
 class BloodDonationViewModel(private val provideRepository: Repository) :ViewModel() {
+    fun getDonorReqFive()=provideRepository.getDonorReqFive()
 
+    val donorReq=provideRepository.donorReq
 
     fun getAllVerifiedUsers()=provideRepository.getAllVerifiedUsers()
 
@@ -16,4 +18,8 @@ class BloodDonationViewModel(private val provideRepository: Repository) :ViewMod
     val validDonorDataUsers=provideRepository.validDonorDataUsers
 
     val isLoading= provideRepository.isLoading
+
+    lateinit var filterProvince:String
+    var filterCity=MutableLiveData<String>()
+
 }

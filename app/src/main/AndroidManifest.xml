@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.redminecapstoneproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,8 +20,9 @@
             android:name=".ui.otp.OtpActivity"
             android:exported="true" />
         <activity
-            android:name=".AlertDialogActivity"
-            android:exported="false" />
+            android:name=".LoaderJarvis"
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".ui.BloodDonorDetailsActivity"
             android:exported="false" />
@@ -58,6 +60,7 @@
         <activity
             android:name=".ui.loginsignup.LoginActivity"
             android:exported="true"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.donordata.DonorDataActivity"

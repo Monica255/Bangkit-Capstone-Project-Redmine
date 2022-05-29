@@ -7,7 +7,7 @@ class MyDonorReqViewModel(private val provideRepository: Repository) :ViewModel(
 
     val donorReq=provideRepository.donorReq
 
-
+    val isLoading=provideRepository.isLoading
 
     fun getMyDonorReq()=provideRepository.getMyDonoReq()
 

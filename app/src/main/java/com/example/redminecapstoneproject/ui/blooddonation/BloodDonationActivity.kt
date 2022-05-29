@@ -5,16 +5,25 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
+import com.example.redminecapstoneproject.adapter.DonorReqAdapter
+import com.example.redminecapstoneproject.adapter.HorizontalDonorReqAdapter
 import com.example.redminecapstoneproject.databinding.ActivityBloodDonationBinding
+import com.example.redminecapstoneproject.helper.helperBloodDonors
 import com.example.redminecapstoneproject.helper.helperDate
 import com.example.redminecapstoneproject.ui.DonationEventsActivity
 import com.example.redminecapstoneproject.ui.DonorRequestActivity
+import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
+import com.example.redminecapstoneproject.ui.detaildonorreq.DetailDonorRequestActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
 import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.DonorRequest
+import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
 
 class BloodDonationActivity : AppCompatActivity() {
@@ -25,7 +34,6 @@ class BloodDonationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        Log.d("DONATION",System.currentTimeMillis().toString())
 
         val loginSignupViewModel = ViewModelProvider(
             this,
@@ -59,12 +67,62 @@ class BloodDonationActivity : AppCompatActivity() {
             setData(it)
         }
 
+        bloodDonationViewModel.getDonorReqFive()
+        bloodDonationViewModel.donorReq.observe(this){
+            if(it!=null){
+                setAdapter(it)
+            }
+        }
+
+        bloodDonationViewModel.isLoading.observe(this){
+            showLoading(it)
+        }
+
     }
 
 
+    private fun showLoading(show:Boolean){
+
+        if(show){
+            binding.lazyLoading.visibility= View.VISIBLE
+            binding.content.visibility= View.GONE
+        }else{
+            binding.lazyLoading.visibility= View.GONE
+            binding.content.visibility= View.VISIBLE
+        }
+    }
+
+    private fun setAdapter(list:List<DonorRequest>){
+        val layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        binding.rvHorizontalDonorRequest.layoutManager = layoutManager
+
+        binding.rvHorizontalDonorRequest.adapter=null
+        //Log.d("TESS",reverseListOrder(list.toMutableList()).toString())
+        val mAdaper= HorizontalDonorReqAdapter(list)
+        binding.rvHorizontalDonorRequest.adapter=mAdaper
+
+        mAdaper.setOnItemClickCallback(object : HorizontalDonorReqAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: DonorRequest) {
+                if(data.uid==FirebaseAuth.getInstance().currentUser?.uid){
+                    val intent=Intent(this@BloodDonationActivity,CreateDonorReqActivity::class.java)
+                    intent.putExtra(CreateDonorReqActivity.EXTRA_DONOR_REQ,data)
+                    startActivity(intent)
+                }else{
+                    val intent=Intent(this@BloodDonationActivity,DetailDonorRequestActivity::class.java)
+                    intent.putExtra(DetailDonorRequestActivity.EXTRA_DONOR_REQ,data)
+                    startActivity(intent)
+                }
+
+            }
+
+        })
+
+    }
+
     @SuppressLint("StringFormatMatches")
     private fun setData(data: DonorDataRoom) {
-        Log.d("DONATION", data.toString())
         if (data != null) {
 
             val mLastDOnate =
@@ -94,8 +152,7 @@ class BloodDonationActivity : AppCompatActivity() {
                 binding.lastBloodDonation.text = "--"
                 binding.canDonateAgain.text = "--"
             }
-
-
+            binding.tvBloodType.text= helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
         }
     }
 

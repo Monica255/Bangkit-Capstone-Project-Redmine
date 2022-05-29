@@ -15,6 +15,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentLoginBinding
@@ -148,11 +149,8 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
             if (fu == null) {
                 //startActivity(intent)
             } else {
-                Log.d("TAG", "fu not null")
-
                 if (activity != null) {
                     loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) { value ->
-
                         if (value == null) {
                             Log.d("TAG", "first acc null data")
                             counter2++
@@ -180,11 +178,10 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
                                     }
                                 } else {
                                     Log.d("TAG","going home")
-                                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     startActivity(intent3)
                                     if (activity != null) {
                                         Log.d("TAG","login finish")
-
                                         activity?.finish()
                                     }
                                 }
@@ -197,7 +194,19 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
             }
         }
 
+        loginSignupViewModel.isLoading.observe(requireActivity()){
+            showLoading(true)
+        }
 
+
+    }
+
+    private fun showLoading(show:Boolean){
+        if(show){
+            if(isAdded){ LoadingUtils.showDialog(context, false) }
+        }else{
+            LoadingUtils.hideDialog()
+        }
     }
 
     private fun signIn() {

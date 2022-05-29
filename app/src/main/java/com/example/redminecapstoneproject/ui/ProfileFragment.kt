@@ -53,20 +53,6 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
 
         loginSignupViewModel.getUserDonorDataDb().observe(requireActivity()) {
             if (it != null) {
-                /*val data =
-                    DonorData(
-                        it.isVerified,
-                        it.gender,
-                        it.bloodType,
-                        it.rhesus,
-                        it.phoneNumber,
-                        it.province,
-                        it.city,
-                        it.haveDonated,
-                        it.hadCovid,
-                        if (it.lastDonateDate != null) helperDate.stringToDate(it.lastDonateDate!!) else null,
-                        if (it.recoveryDate != null) helperDate.stringToDate(it.recoveryDate!!) else null
-                    )*/
                 userDonorData = it
                 Log.d("TAG", userDonorData.toString())
                 if(activity!=null)setData(userDonorData,requireActivity())

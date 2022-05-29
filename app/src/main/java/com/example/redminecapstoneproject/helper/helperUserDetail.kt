@@ -17,4 +17,8 @@ object helperUserDetail {
         return "${prov}#${id}"
     }
 
+    fun toValidPhoneNumber(number:String):String{
+        return "+62${number}".trim()
+    }
+
 }

@@ -75,8 +75,8 @@ object helperDate {
         return System.currentTimeMillis()
     }
 
-    fun getDonorReqRef(uid:String): String {
-        return "${uid}_${getTimeStamp()}"
+    fun getDonorReqRef(uid:String,timeStamp:Long?): String {
+        return "${uid}${timeStamp.toString().replace("-","_")}"
     }
 
     fun getCurrentTime():String{

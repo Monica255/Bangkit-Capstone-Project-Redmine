@@ -33,7 +33,8 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
     var temptLastDonateDate = provideRepository.getUserDonorDataDb().value?.lastDonateDate
     var temptRecoveryDate = provideRepository.getUserDonorDataDb().value?.recoveryDate
 
-    val message: LiveData<Pair<Boolean, String>> = provideRepository.message
+    val message= provideRepository.message
+    val isLoading=provideRepository.isLoading
 
     init {
         _newUserData.value = _userData.value

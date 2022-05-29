@@ -73,7 +73,7 @@ class SplashActivity : AppCompatActivity() {
                                     finish()
                                 } else {
                                     Log.d("TAG","sp going home")
-                                    intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                                     startActivity(intent3)
                                     finish()
                                     //onDestroy()

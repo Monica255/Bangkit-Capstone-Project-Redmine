@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentHomeBinding
@@ -33,13 +34,12 @@ class HomeFragment : Fragment() {
         )[LoginSignupViewModel::class.java]
 
 
+
         binding.btDonateBlood.setOnClickListener { view ->
             startActivity(Intent(activity, BloodDonationActivity::class.java))
         }
 
-        binding.btLookForDonors.setOnClickListener {
-            startActivity(Intent(activity, BloodDonorsActivity::class.java))
-        }
+
 
         binding.btCreateDonorReq.setOnClickListener {
             startActivity(Intent(activity, CreateDonorReqActivity::class.java))
@@ -59,8 +59,15 @@ class HomeFragment : Fragment() {
         loginSignupViewModel.getUserDonorDataDb().observe(requireActivity()) {
             if(it!=null){
                 val data =
-                    DonorDataRoom(uid = it.uid, gender = it.gender)
-                setAvatar(data)
+                    DonorDataRoom(uid = it.uid, gender = it.gender,province = it.province,city = it.city)
+                data.gender?.let { it1 -> setAvatar(it1) }
+
+                binding.btLookForDonors.setOnClickListener {
+                    val intent=Intent(activity, BloodDonorsActivity::class.java)
+                    intent.putExtra(BloodDonorsActivity.EXTRA_PROVINCE,data.province)
+                    intent.putExtra(BloodDonorsActivity.EXTRA_CITY,data.city)
+                    startActivity(intent)
+                }
             }
         }
 
@@ -71,8 +78,8 @@ class HomeFragment : Fragment() {
         binding.tvName.text = data?.name
     }
 
-    private fun setAvatar(data: DonorDataRoom) {
-        val x: Int =if(data.gender=="male")R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female
+    private fun setAvatar(gender: String) {
+        val x: Int =if(gender=="male")R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female
 
         if(isAdded){
             Glide.with(this)

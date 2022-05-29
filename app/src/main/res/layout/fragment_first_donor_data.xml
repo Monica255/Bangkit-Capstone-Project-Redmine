@@ -262,9 +262,9 @@
                     android:layout_marginStart="10dp"
                     android:background="@android:color/transparent"
                     android:inputType="number"
+                    android:maxLength="13"
                     android:outlineSpotShadowColor="@color/red"
                     android:paddingStart="0dp"
-
                     android:hint="@string/phone_number"
                     android:textColor="@color/not_so_black"
                     tools:text="87761142589" />

@@ -1,28 +1,27 @@
 package com.example.redminecapstoneproject.ui.createdonorreq
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityCreateDonorReqBinding
+import com.example.redminecapstoneproject.helper.helperBloodDonors
 import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
-import com.example.redminecapstoneproject.ui.donordata.DonorDataViewModel
+import com.example.redminecapstoneproject.helper.helperUserDetail
+import com.example.redminecapstoneproject.ui.mydonorreq.MyDonorReqActivity
+import com.example.redminecapstoneproject.ui.profile.UserDetailViewModel
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import com.google.firebase.auth.FirebaseAuth
 import www.sanju.motiontoast.MotionToast
-import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.util.*
 
 class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
     private lateinit var binding: ActivityCreateDonorReqBinding
@@ -78,13 +77,6 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             return field
         }
 
-    init {
-
-
-        //createDonorReqViewModel.donorReq.uid=FirebaseAuth.getInstance().currentUser?.uid
-
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateDonorReqBinding.inflate(layoutInflater)
@@ -97,28 +89,30 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             )[CreateDonorReqViewModel::class.java]
 
 
+        val donorReq= intent.getParcelableExtra<DonorRequest>(EXTRA_DONOR_REQ)
+
+        if(donorReq!=null){
+            setData(donorReq)
+        }else{
+            createDonorReqViewModel.accountData.observe(this){
+                setInitialData(it)
+            }
+
+            createDonorReqViewModel.donorData.observe(this){
+                setInitialData(it)
+            }
+        }
+
+
         createDonorReqViewModel.message.observe(this){
             makeToast(it.first,it.second)
         }
 
         binding.btBack.setOnClickListener {
-            createDonorReqViewModel.getDonorReq()
             finish()
         }
 
         binding.btPost.setOnClickListener {
-            /*val x=DonorRequest("uid","name",2,"ab","positive","bali","denpasar","sanglah","des","mon","123")
-
-            x.uid=FirebaseAuth.getInstance().currentUser?.uid
-            x.time= helperDate.getCurrentTime()
-
-            x.timestamp="-${ System.currentTimeMillis() }".toLong()
-
-            FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
-                createDonorReqViewModel.postDonorReq(x,
-                    it1
-                )
-            }*/
             if (isDataValid()) {
                 createDonorReqViewModel.donorReq.uid=FirebaseAuth.getInstance().currentUser?.uid
                 createDonorReqViewModel.donorReq.time=helperDate.getCurrentTime()
@@ -129,6 +123,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
                         it1
                     )
                 }
+                Log.d("DONOR",createDonorReqViewModel.donorReq.toString())
 
                 finish()
             } else {
@@ -156,9 +151,134 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         binding.cvPickCity.setOnClickListener {
             newDialog("Select City")
         }
+
+        binding.btDelete.setOnClickListener {
+            if(donorReq?.uid!=null&&donorReq.timestamp!=null){
+                showConfirmDialog(donorReq.uid.toString(),donorReq.timestamp.toString())
+            }
+        }
+
     }
 
 
+    private fun showConfirmDialog(uid:String,timeStamp:String) {
+        val createDonorReqViewModel =
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
+        var donorReqId=helperBloodDonors.toDonorReqId(uid,timeStamp)
+        val builder = AlertDialog.Builder(this)
+        val mConfirmDialog = builder.create()
+
+
+        builder.create()
+        builder.setTitle(getString(R.string.delete))
+        builder.setMessage("Are you sure you want to delete this donor request?")
+
+        builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
+            createDonorReqViewModel.deleteDonorReq(donorReqId)
+            mConfirmDialog.cancel()
+        }
+
+        builder.setNegativeButton(getString(R.string.no)) { _, _ ->
+            mConfirmDialog.cancel()
+        }
+
+        builder.show()
+    }
+
+
+
+    private fun setData(data:DonorRequest){
+        val createDonorReqViewModel =
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
+        createDonorReqViewModel.donorReq=data
+        binding.apply {
+            tvToolbarTitle.text="Donor Request"
+            btDelete.visibility=View.VISIBLE
+            etPatientName.setText(data.patientName)
+            etPatientName.isEnabled=false
+            etPatientName.setTextColor(resources.getColor(R.color.not_so_black,theme))
+
+            data.numberOfBloodBag?.let { etNumberOfBloodNeeded.setText(it.toString()) }
+            etNumberOfBloodNeeded.isEnabled=false
+            etNumberOfBloodNeeded.setTextColor(resources.getColor(R.color.not_so_black,theme))
+
+            rgBloodType.check(
+                when (data.bloodType) {
+                    "a" -> R.id.rb_a
+                    "b" -> R.id.rb_b
+                    "ab" -> R.id.rb_ab
+                    "o" -> R.id.rb_o
+                    else -> -1
+                }
+            )
+
+            rbA.isClickable=false
+            rbB.isClickable=false
+            rbAb.isClickable=false
+            rbO.isClickable=false
+
+
+            rgRhesus.check(if (data.rhesus == "positive") R.id.rb_positive else if (data.rhesus == "negative") R.id.rb_negative else R.id.rb_dont_know)
+            rbPositive.isClickable=false
+            rbNegative.isClickable=false
+
+            tvProvince.text=helperUserDetail.getProvinceName(data.province.toString()).lowercase()?.replaceFirstChar(Char::titlecase)
+            cvPickProvince.isEnabled=false
+            tvProvince.alpha=1F
+
+            tvCity.text=data.city?.lowercase()?.replaceFirstChar(Char::titlecase)
+            cvPickCity.isEnabled=false
+            tvCity.alpha=1F
+
+            etHospitalName.setText(data.hospitalName)
+            etHospitalName.isEnabled=false
+            etHospitalName.setTextColor(resources.getColor(R.color.not_so_black,theme))
+
+            etDescription.setText(data.description)
+            etDescription.isEnabled=false
+            etDescription.setTextColor(resources.getColor(R.color.not_so_black,theme))
+
+            etContactName.setText(data.contactName)
+            etContactName.isEnabled=false
+            etContactName.setTextColor(resources.getColor(R.color.not_so_black,theme))
+
+            etPhoneNumber.setText(data.phoneNumber)
+            etPhoneNumber.isEnabled=false
+
+            btPost.visibility=View.GONE
+
+        }
+    }
+
+    private fun setInitialData(data:Any?){
+        val createDonorReqViewModel =
+            ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[CreateDonorReqViewModel::class.java]
+        if(data is RegisAccountDataRoom){
+            binding.etContactName.setText(data.name)
+            createDonorReqViewModel.donorReq.contactName=data.name
+        }else if(data is DonorDataRoom){
+            binding.etPhoneNumber.setText(data.phoneNumber)
+            createDonorReqViewModel.donorReq.phoneNumber=data.phoneNumber
+
+            binding.tvProvince.text=helperUserDetail.getProvinceName(data.province.toString()).lowercase()?.replaceFirstChar(Char::titlecase)
+            createDonorReqViewModel.donorReq.province=data.province
+            binding.tvProvince.alpha=1F
+
+            binding.tvCity.text=data.city?.lowercase()?.replaceFirstChar(Char::titlecase)
+            createDonorReqViewModel.donorReq.city=data.city
+            binding.tvCity.alpha=1F
+
+        }
+    }
 
 
 
@@ -177,23 +297,40 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 )
             )
         } else {
-            MotionToast.Companion.createColorToast(
-                this,
-                "Yey success 😍",
-                msg,
-                MotionToast.TOAST_SUCCESS,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.SHORT_DURATION,
-                ResourcesCompat.getFont(
+            if(msg.contains("delete",true)){
+                MotionToast.Companion.createColorToast(
                     this,
-                    www.sanju.motiontoast.R.font.helvetica_regular
+                    "Deleted",
+                    msg,
+                    MotionToast.TOAST_INFO,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(
+                        this,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
                 )
-            )
+                finish()
+            }else{
+                MotionToast.Companion.createColorToast(
+                    this,
+                    "Yey success 😍",
+                    msg,
+                    MotionToast.TOAST_SUCCESS,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(
+                        this,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
+            }
+
         }
     }
 
 
-    private fun newDialog(title: String, isProvinceNotNull: Boolean = false): CustomDialogFragment {
+    private fun newDialog(title: String): CustomDialogFragment {
         val dialog = CustomDialogFragment()
         dialog.show(this.supportFragmentManager, "mDialog")
         arg.putString("title", title)
@@ -263,7 +400,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 getString(R.string.max_blood_bag)
         } else {
             isNumberOfBloodBagValid = true
-            createDonorReqViewModel.donorReq.phoneNumber = number
+            createDonorReqViewModel.donorReq.numberOfBloodBag = number.toInt()
         }
     }
 
@@ -370,21 +507,6 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         createDonorReqViewModel.donorReq.phoneNumber = selectedPhoneNumber
     }
 
-    private fun clearAllError() {
-        binding.ilPatientName.isErrorEnabled = false
-        binding.ilPatientName.error = ""
-        binding.ilNumberOfBloodNeeded.isErrorEnabled = false
-        binding.ilNumberOfBloodNeeded.error = ""
-        binding.ilHospitalName.isErrorEnabled = false
-        binding.ilHospitalName.error = ""
-        binding.ilDescription.isErrorEnabled = false
-        binding.ilDescription.error = ""
-        binding.ilContactName.isErrorEnabled = false
-        binding.ilContactName.error = ""
-        binding.ilPhone.isErrorEnabled = false
-        binding.ilPhone.error = ""
-    }
-
     override fun onFocusChange(v: View?, isFocused: Boolean) {
         if (v != null) {
             when (v.id) {
@@ -439,4 +561,9 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             }
         }
     }
+
+    companion object{
+        const val EXTRA_DONOR_REQ="extra_donor_req"
+    }
+
 }

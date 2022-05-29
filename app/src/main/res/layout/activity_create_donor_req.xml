@@ -37,6 +37,16 @@
             app:layout_constraintStart_toEndOf="@id/bt_back"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:visibility="gone"
+            android:id="@+id/bt_delete"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/lighter_red"
+            android:background="@drawable/icon_delete"
+            />
+
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
@@ -69,10 +79,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_marginBottom="5dp"
+                app:boxStrokeColor="@color/not_so_black"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:errorIconTint="@color/red"
                 app:helperText=""
+
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -103,10 +115,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_marginBottom="5dp"
+                app:boxStrokeColor="@color/not_so_black"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:errorIconTint="@color/red"
                 app:helperText=""
+
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -116,6 +130,7 @@
                     android:gravity="center_horizontal"
                     android:hint="@string/blood_bags"
                     android:inputType="number"
+                    android:maxLength="1"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -142,6 +157,7 @@
                 android:paddingBottom="10dp">
 
                 <RadioButton
+                    android:id="@+id/rb_a"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:layout_marginEnd="13dp"
@@ -154,6 +170,7 @@
                     android:textColor="@drawable/radio_text_selector" />
 
                 <RadioButton
+                    android:id="@+id/rb_b"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:layout_marginStart="14dp"
@@ -167,6 +184,7 @@
                     android:textColor="@drawable/radio_text_selector" />
 
                 <RadioButton
+                    android:id="@+id/rb_ab"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:layout_marginStart="14dp"
@@ -180,6 +198,7 @@
                     android:textColor="@drawable/radio_text_selector" />
 
                 <RadioButton
+                    android:id="@+id/rb_o"
                     android:layout_width="69dp"
                     android:layout_height="69dp"
                     android:layout_marginStart="14dp"
@@ -215,6 +234,7 @@
                 android:paddingBottom="10dp">
 
                 <RadioButton
+                    android:id="@+id/rb_positive"
                     android:layout_width="69dp"
                     android:layout_height="@dimen/cv_width"
                     android:layout_marginEnd="13dp"
@@ -227,6 +247,7 @@
                     android:textColor="@drawable/radio_text_selector" />
 
                 <RadioButton
+                    android:id="@+id/rb_negative"
                     android:layout_width="69dp"
                     android:layout_height="@dimen/cv_width"
                     android:layout_marginStart="14dp"
@@ -253,14 +274,14 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_pick_province"
-                app:cardCornerRadius="4dp"
-                style="@style/cardViewStyle.cardViewStyleFixed">
+                style="@style/cardViewStyle.cardViewStyleFixed"
+                app:cardCornerRadius="4dp">
 
                 <TextView
+                    android:id="@+id/tv_province"
                     style="@style/TitleText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/tv_province"
                     android:alpha="0.6"
                     android:gravity="center"
                     android:text="@string/province" />
@@ -280,14 +301,14 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_pick_city"
-                app:cardCornerRadius="4dp"
-                style="@style/cardViewStyle.cardViewStyleFixed">
+                style="@style/cardViewStyle.cardViewStyleFixed"
+                app:cardCornerRadius="4dp">
 
                 <TextView
+                    android:id="@+id/tv_city"
                     style="@style/TitleText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/tv_city"
                     android:alpha="0.6"
                     android:gravity="center"
                     android:text="@string/city" />
@@ -314,10 +335,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_marginBottom="5dp"
+                app:boxStrokeColor="@color/not_so_black"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:errorIconTint="@color/red"
                 app:helperText=""
+
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -348,10 +371,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_marginBottom="5dp"
+                app:boxStrokeColor="@color/not_so_black"
                 app:counterEnabled="true"
                 app:counterMaxLength="200"
-                app:helperTextEnabled="true"
                 app:errorIconDrawable="@null"
+                app:helperTextEnabled="true"
+
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -360,7 +385,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="top|left"
                     android:hint="@string/description"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    tools:ignore="RtlHardcoded" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--contact name-->
@@ -382,10 +408,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/margin_start_end"
                 android:layout_marginBottom="5dp"
+                app:boxStrokeColor="@color/not_so_black"
                 app:errorEnabled="true"
                 app:errorIconDrawable="@null"
                 app:errorIconTint="@color/red"
                 app:helperText=""
+
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -429,6 +457,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    app:boxStrokeColor="@color/not_so_black"
                     app:errorEnabled="true"
                     app:errorIconDrawable="@null"
                     app:errorIconTint="@color/red"
@@ -448,6 +477,7 @@
                         android:inputType="number"
                         android:outlineSpotShadowColor="@color/red"
                         android:paddingStart="0dp"
+                        android:maxLength="13"
                         android:textColor="@color/not_so_black"
                         tools:text="87761142589" />
                 </com.google.android.material.textfield.TextInputLayout>

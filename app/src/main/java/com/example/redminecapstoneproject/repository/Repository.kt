@@ -70,42 +70,53 @@ class Repository(
             FirebaseDatabase.getInstance("https://redmine-350506-default-rtdb.asia-southeast1.firebasedatabase.app").reference
     }
 
+    fun deleteDonorReq(id:String){
+        Log.d("DD","id "+id)
+        dbRef?.child("donor_req")?.child(id)?.removeValue()?.addOnCompleteListener {
+            if(it.isSuccessful){
+                _message.value= Pair(false, "Donor request is successfully deleted!")
+            }else{
+                _message.value= Pair(true, "Failed to delete donor request")
+            }
+        }
+    }
+
     fun getMyDonoReq() {
-        val donorReqs = ArrayList<DonorRequest>()
+        _isLoading.value=true
         dbRef?.child("donor_req")?.orderByChild("uid")
             ?.equalTo(FirebaseAuth.getInstance().currentUser?.uid)
             ?.addValueEventListener(object : ValueEventListener {
 
-
                 override fun onDataChange(snapshot: DataSnapshot) {
+                   // _donorReq.value= listOf()
+                    val donorReqs = ArrayList<DonorRequest>()
                     if (snapshot.exists()) {
                         for (i in snapshot.children) {
                             val donorReq = i.getValue(DonorRequest::class.java)
                             if (donorReq != null) {
                                 donorReqs.add(donorReq)
-                                _donorReq.value = donorReqs
+
                             }
                         }
-
-                        Log.d("DONATION", "dr " + donorReqs.toString())
-
-
+                        val x=donorReqs.toMutableList().sortedByDescending { it.timestamp }
+                        _donorReq.value =x
+                        _isLoading.value=false
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    _isLoading.value=false
                     Log.e("firebase", error.message)
                 }
             })
     }
 
-    fun getDonorReqDes() {
-        val donorReqs = ArrayList<DonorRequest>()
-        dbRef?.child("donor_req")?.orderByChild("timestamp")
+    fun getDonorReqFive() {
+        _isLoading.value=true
+        dbRef?.child("donor_req")?.orderByChild("timestamp")?.limitToFirst(5)
             ?.addValueEventListener(object : ValueEventListener {
-
-
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val donorReqs = ArrayList<DonorRequest>()
                     if (snapshot.exists()) {
                         for (i in snapshot.children) {
                             val donorReq = i.getValue(DonorRequest::class.java)
@@ -113,32 +124,28 @@ class Repository(
                                 donorReqs.add(donorReq)
                             }
                         }
-
-                        Log.d("DONATION", "dr " + donorReqs.toString())
-
+                        _donorReq.value = donorReqs
+                        _isLoading.value=false
 
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("firebase", error.message)
+                    _isLoading.value=false
                 }
             })
     }
 
     fun postDonorReq(data: DonorRequest, uid: String) {
-
         mDb?.getReference("donor_req")
-            ?.child(helperDate.getDonorReqRef(uid))?.setValue(data)
+            ?.child(helperDate.getDonorReqRef(uid,data.timestamp))?.setValue(data)
             ?.addOnCompleteListener {
                 if (it.isSuccessful) {
                     _isLoading.value = false
                     _message.value = Pair(false, "Donor request is successfully posted!")
-                    Log.d("DONATION", "msg " + _message.value.toString())
                 } else {
                     _isLoading.value = false
                     _message.value = Pair(true, "Failed to post donor request")
-
                 }
             }
     }
@@ -189,30 +196,27 @@ class Repository(
                     if (responseBody != null) {
                         _listCities.value = responseBody.data
                     }
-                    //_message.value = responseBody?.message.toString()
-
                 } else {
-                    //_message.value = response.message()
+                    Log.d("ERROR","error")
                 }
             }
 
             override fun onFailure(call: Call<CityResponse>, t: Throwable) {
                 _isLoading.value = false
-                //_message.value = t.message.toString()
             }
-
         })
     }
 
 
     fun getAllVerifiedUsers() {
-        val verifiedAccUsers = ArrayList<TempAccountData>()
         //var verifiedDonorDataUsers: ArrayList<TempDonorData>
+        _isLoading.value=true
         dbRef?.child("users")?.orderByChild("verified")?.equalTo(true)
             ?.addValueEventListener(object : ValueEventListener {
 
 
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val verifiedAccUsers = ArrayList<TempAccountData>()
                     if (snapshot.exists()) {
                         for (i in snapshot.children) {
                             val verifiedUser = i.getValue(TempAccountData::class.java)
@@ -223,11 +227,7 @@ class Repository(
 
 
                         _validAccUsers.value = verifiedAccUsers
-                        /*FirebaseAuth.getInstance().currentUser?.let {
-                            _validUsers.value=helperBloodDonors.toValidBloodDonorsList(verifiedAccUsers,verifiedDonorDataUsers,
-                                it.uid)
-                        }*/
-                        Log.d("DONATION", "v acc " + verifiedAccUsers.toString())
+                        _isLoading.value=false
 
 
                     }
@@ -235,19 +235,23 @@ class Repository(
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("firebase", error.message)
+                    _isLoading.value=false
+
                 }
             })
     }
 
 
+
     fun getAllVerifiedDonorDataUsers() {
-        val verifiedDonorDataUsers = ArrayList<TempDonorData>()
-        //var userAccountData: HashMap<String, Any>?
+        _isLoading.value=true
         dbRef?.child("users_data")?.orderByChild("verified")?.equalTo(true)
             ?.addValueEventListener(object : ValueEventListener {
 
 
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val verifiedDonorDataUsers = ArrayList<TempDonorData>()
+
                     if (snapshot.exists()) {
                         for (i in snapshot.children) {
                             val verifiedUser = i.getValue(TempDonorData::class.java)
@@ -256,11 +260,11 @@ class Repository(
                             }
                         }
                         _validDonorDataUsers.value = verifiedDonorDataUsers
-                        Log.d("DONATION", "repo dd " + verifiedDonorDataUsers.toString())
+                        _isLoading.value=false
 
                     } else {
                         Log.d("DONATION", "no data")
-
+                        _isLoading.value=false
                     }
                 }
 

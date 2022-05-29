@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
     tools:context=".ui.detaildonorreq.DonorReqContactFragment">
@@ -55,6 +55,7 @@
                     android:text="87761142589" />
 
                 <Button
+                    android:id="@+id/bt_copy"
                     style="@style/TitleText"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
@@ -66,6 +67,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/bt_call"
                 style="@style/TitleText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -77,6 +79,7 @@
                 android:textColor="@color/white" />
 
             <Button
+                android:id="@+id/bt_wa"
                 style="@style/TitleText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

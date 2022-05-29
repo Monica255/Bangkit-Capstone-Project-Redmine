@@ -38,6 +38,7 @@
                     app:tint="@color/white" />
 
                 <TextView
+                    android:id="@+id/tv_post_time"
                     style="@style/TitleTextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -52,7 +53,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="@dimen/margin_start_end"
-                android:layout_marginTop="34dp"
+                android:layout_marginTop="20dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="5dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:gravity="center_horizontal"
-                        android:text="@string/b"
+                        tools:text="@string/b"
                         android:textSize="40sp" />
 
                     <TextView
@@ -109,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="1"
-                    android:text="Jonatan Sentani" />
+                    tools:text="Jonatan Sentani" />
 
                 <TextView
                     style="@style/TitleTextBold"
@@ -128,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="2"
-                    android:text="PMI Sanglah" />
+                    tools:text="PMI Sanglah" />
 
 
             </LinearLayout>
@@ -150,7 +151,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:paddingBottom="20dp">
-
                     <TextView
                         style="@style/TitleTextBold"
                         android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                         android:text="@string/location" />
 
                     <TextView
-                        android:id="@+id/tv_donor_req_location"
+                        android:id="@+id/tv_location"
                         style="@style/TitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -169,7 +169,26 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
                         android:maxLines="2"
-                        android:text="RS Sanglah, Denpasar" />
+                        tools:text="Denpasar,Bali"/>
+                    <TextView
+                        style="@style/TitleTextBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="@string/hospital_name" />
+
+                    <TextView
+                        android:id="@+id/tv_donor_req_hospital_name"
+                        style="@style/TitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:maxLines="2"
+                        tools:text="RS Sanglah, Denpasar" />
 
 
                     <TextView
@@ -182,7 +201,7 @@
                         android:text="@string/description" />
 
                     <TextView
-                        android:id="@+id/tv_donation_event_des"
+                        android:id="@+id/tv_donor_req_des"
                         style="@style/TitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -190,7 +209,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
                         android:maxLines="2"
-                        android:text="Lagi butuh dua kantung darah untuk ayah saya dengan golongan darah B di rumah sakit Sanglah. Mohon bantuannya" />
+                        tools:text="Lagi butuh dua kantung darah untuk ayah saya dengan golongan darah B di rumah sakit Sanglah. Mohon bantuannya" />
 
                     <TextView
                         style="@style/TitleTextBold"
@@ -202,7 +221,7 @@
                         android:text="@string/contact_person" />
 
                     <TextView
-                        android:id="@+id/donation_event_place"
+                        android:id="@+id/tv_contact_name"
                         style="@style/TitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -212,8 +231,8 @@
                         android:drawableLeft="@drawable/icon_profile_resize"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
-                        android:maxLines="2"
-                        android:text="Fredi Sentani" />
+                        android:maxLines="1"
+                        tools:text="Fredi Sentani" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

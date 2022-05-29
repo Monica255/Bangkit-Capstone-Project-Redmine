@@ -58,4 +58,9 @@ object helperBloodDonors {
         return "$bloodType$mRhesus"
     }
 
+    fun toDonorReqId(uid:String,timeStamp:String):String{
+        var x=timeStamp.replace("-","_")
+        return "$uid$x"
+    }
+
 }

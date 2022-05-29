@@ -12,13 +12,16 @@ import com.example.redminecapstoneproject.ui.testing.DonorRequest
 
 class CreateDonorReqViewModel(private val provideRepository: Repository) :ViewModel() {
     var donorReq=DonorRequest()
-    var provinceId:Int=0
+
 
     fun postDonorReq(data:DonorRequest,uid:String)=provideRepository.postDonorReq(data,uid)
     //fun getUserDonorData()=provideRepository.getUserDonorDataDb()
     var message=provideRepository.message
 
-    fun getDonorReq()=provideRepository.getDonorReqDes()
+    fun deleteDonorReq(id:String)=provideRepository.deleteDonorReq(id)
+
+    var accountData = provideRepository.getUserAccountDataDb()
+    var donorData = provideRepository.getUserDonorDataDb()
 
 
 

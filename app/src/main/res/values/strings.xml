@@ -106,10 +106,11 @@
         \n <li>If you have received the COVID vaccine, please wait 3 days before attempting to donate</li>
     </string>
 
-    <string name="requirements_list1">Be at least 17 years old</string>
-    <string name="requirements_list2">Be in good health generally and feel well on the day of donation</string>
-    <string name="requirements_list3">Weigh at least 110 pounds</string>
-    <string name="requirements_list4">If you have received the COVID vaccine, please wait 3 days before attempting to donate</string>
+    <string name="requirements_list1">- Be at least 17 years old</string>
+    <string name="requirements_list2">- Be in good health generally and feel well on the day of donation</string>
+    <string name="requirements_list3">- Weigh at least 110 pounds</string>
+    <string name="requirements_list4">- If you have received the COVID vaccine, please wait 3 days before attempting to donate</string>
+    <string name="requirements_list5">- Have received the second dose of the Covid-19 vaccine</string>
 
     <!-- donor events -->
     <string name="donation_event">Donation Event</string>
@@ -190,4 +191,7 @@
     <string name="email_verification">Email Verification</string>
     <string name="we_have_sent_you_the_code">We have sent the code to your email</string>
     <string name="please_input_bellow">Please input it bellow</string>
+
+    <!--my donor req-->
+    <string name="delete">Delete</string>
 </resources>

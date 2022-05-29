@@ -270,6 +270,7 @@
                                 android:inputType="number"
                                 android:outlineSpotShadowColor="@color/red"
                                 android:paddingStart="0dp"
+                                android:maxLength="13"
                                 android:textColor="@color/not_so_black"
                                 tools:text="87761142589" />
                         </com.google.android.material.textfield.TextInputLayout>

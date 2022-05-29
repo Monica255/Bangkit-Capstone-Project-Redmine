@@ -8,6 +8,7 @@ import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.databinding.ItemVerticalAlertDialogBinding
 import com.example.redminecapstoneproject.databinding.ItemVerticalBloodDonorsBinding
 import com.example.redminecapstoneproject.helper.helperBloodDonors
+import com.example.redminecapstoneproject.helper.helperUserDetail
 import com.example.redminecapstoneproject.ui.testing.BloodDonors
 
 class BloodDonorsAdapter(private val list: List<BloodDonors>?):
@@ -22,7 +23,8 @@ class BloodDonorsAdapter(private val list: List<BloodDonors>?):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: BloodDonors) {
             binding.tvDonorName.text=data.name
-            binding.tvDonorLocation.text=helperBloodDonors.toLocation(data.city,data.province)
+            binding.tvDonorLocation.text=helperBloodDonors.toLocation(data.city?.lowercase()?.replaceFirstChar(Char::titlecase),
+                data.province?.let { helperUserDetail.getProvinceName(it)?.lowercase()?.replaceFirstChar(Char::titlecase) })
             binding.tvBloodType.text= helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
 
 

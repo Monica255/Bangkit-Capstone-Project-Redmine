@@ -104,12 +104,11 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
         userDetailViewModel.accountData.observe(this) {
-            /*if(isVerified2!=it.isVerified && isVerified2!=null){
+            if(isVerified2!=it.isVerified && isVerified2!=null){
                 userDetailViewModel._newAccountData.value = newAccountData(it)
 
             }
             isVerified2=it.isVerified
-*/
             if (userDetailViewModel._newAccountData.value == null) {
                 userDetailViewModel._newAccountData.value = newAccountData(it)
                 //userDetailViewModel.tempAccountData = newAccountData(it)
@@ -215,8 +214,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         if (user is DonorDataRoom) {
             binding.apply {
                 ilPhone.editText?.setText(user.phoneNumber)
-                province = user.province?.let { helperUserDetail.getProvinceName(it) } ?: "Province"
-                city = user.city ?: "City"
+                province = user.province?.let { helperUserDetail.getProvinceName(it).lowercase()?.replaceFirstChar(Char::titlecase) } ?: "Province"
+                city = user.city?.lowercase()?.replaceFirstChar(Char::titlecase) ?: "City"
                 user.gender?.let { setAvatar(it) }
 
                 if (user.isVerified == true) {

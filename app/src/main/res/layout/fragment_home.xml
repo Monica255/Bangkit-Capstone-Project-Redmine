@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Dimas Ari L."
+                tools:text="Dimas Ari L."
                 app:layout_constraintStart_toEndOf="@id/img_profile"
                 app:layout_constraintTop_toBottomOf="@id/tv_hello" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -157,6 +157,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/white" />
         </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
 
