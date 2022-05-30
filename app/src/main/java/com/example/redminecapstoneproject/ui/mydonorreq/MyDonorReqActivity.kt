@@ -35,6 +35,7 @@ class MyDonorReqActivity : AppCompatActivity() {
         myDonorReqViewModel.getMyDonorReq()
         myDonorReqViewModel.donorReq.observe(this){
             if(it!=null){
+                Log.d("EMPTY",it.toString())
                 setAdapter(it)
             }
         }
@@ -44,6 +45,7 @@ class MyDonorReqActivity : AppCompatActivity() {
         }
 
         myDonorReqViewModel.isLoading.observe(this){
+            Log.d("LOADING",it.toString())
             showLoading(it)
         }
 
@@ -53,10 +55,10 @@ class MyDonorReqActivity : AppCompatActivity() {
 
         if(show){
             binding.ltJavrvis.visibility= View.VISIBLE
-            binding.rvBloodDonors.visibility= View.GONE
+            binding.rvMyDonorReq.visibility= View.GONE
         }else{
             binding.ltJavrvis.visibility= View.GONE
-            binding.rvBloodDonors.visibility= View.VISIBLE
+            binding.rvMyDonorReq.visibility= View.VISIBLE
         }
     }
 
@@ -70,28 +72,36 @@ class MyDonorReqActivity : AppCompatActivity() {
         return destination
     }
     private fun setAdapter(list:List<DonorRequest>){
-        val layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        binding.rvBloodDonors.layoutManager = layoutManager
+        if (list.isEmpty()) {
+            binding.ltNoDataDonorReq.visibility = View.VISIBLE
+            binding.rvMyDonorReq.visibility = View.GONE
+        } else {
+            binding.ltNoDataDonorReq.visibility = View.GONE
+            binding.rvMyDonorReq.visibility = View.VISIBLE
+        }
+            val layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        binding.rvBloodDonors.adapter=null
-        Log.d("TESS",reverseListOrder(list.toMutableList()).toString())
-        val mAdaper= DonorReqAdapter(reverseListOrder(list.toMutableList()))
-        binding.rvBloodDonors.adapter=mAdaper
+            binding.rvMyDonorReq.layoutManager = layoutManager
 
-        mAdaper.setOnItemClickCallback(object : DonorReqAdapter.OnItemClickCallback{
-            override fun onItemClicked(data: DonorRequest) {
+            binding.rvMyDonorReq.adapter = null
+            Log.d("TESS", reverseListOrder(list.toMutableList()).toString())
+            val mAdaper = DonorReqAdapter(reverseListOrder(list.toMutableList()))
+            binding.rvMyDonorReq.adapter = mAdaper
 
-                var intent= Intent(this@MyDonorReqActivity,CreateDonorReqActivity::class.java)
-                intent.putExtra(CreateDonorReqActivity.EXTRA_DONOR_REQ,data)
-                startActivity(intent)
+            mAdaper.setOnItemClickCallback(object : DonorReqAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: DonorRequest) {
 
-            }
+                    var intent = Intent(this@MyDonorReqActivity, CreateDonorReqActivity::class.java)
+                    intent.putExtra(CreateDonorReqActivity.EXTRA_DONOR_REQ, data)
+                    startActivity(intent)
 
-        })
+                }
 
-    }
+            })
+        }
+
 
 
 }

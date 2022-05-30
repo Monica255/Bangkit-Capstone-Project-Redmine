@@ -127,6 +127,7 @@
     <string name="about">About Redmine</string>
     <string name="sign_out">Sign Out</string>
 
+
     <!-- user detail -->
     <string name="user_detail">User Detail</string>
     <string name="save">Save</string>
@@ -151,6 +152,7 @@
 
     <!--blood donor details-->
     <string name="note">Only people with verified accounts will be shown in the list of blood donors. We only show you Standby Donors, who are eligible to donate their blood. However, it is possible that the data has not been updated. So please contact them to confirm their availability and eligibility.</string>
+    <string name="blood_donor">Blood Donor</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -194,4 +196,13 @@
 
     <!--my donor req-->
     <string name="delete">Delete</string>
+
+    <!--webview-->
+    <string name="load_web_success">Website loaded successfully</string>
+    <string name="load_web">Loading website...</string>
+    <string name="web_url">https://www.redcrossblood.org/donate-blood/how-to-donate/eligibility-requirements.html</string>
+
+    <!--faq-->
+    <string name="faq">Frequently Asked Questions</string>
+
 </resources>

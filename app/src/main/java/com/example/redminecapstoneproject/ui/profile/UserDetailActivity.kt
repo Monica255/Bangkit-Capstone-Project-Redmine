@@ -174,13 +174,20 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
         binding.btBack.setOnClickListener {
-            if (userDetailViewModel.isDataDifferent()) {
-                showConfirmDialog("back", userDetailViewModel)
-            } else onBackPressed()
-            //finish()
+            onBackPressed()
         }
 
 
+    }
+
+    override fun onBackPressed() {
+        val userDetailViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[UserDetailViewModel::class.java]
+        if (userDetailViewModel.isDataDifferent()) {
+            showConfirmDialog("back", userDetailViewModel)
+        } else super.onBackPressed()
     }
 
 
@@ -367,7 +374,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             } else if (x == "back") {
                 resetTemptData(vm)
                 setButtonSaveEnable(false)
-                onBackPressed()
+                super.onBackPressed()
             } else {
                 val userDetailViewModel = ViewModelProvider(
                     this,
@@ -399,6 +406,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     private fun resetTemptData(vm: UserDetailViewModel) {
+        vm.searchCityQuery=null
+        vm.searchProvinceQuery=null
         vm.userData.value?.let {
             vm._newUserData.value = newUserData(it)
             Log.d("TAG", "renew ud " + vm._newUserData.value)

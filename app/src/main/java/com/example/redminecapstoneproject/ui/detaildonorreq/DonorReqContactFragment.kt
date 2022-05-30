@@ -30,6 +30,8 @@ class DonorReqContactFragment : Fragment() {
                 ViewModelProvider(requireActivity())[DetailDonorReqViewModel::class.java]
 
             val phoneNumber = detailDonorReqViewModel.phoneNumber
+            binding.tvDonorReqPhoneNumber.text=phoneNumber
+
 
             binding.btCopy.setOnClickListener {
                 phoneNumber?.let { it1 -> copyToClipBoard(it1) }

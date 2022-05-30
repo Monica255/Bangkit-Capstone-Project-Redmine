@@ -16,6 +16,9 @@ import com.google.android.material.navigation.NavigationBarView
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    lateinit var state:String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -27,24 +30,34 @@ class HomeActivity : AppCompatActivity() {
         binding.navigation.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
-                    try{
+                    Log.d("STATE","home click from "+state)
+                    if(state== FAQ){
+                        navController.navigate(R.id.action_faqFragment_to_homeFragment)
+                    }else if(state== PROFILE) {
                         navController.navigate(R.id.action_profileFragment_to_homeFragment)
-                        Log.d("TAG", "ha " + navController.currentDestination?.id.toString())
-                    }catch (e:Exception){
-                        Log.e("ERROR","Already in destination")
                     }
-
-
+                    Log.d("STATE","now state is "+state)
                     return@OnItemSelectedListener true
                 }
                 R.id.menu_profile -> {
-                    try {
+                    Log.d("STATE","profile click from "+state)
+                    if(state== HOME){
                         navController.navigate(R.id.action_homeFragment_to_profileFragment)
-                        Log.d("TAG", navController.currentDestination?.id.toString())
-                    }catch (e:java.lang.Exception){
-                        Log.e("ERROR","Already in destination")
+                    }else if(state== FAQ) {
+                        navController.navigate(R.id.action_faqFragment_to_profileFragment)
                     }
+                    Log.d("STATE","now state is "+state)
+                    return@OnItemSelectedListener true
+                }
 
+                R.id.menu_faq -> {
+                    Log.d("STATE","faq click from "+state)
+                    if(state== HOME){
+                        navController.navigate(R.id.action_homeFragment_to_faqFragment)
+                    }else if(state== PROFILE) {
+                        navController.navigate(R.id.action_profileFragment_to_faqFragment)
+                    }
+                    Log.d("STATE","now state is "+state)
                     return@OnItemSelectedListener true
                 }
             }
@@ -52,6 +65,11 @@ class HomeActivity : AppCompatActivity() {
         })
 
 
+    }
+    companion object{
+        const val HOME="home"
+        const val PROFILE="profile"
+        const val FAQ="faq"
     }
 
 

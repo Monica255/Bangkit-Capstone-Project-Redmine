@@ -11,19 +11,19 @@ object helperBloodDonors {
     fun toValidBloodDonorsList(
         accData: ArrayList<TempAccountData>,
         donorData: ArrayList<TempDonorData>,
-        currentUid:String
+        currentUid: String
     ): List<BloodDonors> {
         var counter = 0
         val mList = ArrayList<BloodDonors>()
         for (item in accData) {
             second@ for (item2 in donorData) {
-                if (item2.uid == item.uid && item2.haveDonated == false && item2.hadCovid == false&&item.uid!=currentUid) {
+                if (item2.uid == item.uid && item2.haveDonated == false && item2.hadCovid == false && item.uid != currentUid) {
                     val data = BloodDonors(
                         uid = item.uid,
                         name = item.name,
                         province = item2.province,
-                        city=item2.city,
-                        gender=item2.gender,
+                        city = item2.city,
+                        gender = item2.gender,
                         bloodType = item2.bloodType,
                         rhesus = item2.rhesus,
                         phoneNumber = item2.phoneNumber
@@ -50,17 +50,25 @@ object helperBloodDonors {
         } else data
     }
 
-    fun toBloodType(bloodType:String?,rhesus:String?):String{
-        var mRhesus:String=""
-        if(bloodType!=null&&rhesus!=null){
-            mRhesus= if(rhesus=="positive")"+" else if(rhesus=="negative") "-" else ""
+    fun toBloodType(bloodType: String?, rhesus: String?): String {
+        var mRhesus: String = ""
+        if (bloodType != null && rhesus != null) {
+            mRhesus = if (rhesus == "positive") "+" else if (rhesus == "negative") "-" else ""
         }
-        return "$bloodType$mRhesus"
+        return "$bloodType$mRhesus".uppercase()
     }
 
-    fun toDonorReqId(uid:String,timeStamp:String):String{
-        var x=timeStamp.replace("-","_")
+    fun toDonorReqId(uid: String, timeStamp: String): String {
+        var x = timeStamp.replace("-", "_")
         return "$uid$x"
+    }
+
+    fun toBagsFormat(bag: Int): String {
+        return if (bag == 1) {
+            "$bag bag"
+        } else {
+            "$bag bags"
+        }
     }
 
 }

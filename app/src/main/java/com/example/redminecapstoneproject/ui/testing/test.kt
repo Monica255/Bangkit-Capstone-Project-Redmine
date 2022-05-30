@@ -149,3 +149,12 @@ data class City(
     @SerializedName("nama_kota")
     val cityName:String
 )
+
+@Entity
+data class Faq(
+    @PrimaryKey
+    val faq_id:String="",
+    val question:String="",
+    val answer:String="",
+    var expand:Boolean=false
+)

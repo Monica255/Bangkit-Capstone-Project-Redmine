@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.redminecapstoneproject.repository.Repository
 
 class BloodDonationViewModel(private val provideRepository: Repository) :ViewModel() {
-    fun getDonorReqFive()=provideRepository.getDonorReqFive()
+    fun getDonorReq()=provideRepository.getDonorReq()
 
     val donorReq=provideRepository.donorReq
 

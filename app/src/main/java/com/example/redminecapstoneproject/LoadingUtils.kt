@@ -1,10 +1,12 @@
 package com.example.redminecapstoneproject
 
 import android.content.Context
+import android.os.Bundle
 
 open class LoadingUtils {
     companion object {
         private var jarvisLoader: LoaderJarvis? = null
+        
         fun showDialog(
             context: Context?,
             isCancelable: Boolean

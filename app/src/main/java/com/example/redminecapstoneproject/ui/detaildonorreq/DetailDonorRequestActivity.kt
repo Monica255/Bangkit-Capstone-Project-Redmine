@@ -37,7 +37,11 @@ class DetailDonorRequestActivity : AppCompatActivity() {
         binding.apply {
             tvPostTime.text = data.time?.let { helperDate.toPostTime(it, baseContext) }
             tvDonorReqPatientName.text = data.patientName
-            tvDonorReqBloodBagNeeded.text = data.numberOfBloodBag.toString()
+            tvDonorReqBloodBagNeeded.text = data.numberOfBloodBag?.let {
+                helperBloodDonors.toBagsFormat(
+                    it
+                )
+            }
             tvLocation.text = helperBloodDonors.toLocation(
                 data.city?.lowercase()
                     ?.replaceFirstChar(Char::titlecase),

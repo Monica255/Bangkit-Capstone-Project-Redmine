@@ -20,6 +20,7 @@ import com.example.redminecapstoneproject.adapter.AlertDialogAdapter
 import com.example.redminecapstoneproject.helper.helperUserDetail
 import com.example.redminecapstoneproject.ui.blooddonation.BloodDonationViewModel
 import com.example.redminecapstoneproject.ui.blooddonation.BloodDonorsActivity
+import com.example.redminecapstoneproject.ui.blooddonation.DonorRequestActivity
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqViewModel
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
@@ -374,6 +375,9 @@ class CustomDialogFragment() : DialogFragment() {
                             createDonorReqViewModel.donorReq.city = data.cityName
                         }
                         is BloodDonorsActivity -> {
+                            bloodDonationViewModel.filterCity.value = data.cityName
+                        }
+                        is DonorRequestActivity -> {
                             bloodDonationViewModel.filterCity.value = data.cityName
                         }
                     }

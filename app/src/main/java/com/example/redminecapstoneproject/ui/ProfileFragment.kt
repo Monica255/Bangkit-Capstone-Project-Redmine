@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -31,6 +32,13 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
     private var userAccountData: RegisAccountDataRoom? = null
     private var userDonorData: DonorDataRoom? = null
 
+    override fun onStart() {
+        super.onStart()
+        if(isAdded){
+            val activity= activity as HomeActivity
+            activity.state=HomeActivity.PROFILE
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,7 +55,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
 
         loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
             if (fu == null) {
-                if(isAdded)startActivity(intent)
+                if (isAdded) startActivity(intent)
             }
         }
 
@@ -55,30 +63,34 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
             if (it != null) {
                 userDonorData = it
                 Log.d("TAG", userDonorData.toString())
-                if(activity!=null)setData(userDonorData,requireActivity())
+                if (activity != null) setData(userDonorData, requireActivity())
 
             }
         }
 
         //userAccountData = loginSignupViewModel.userAccountData.value!!
-        if(isAdded){ setData(userDonorData, requireActivity()) }
+        if (isAdded) {
+            setData(userDonorData, requireActivity())
+        }
 
 
         loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) {
             if (it != null) {
                 val data =
-                    RegisAccountDataRoom(it.uid, it.isVerified,it.name, it.email,it.otpCode)
+                    RegisAccountDataRoom(it.uid, it.isVerified, it.name, it.email, it.otpCode)
                 userAccountData = data
-                if(isAdded){ setData(userAccountData, requireActivity()) }
+                if (isAdded) {
+                    setData(userAccountData, requireActivity())
+                }
             }
 
         }
     }
 
     @SuppressLint("StringFormatMatches")
-    private fun setData(data: Any?,c:Context) {
+    private fun setData(data: Any?, c: Context) {
         Log.d("TAG", data.toString())
-        if(data!=null){
+        if (data != null) {
             when (data) {
                 is RegisAccountDataRoom -> {
                     binding.tvName.text = (data.name).toString()
@@ -87,8 +99,9 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
                 }
                 is DonorDataRoom -> {
                     data.gender?.let { setAvatar(it) }
-                    val mLastBloodDOnation=if (data.lastDonateDate != null) helperDate.stringToDate(data.lastDonateDate!!) else null
-                    if (mLastBloodDOnation!= null) {
+                    val mLastBloodDOnation =
+                        if (data.lastDonateDate != null) helperDate.stringToDate(data.lastDonateDate!!) else null
+                    if (mLastBloodDOnation != null) {
                         binding.lastBloodDonation.text = getString(
                             R.string.date_format,
                             mLastBloodDOnation.month,
@@ -111,13 +124,16 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
                         if ((data.isVerified)) c.resources.getString(R.string.verified_account) else getString(
                             R.string.unverified_account
                         )
-                    binding.tvBloodType.text=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
+                    binding.tvBloodType.text =
+                        helperBloodDonors.toBloodType(data.bloodType, data.rhesus)
                 }
             }
         }
     }
+
     private fun setAvatar(data: String) {
-        val x: Int =if(data=="male")R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female
+        val x: Int =
+            if (data == "male") R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female
         Glide.with(this)
             .load(x)
             .placeholder(R.drawable.placeholder)
@@ -156,9 +172,26 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         }
 
         binding.cvSignOut.setOnClickListener {
-            loginSignupViewModel.signOut()
+            showConfirmDialog(loginSignupViewModel)
         }
 
+    }
+
+    private fun showConfirmDialog(vm: LoginSignupViewModel) {
+        val builder = AlertDialog.Builder(requireActivity())
+        val mConfirmDialog = builder.create()
+        builder.setTitle(getString(R.string.sign_out))
+        builder.setMessage("Are you sure you want to sign out?")
+        builder.create()
+
+        builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
+            vm.signOut()
+        }
+
+        builder.setNegativeButton(getString(R.string.no)) { _, _ ->
+            mConfirmDialog.cancel()
+        }
+        builder.show()
     }
 
 
@@ -167,8 +200,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     companion object {

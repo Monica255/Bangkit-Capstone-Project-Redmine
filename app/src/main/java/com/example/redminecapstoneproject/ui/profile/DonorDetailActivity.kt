@@ -192,15 +192,24 @@ class DonorDetailActivity : AppCompatActivity() {
 
 
         binding.btBack.setOnClickListener {
-            if (userDetailViewModel.isDataDifferent()) {
-                showConfirmDialog("back", userDetailViewModel)
-            } else onBackPressed()
-            //finish()
+            Log.d("LOADING","btn back")
+            onBackPressed()
         }
 
         binding.btSave.setOnClickListener {
             showConfirmDialog("save", userDetailViewModel)
         }
+    }
+
+    override fun onBackPressed() {
+        Log.d("LOADING","back back")
+        val userDetailViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[UserDetailViewModel::class.java]
+        if (userDetailViewModel.isDataDifferent()) {
+            showConfirmDialog("back", userDetailViewModel)
+        } else super.onBackPressed()
     }
 
     private fun showConfirmDialog(x: String, vm: UserDetailViewModel) {
@@ -228,7 +237,7 @@ class DonorDetailActivity : AppCompatActivity() {
                     setData(it)
                 }
                 setButtonSaveEnable(false)
-                onBackPressed()
+                super.onBackPressed()
             } else {
                 val userDetailViewModel = ViewModelProvider(
                     this,

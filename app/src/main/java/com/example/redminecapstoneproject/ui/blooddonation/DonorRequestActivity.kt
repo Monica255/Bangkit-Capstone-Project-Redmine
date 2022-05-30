@@ -4,38 +4,60 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.adapter.HorizontalDonorReqAdapter
-import com.example.redminecapstoneproject.databinding.ActivityBloodDonationBinding
+import com.example.redminecapstoneproject.adapter.VerticalDonorReqAdapter
+import com.example.redminecapstoneproject.databinding.ActivityDonorRequestBinding
 import com.example.redminecapstoneproject.helper.helperBloodDonors
 import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.ui.DonationEventsActivity
+import com.example.redminecapstoneproject.helper.helperUserDetail
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 import com.example.redminecapstoneproject.ui.detaildonorreq.DetailDonorRequestActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
 import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
+import com.example.redminecapstoneproject.ui.profile.UserDetailViewModel
+import com.example.redminecapstoneproject.ui.testing.BloodDonors
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
 import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
 
-class BloodDonationActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityBloodDonationBinding
+class DonorRequestActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityDonorRequestBinding
     private lateinit var province: String
+    private lateinit var city: String
+    private var arg = Bundle()
+
+    private fun newDialog(title: String): CustomDialogFragment {
+        val dialog = CustomDialogFragment()
+        dialog.show(supportFragmentManager, "mDialog")
+        arg.putString("title", title)
+        dialog.arguments
+        dialog.arguments = arg
+        return dialog
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityBloodDonationBinding.inflate(layoutInflater)
+        binding = ActivityDonorRequestBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         val loginSignupViewModel = ViewModelProvider(
             this,
             RepoViewModelFactory.getInstance(this)
         )[LoginSignupViewModel::class.java]
+
+        val userDetailViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[UserDetailViewModel::class.java]
+
 
         val bloodDonationViewModel = ViewModelProvider(
             this,
@@ -43,41 +65,43 @@ class BloodDonationActivity : AppCompatActivity() {
         )[BloodDonationViewModel::class.java]
 
 
-        binding.cvDonorDetail.setOnClickListener {
-            startActivity(Intent(this, DonorDetailActivity::class.java))
-        }
-
-
-        binding.btBloodDonationEvents.setOnClickListener {
-            startActivity(Intent(this, DonationEventsActivity::class.java))
-        }
-
-        binding.btBloodDonorReq.setOnClickListener {
-            startActivity(Intent(this, DonorRequestActivity::class.java))
-        }
-
-        binding.btBack.setOnClickListener {
-            finish()
-        }
-
-        binding.btBloodDonorReq.setOnClickListener {
-            val intent = Intent(this, DonorRequestActivity::class.java)
-            startActivity(intent)
-        }
 
         loginSignupViewModel.getUserDonorDataDb().observe(this) {
             province = it.province.toString()
+            city = it.city.toString()
+            binding.btFilter.text = city?.lowercase()?.replaceFirstChar(Char::titlecase)
+            userDetailViewModel.getCities(
+                helperUserDetail.getProvinceID(province)
+            )
             setData(it)
+            Log.d("LOADING", "yy " + it.toString())
 
             bloodDonationViewModel.getDonorReq()
             bloodDonationViewModel.donorReq.observe(this) { it2 ->
                 if (it2 != null) {
-                    setAdapterDonorReq(it2)
+                    //setAdapter(it2)
+                    Log.d("LOADING", "xx " + it2.toString())
+                    bloodDonationViewModel.filterCity.value = city
+                    //bloodDonationViewModel.filterProvince=province
+                    bloodDonationViewModel.filterCity.observe(this) { it ->
+                        setAdapter(filterList(it, it2))
+                    }
                 }
             }
         }
 
 
+        binding.cvDonorDetail.setOnClickListener {
+            startActivity(Intent(this, DonorDetailActivity::class.java))
+        }
+
+        binding.btFilter.setOnClickListener {
+            newDialog(CustomDialogFragment.FILTER_BY_CITY)
+        }
+
+        binding.btBack.setOnClickListener {
+            finish()
+        }
 
         bloodDonationViewModel.isLoading.observe(this) {
             showLoading(it)
@@ -85,52 +109,55 @@ class BloodDonationActivity : AppCompatActivity() {
 
     }
 
-
     private fun showLoading(show: Boolean) {
 
         if (show) {
-            binding.lazyLoading.visibility = View.VISIBLE
-            binding.content.visibility = View.GONE
+            binding.ltJavrvis.visibility = View.VISIBLE
+            binding.rvDonorReq.visibility = View.GONE
         } else {
-            binding.lazyLoading.visibility = View.GONE
-            binding.content.visibility = View.VISIBLE
+            binding.ltJavrvis.visibility = View.GONE
+            binding.rvDonorReq.visibility = View.VISIBLE
         }
     }
 
-    private fun setAdapterDonorReq(list: List<DonorRequest>) {
-        var s = ArrayList<DonorRequest>()
-        var counter = 0
-        first@ for (i in list) {
-            if (i.province == province) {
-                s.add(i)
-                counter++
+
+    fun filterList(filterCity: String, list: List<DonorRequest>): List<DonorRequest> {
+        var x = ArrayList<DonorRequest>()
+        for (i in list) {
+            if (i.city == filterCity) {
+                x.add(i)
             }
-            if (counter == 5) break@first
         }
-        if (s.isEmpty()) {
-            binding.ltNoDataDonorReq.visibility = View.VISIBLE
-            binding.rvHorizontalDonorRequest.alpha = 0F
+        return x
+    }
+
+    private fun setAdapter(list: List<DonorRequest>) {
+
+        if (list.isEmpty()) {
+            binding.ltNoData.visibility = View.VISIBLE
+            binding.rvDonorReq.visibility = View.GONE
         } else {
-            binding.ltNoDataDonorReq.visibility = View.GONE
-            binding.rvHorizontalDonorRequest.alpha = 1F
+            binding.ltNoData.visibility = View.GONE
+            binding.rvDonorReq.visibility = View.VISIBLE
         }
         val layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvHorizontalDonorRequest.layoutManager = layoutManager
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val mAdapter = HorizontalDonorReqAdapter(s)
-        binding.rvHorizontalDonorRequest.adapter = mAdapter
+        binding.rvDonorReq.layoutManager = layoutManager
+        binding.rvDonorReq.adapter = null
+        val mAdaper = VerticalDonorReqAdapter(list)
+        binding.rvDonorReq.adapter = mAdaper
 
-        mAdapter.setOnItemClickCallback(object : HorizontalDonorReqAdapter.OnItemClickCallback {
+        mAdaper.setOnItemClickCallback(object : VerticalDonorReqAdapter.OnItemClickCallback {
             override fun onItemClicked(data: DonorRequest) {
                 if (data.uid == FirebaseAuth.getInstance().currentUser?.uid) {
                     val intent =
-                        Intent(this@BloodDonationActivity, CreateDonorReqActivity::class.java)
+                        Intent(this@DonorRequestActivity, CreateDonorReqActivity::class.java)
                     intent.putExtra(CreateDonorReqActivity.EXTRA_DONOR_REQ, data)
                     startActivity(intent)
                 } else {
                     val intent = Intent(
-                        this@BloodDonationActivity,
+                        this@DonorRequestActivity,
                         DetailDonorRequestActivity::class.java
                     )
                     intent.putExtra(DetailDonorRequestActivity.EXTRA_DONOR_REQ, data)
@@ -177,5 +204,6 @@ class BloodDonationActivity : AppCompatActivity() {
             binding.tvBloodType.text = helperBloodDonors.toBloodType(data.bloodType, data.rhesus)
         }
     }
+
 
 }

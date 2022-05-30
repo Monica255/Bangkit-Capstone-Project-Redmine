@@ -25,6 +25,14 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var userAccountData: RegisAccountDataRoom? = null
 
+    override fun onStart() {
+        super.onStart()
+        if(isAdded){
+            val activity= activity as HomeActivity
+            activity.state=HomeActivity.HOME
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

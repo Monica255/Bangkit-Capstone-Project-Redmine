@@ -18,11 +18,11 @@ import com.example.redminecapstoneproject.ui.testing.BloodDonors
 import com.google.firebase.auth.FirebaseAuth
 
 class BloodDonorsActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityBloodDonorsBinding
-    private lateinit var listValidDOnors:List<BloodDonors>
-    private lateinit var province:String
-    private lateinit var city:String
-    private var arg=Bundle()
+    private lateinit var binding: ActivityBloodDonorsBinding
+    private lateinit var listValidDOnors: List<BloodDonors>
+    private lateinit var province: String
+    private lateinit var city: String
+    private var arg = Bundle()
 
     private fun newDialog(title: String): CustomDialogFragment {
         val dialog = CustomDialogFragment()
@@ -35,7 +35,7 @@ class BloodDonorsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityBloodDonorsBinding.inflate(layoutInflater)
+        binding = ActivityBloodDonorsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val bloodDonationViewModel = ViewModelProvider(
             this,
@@ -49,27 +49,28 @@ class BloodDonorsActivity : AppCompatActivity() {
 
         bloodDonationViewModel.getAllVerifiedUsers()
         bloodDonationViewModel.getAllVerifiedDonorDataUsers()
-        province= intent.getStringExtra(EXTRA_PROVINCE).toString()
-        city= intent.getStringExtra(EXTRA_CITY).toString()
-        binding.btFilter.text=city?.lowercase()?.replaceFirstChar(Char::titlecase)
+        province = intent.getStringExtra(EXTRA_PROVINCE).toString()
+        city = intent.getStringExtra(EXTRA_CITY).toString()
+        binding.btFilter.text = city?.lowercase()?.replaceFirstChar(Char::titlecase)
 
         userDetailViewModel.getCities(
             helperUserDetail.getProvinceID(province)
         )
 
-        bloodDonationViewModel.validAccUsers.observe(this){value->
-            if(value!=null){
-                bloodDonationViewModel.validDonorDataUsers.observe(this){
-                    if(it!=null){
+        bloodDonationViewModel.validAccUsers.observe(this) { value ->
+            if (value != null) {
+                bloodDonationViewModel.validDonorDataUsers.observe(this) {
+                    if (it != null) {
                         FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
-                            listValidDOnors=helperBloodDonors.toValidBloodDonorsList(value,it,
+                            listValidDOnors = helperBloodDonors.toValidBloodDonorsList(
+                                value, it,
                                 it1
                             )
                         }
-                        bloodDonationViewModel.filterCity.value=city
-                        bloodDonationViewModel.filterProvince=province
-                        bloodDonationViewModel.filterCity.observe(this){
-                            setAdapter(filterList(it,listValidDOnors))
+                        bloodDonationViewModel.filterCity.value = city
+                        //bloodDonationViewModel.filterProvince=province
+                        bloodDonationViewModel.filterCity.observe(this) {
+                            setAdapter(filterList(it, listValidDOnors))
                         }
                     }
                 }
@@ -83,27 +84,27 @@ class BloodDonorsActivity : AppCompatActivity() {
             finish()
         }
 
-        bloodDonationViewModel.isLoading.observe(this){
+        bloodDonationViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
     }
 
-    private fun showLoading(show:Boolean){
+    private fun showLoading(show: Boolean) {
 
-        if(show){
-            binding.ltJavrvis.visibility= View.VISIBLE
-            binding.rvBloodDonors.visibility= View.GONE
-        }else{
-            binding.ltJavrvis.visibility= View.GONE
-            binding.rvBloodDonors.visibility= View.VISIBLE
+        if (show) {
+            binding.ltJavrvis.visibility = View.VISIBLE
+            binding.rvBloodDonors.visibility = View.GONE
+        } else {
+            binding.ltJavrvis.visibility = View.GONE
+            binding.rvBloodDonors.visibility = View.VISIBLE
         }
     }
 
-    fun filterList(filterCity:String,list:List<BloodDonors>):List<BloodDonors>{
-        var x=ArrayList<BloodDonors>()
-        for(i in list){
-            if(i.city==filterCity){
+    fun filterList(filterCity: String, list: List<BloodDonors>): List<BloodDonors> {
+        var x = ArrayList<BloodDonors>()
+        for (i in list) {
+            if (i.city == filterCity) {
                 x.add(i)
             }
         }
@@ -111,29 +112,37 @@ class BloodDonorsActivity : AppCompatActivity() {
     }
 
 
+    private fun setAdapter(list: List<BloodDonors>) {
 
-    private fun setAdapter(list:List<BloodDonors>){
-
+        if (list.isEmpty()) {
+            binding.ltNoData.visibility = View.VISIBLE
+            binding.rvBloodDonors.visibility = View.GONE
+        } else {
+            binding.ltNoData.visibility = View.GONE
+            binding.rvBloodDonors.visibility = View.VISIBLE
+        }
         val layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
         binding.rvBloodDonors.layoutManager = layoutManager
-        val mAdaper= BloodDonorsAdapter(list)
-        binding.rvBloodDonors.adapter=mAdaper
+        val mAdaper = BloodDonorsAdapter(list)
+        binding.rvBloodDonors.adapter = mAdaper
 
-        mAdaper.setOnItemClickCallback(object :BloodDonorsAdapter.OnItemClickCallback{
+        mAdaper.setOnItemClickCallback(object : BloodDonorsAdapter.OnItemClickCallback {
             override fun onItemClicked(data: BloodDonors) {
-                var intent=Intent(this@BloodDonorsActivity,BloodDonorDetailsActivity::class.java)
-                intent.putExtra(EXTRA_BLOOD_DONOR,data)
+                var intent =
+                    Intent(this@BloodDonorsActivity, BloodDonorDetailsActivity::class.java)
+                intent.putExtra(EXTRA_BLOOD_DONOR, data)
                 startActivity(intent)
             }
 
         })
 
+
     }
-    companion object{
-        const val EXTRA_PROVINCE="extra_province"
-        const val EXTRA_CITY="extra_city"
-        const val EXTRA_BLOOD_DONOR="extra_blood_donor"
+
+    companion object {
+        const val EXTRA_PROVINCE = "extra_province"
+        const val EXTRA_CITY = "extra_city"
+        const val EXTRA_BLOOD_DONOR = "extra_blood_donor"
     }
 }

@@ -5,9 +5,9 @@
         android:title="Home"
         android:icon="@drawable/icon_home"/>
     <item
-        android:id="@+id/menu_chat"
-        android:title="ChatBot"
-        android:icon="@drawable/icon_chat"/>
+        android:id="@+id/menu_faq"
+        android:title="FaQ"
+        android:icon="@drawable/icon_faq"/>
     <item
         android:id="@+id/menu_schedule"
         android:title="Schedule"

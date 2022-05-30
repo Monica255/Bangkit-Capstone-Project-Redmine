@@ -195,7 +195,7 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
         }
 
         loginSignupViewModel.isLoading.observe(requireActivity()){
-            showLoading(true)
+            showLoading(it)
         }
 
 

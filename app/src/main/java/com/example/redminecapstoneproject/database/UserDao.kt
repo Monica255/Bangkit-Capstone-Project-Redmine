@@ -3,6 +3,7 @@ package com.example.redminecapstoneproject.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.Faq
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 
 @Dao
@@ -25,10 +26,10 @@ interface UserDao {
     @Query("DELETE FROM DonorDataRoom WHERE uid= :uid")
     fun deleteDonorData(uid:String)
 
-    @Query("SELECT * FROM RegisAccountDataRoom WHERE uid= :uid")
-    fun getAccountData2(uid:String):RegisAccountDataRoom
+    @Query("SELECT * FROM faq")
+    fun getAllFaq():LiveData<List<Faq>>
 
-    @Query("SELECT * FROM DonorDataRoom WHERE uid= :uid")
-    fun getDonorData2(uid:String):DonorDataRoom
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertFaq(data:List<Faq>)
 
 }

@@ -4,4 +4,6 @@ import androidx.lifecycle.ViewModel
 
 class DetailDonorReqViewModel:ViewModel() {
     lateinit var phoneNumber:String
+
+
 }

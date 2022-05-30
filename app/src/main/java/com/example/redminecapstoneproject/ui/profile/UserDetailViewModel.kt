@@ -28,7 +28,6 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
 
     var _newAccountData = MutableLiveData<RegisAccountDataRoom>()
 
-    fun tes()=provideRepository.test()
 
     var temptLastDonateDate = provideRepository.getUserDonorDataDb().value?.lastDonateDate
     var temptRecoveryDate = provideRepository.getUserDonorDataDb().value?.recoveryDate
