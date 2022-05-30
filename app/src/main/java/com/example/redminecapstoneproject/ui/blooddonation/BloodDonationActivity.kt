@@ -85,7 +85,6 @@ class BloodDonationActivity : AppCompatActivity() {
 
     }
 
-
     private fun showLoading(show: Boolean) {
 
         if (show) {
