@@ -1,0 +1,46 @@
+Usability testing #1 Redmine App (May 30, 2022)
+Note: 
+remember that Redmine only shows data in your selected area. If there are no data, try changing it to Aceh, Aceh Timur.
+OTP code is 123456.
+•	Task 1: Register Account
+This is your first time using Redmine app, so you open Redmine app and try to register an account using email and password.
+
+•	Task 2: Edit User Detail
+Supposing you mistyped your name/phone number, you try to edit your data.
+
+•	Task 3: Edit Donor Detail
+Supposing you chose the wrong blood type/rhesus, you try to edit your data.
+
+•	Task 4: Read Frequently Asked Questions
+You are new to blood donation, so you try to inquire about it.
+
+•	Task 5: Make Donor Request
+You are in need of a blood donor for your significant other, so you make a donor request.
+
+•	Task 6: Contact Blood Donor
+You are in need of a blood donor for your significant other, so you look for people who are eligible for blood donation.
+
+•	Task 7: Contact People in Need of Blood Donors 
+Supposing you are eligible for donating blood, you look for people who are in need of blood donation.
+
+•	Task 8: Switch Account
+You try to log out and register again with your Google account.
+
+
+Bug found
+
+1: When login with invalid data, the loading animation is looped
+File: LoginFragment
+Status: Fixed
+2. When login with invalid data and toast is shown, then go to sign-up- fragment, toast is 
+File: SignupFragment
+shown again.
+Status: Fixed
+3. When sign-up with invalid data and toast is shown, then go to log-in- fragment, toast is shown again.
+File: LoginFragment
+4. Some fragments aren’t attached to an activity
+Status: Fixed
+5. Donor request list in blood donation activity is filtered by province meanwhile in blood donor request activity is filtered by city. 
+File: BloodDonationActivity & DonorRequestActivity
+Status: Fixed
+
