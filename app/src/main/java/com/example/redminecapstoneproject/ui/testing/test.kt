@@ -18,11 +18,14 @@ object test {
 
 
 }
-
+data class ResponseMsg(
+    var error: Boolean,
+    var message: String
+)
 data class ResponseVerification(
-    val gender:String,
-    val name:String,
-    val verified:Boolean
+    var gender: String,
+    var name: String,
+    var verified: Boolean
 )
 
 data class Verification(

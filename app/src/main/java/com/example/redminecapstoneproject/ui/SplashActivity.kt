@@ -39,7 +39,6 @@ class SplashActivity : AppCompatActivity() {
 
 
             loginSignupViewModel.firebaseUser.observe(this) { fu ->
-                Log.d("TAG", "it.toString()")
                 if (fu == null) {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
@@ -47,14 +46,9 @@ class SplashActivity : AppCompatActivity() {
                 } else {
 
                     loginSignupViewModel.getUserAccountDataDb().observe(this) { value ->
-                        //Log.d("TAG","sp1 "+value.toString())
                         if (value == null) {
-
-                            Log.d("TAG", "acc null")
                             loginSignupViewModel.setUserAccountData()
-
                         }else if(value.otpCode==null){
-                            Log.d("TAG","otp null")
                             intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent4)
                             //onDestroy()
@@ -91,11 +85,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        val loginSignupViewModel = ViewModelProvider(
-            this,
-            RepoViewModelFactory.getInstance(this)
-        )[LoginSignupViewModel::class.java]
-        Log.d("TAG","destroyed")
         startSplash?.cancel()
         super.onDestroy()
     }

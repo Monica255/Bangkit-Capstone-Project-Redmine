@@ -79,6 +79,9 @@
 
     <!-- blood donor request -->
     <string name="blood_donor_req">Blood Donor Request</string>
+    <string name="blood_type_compatible">Your blood type is compatible</string>
+    <string name="blood_type_not_compatible">Your blood type is not compatible</string>
+    <string name="blood_type_may_be_compatible">Your blood type may be compatible</string>
 
     <!-- donor request -->
     <string name="donor_req">Donor Request</string>
@@ -208,7 +211,7 @@
 
     <!--verify account-->
     <string name="input_picture">Please input yg ID card photo</string>
-    <string name="email_null">Can not verify account</string>
+    <string name="uid_null">Can not verify account</string>
     <string name="choose_picture">Choose picture</string>
 
 </resources>

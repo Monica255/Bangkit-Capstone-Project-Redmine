@@ -23,6 +23,9 @@ class CreateDonorReqViewModel(private val provideRepository: Repository) :ViewMo
     var accountData = provideRepository.getUserAccountDataDb()
     var donorData = provideRepository.getUserDonorDataDb()
 
+    val isLoading=provideRepository.isLoading
+
+
 
 
 }

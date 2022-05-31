@@ -12,11 +12,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 class Repository(
     private val userRoomDatabase: UserRoomDatabase,
@@ -26,6 +31,12 @@ class Repository(
     private var mAuth: FirebaseAuth? = null
     private var mDb: FirebaseDatabase? = null
     private var dbRef: DatabaseReference? = null
+    private var msg:Pair<Boolean,String>?=null
+    set(value) {
+        field=value
+            _message.value=value!!
+        Log.d("TES","set "+_message.value.toString())
+    }
 
     private val _message = MutableLiveData<Pair<Boolean, String>>()
     val message: LiveData<Pair<Boolean, String>> = _message
@@ -143,6 +154,8 @@ class Repository(
     }
 
     fun postDonorReq(data: DonorRequest, uid: String) {
+
+        _isLoading.value=true
         mDb?.getReference(REF_DONOR_REQ)
             ?.child(helperDate.getDonorReqRef(uid, data.timestamp))?.setValue(data)
             ?.addOnCompleteListener {
@@ -158,33 +171,44 @@ class Repository(
 
 
     fun requestVerification(data:Verification){
-        _isLoading.value = true
-        val api = ApiConfig.getApiServiceOCR().postIDCard(data.imagefile,data.uid)
-
-        api.enqueue(object : Callback<ResponseVerification> {
-            override fun onResponse(
-                call: Call<ResponseVerification>,
-                response: Response<ResponseVerification>
-            ) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        _responseVerification.value = responseBody!!
+        //var msg:Pair<Boolean,String>?=null
+        executorService.execute {
+            _isLoading.postValue(true)
+            val uid = data.uid.toRequestBody("text/plain".toMediaType())
+            Log.d("DD",data.toString())
+            val api = ApiConfig.getApiServiceOCR().postIDCard(data.imagefile,uid)
+            api.enqueue(object : Callback<ResponseVerification> {
+                override fun onResponse(
+                    call: Call<ResponseVerification>,
+                    response: Response<ResponseVerification>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        if (responseBody != null) {
+                            _responseVerification.postValue(responseBody!!)
+                        }
+                        msg=Pair(false,"Your account is now verified")
+                        Log.d("TES", msg.toString())
+                       // _message.postValue(Pair(false,"Your account is now verified"))
+                    } else {
+                        msg=Pair(true,"${ response.code()}: Failed to request account verification")
+                        //_message.postValue(Pair(true,"${ response.code()}: Failed to request account verification"))
                     }
-                    _message.value = Pair(false,"Your account is now verified")
+                    _isLoading.postValue(false)
 
-                } else {
-                    _message.value = Pair(true,"Failed to request account verification")
                 }
-                _isLoading.value = false
-            }
 
-            override fun onFailure(call: Call<ResponseVerification>, t: Throwable) {
-                _isLoading.value = false
-                _message.value = Pair(true,"Failed to request account verification")
-            }
+                override fun onFailure(call: Call<ResponseVerification>, t: Throwable) {
+                    _isLoading.postValue(false)
+                    msg=Pair(true,"Failed to request account verification")
+                    //_message.postValue(Pair(true,"Failed to request account verification"))
+                }
 
-        })
+            })
+        }
+        Log.d("TES",msg.toString())
+        if(msg!=null)_message.value=msg!!
+        Log.d("TES","2 "+_message.value.toString())
     }
 
     fun getProvinces() {

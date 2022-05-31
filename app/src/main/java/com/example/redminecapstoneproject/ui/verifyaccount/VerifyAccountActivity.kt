@@ -1,9 +1,11 @@
 package com.example.redminecapstoneproject.ui.verifyaccount
 
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,37 +13,50 @@ import android.os.Environment
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityVerifyAccountBinding
+import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
 import com.example.redminecapstoneproject.ui.testing.Verification
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import www.sanju.motiontoast.MotionToast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.coroutineScope as coroutineScope1
 
 class VerifyAccountActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityVerifyAccountBinding
+    private lateinit var binding: ActivityVerifyAccountBinding
     private var getFile: File? = null
-    private var uid:String?=null
+    private var uid: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding= ActivityVerifyAccountBinding.inflate(layoutInflater)
+        binding = ActivityVerifyAccountBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        val verifyAccountViewModel=ViewModelProvider(
-            this,RepoViewModelFactory.getInstance(this)
+        val verifyAccountViewModel = ViewModelProvider(
+            this, RepoViewModelFactory.getInstance(this)
         )[VerifyAccountViewModel::class.java]
 
 
         setContentView(binding.root)
 
-        uid=intent.getStringExtra(UID)
+        //uid=intent.getStringExtra(UID)
+
+        verifyAccountViewModel.getAccountData().observe(this) {
+            uid = it.uid
+        }
 
         binding.btBack.setOnClickListener {
             onBackPressed()
@@ -50,8 +65,88 @@ class VerifyAccountActivity : AppCompatActivity() {
         binding.btGallery.setOnClickListener {
             startGallery()
         }
+        binding.btVerifyAccount.setOnClickListener {
+            uploadImage()
+
+
+        }
+
+
+        verifyAccountViewModel.isLoading.observe(this) {
+            if (it) {
+                showLoading(true)
+                binding.btCamera.postDelayed({
+                    showLoading(false)
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }, 800)
+            }
+        }
+
+        /*verifyAccountViewModel.message.observe(this) {
+            makeToast(it.first, it.second)
+            if (!it.first) {
+                verifyAccountViewModel.responseVerification.observe(this) {
+                    var intent = Intent()
+                    //intent.putExtra(UserDetailActivity.NEW_NAME, it.name)
+                    //intent.putExtra(UserDetailActivity.NEW_GENDER, it.gender)
+                    setResult(Activity.RESULT_OK)
+                }
+                //finish()
+            } else {
+                reset()
+            }
+        }*/
 
     }
+
+    private fun reset() {
+        binding.imgPhoto.visibility = View.GONE
+        binding.imgPhoto.setImageDrawable(getDrawable(R.drawable.placeholder))
+        binding.ltJavrvis.visibility = View.VISIBLE
+        binding.btVerifyAccount.visibility = View.GONE
+        getFile = null
+    }
+
+    private fun showLoading(show: Boolean) {
+        if (show) {
+            LoadingUtils.showLoading(this, false)
+        } else {
+            LoadingUtils.hideLoading()
+        }
+    }
+
+    private fun makeToast(isError: Boolean, msg: String) {
+        if (isError) {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Ups",
+                msg,
+                MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    this,
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        } else {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Yey success 😍",
+                msg,
+                MotionToast.TOAST_SUCCESS,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    this,
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        }
+    }
+
+
     private val timeStamp: String = SimpleDateFormat(
         FILENAME_FORMAT,
         Locale.US
@@ -94,18 +189,23 @@ class VerifyAccountActivity : AppCompatActivity() {
             val myFile = uriToFile(selectedImg, this@VerifyAccountActivity)
             getFile = myFile
             binding.imgPhoto.setImageURI(selectedImg)
-            binding.ltJavrvis.visibility=View.GONE
-            binding.imgPhoto.visibility=View.VISIBLE
-            binding.btVerifyAccount.visibility=View.VISIBLE
+            binding.ltJavrvis.visibility = View.GONE
+            binding.imgPhoto.visibility = View.VISIBLE
+            binding.btVerifyAccount.visibility = View.VISIBLE
             //binding.etDes.requestFocus()
         }
     }
 
 
+    fun uploadImage() {
+        /*showLoading(true)
+        binding.btCamera.postDelayed({
+            showLoading(false)
+            finish()
+        },800)*/
 
-    private fun uploadImage() {
-        val verifyAccountViewModel=ViewModelProvider(
-            this,RepoViewModelFactory.getInstance(this)
+        val verifyAccountViewModel = ViewModelProvider(
+            this, RepoViewModelFactory.getInstance(this)
         )[VerifyAccountViewModel::class.java]
         when {
             getFile == null -> {
@@ -120,7 +220,7 @@ class VerifyAccountActivity : AppCompatActivity() {
             uid == null -> {
                 Toast.makeText(
                     this@VerifyAccountActivity,
-                    getString(R.string.email_null),
+                    getString(R.string.uid_null),
                     Toast.LENGTH_SHORT
                 ).show()
 
@@ -128,18 +228,21 @@ class VerifyAccountActivity : AppCompatActivity() {
             }
             else -> {
                 val file = getFile as File
-                val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val requestImageFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                    "photo",
+                    "imagefile",
                     file.name,
                     requestImageFile
                 )
+
+
                 verifyAccountViewModel.requestVerification(
                     Verification(
                         imageMultipart,
                         uid!!
                     )
                 )
+                //finish()
 
             }
         }
@@ -149,7 +252,7 @@ class VerifyAccountActivity : AppCompatActivity() {
 
 
     companion object {
-        const val UID=""
+        const val UID = ""
         const val FILENAME_FORMAT = "MMddyyyy"
     }
 

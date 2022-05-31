@@ -19,7 +19,7 @@ class DetailDonorRequestActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        donorReq = intent.getParcelableExtra<DonorRequest>(EXTRA_DONOR_REQ)
+        donorReq = intent.getParcelableExtra(EXTRA_DONOR_REQ)
 
         var detailDonorReqViewModel=ViewModelProvider(this)[DetailDonorReqViewModel::class.java]
         detailDonorReqViewModel.phoneNumber= donorReq?.phoneNumber.toString()
@@ -53,11 +53,16 @@ class DetailDonorRequestActivity : AppCompatActivity() {
             tvContactName.text = data.contactName
             tvDonorReqDes.text=data.description?:""
             tvBloodType.text = helperBloodDonors.toBloodType(data.bloodType, data.rhesus)
+
+            tvCompatibility.text=intent.getStringExtra(EXTRA_COMP)
+            tvCompatibility.setTextColor(intent.getIntExtra(EXTRA_COMP_COLOR,0))
         }
     }
 
     companion object {
         const val EXTRA_DONOR_REQ = "donor_request"
+        const val EXTRA_COMP="extra_comp"
+        const val EXTRA_COMP_COLOR="extra_comp_color"
     }
 
 }

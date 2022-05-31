@@ -8,15 +8,18 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.redminecapstoneproject.CustomDialogFragment
+import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityUserDetailBinding
@@ -66,13 +69,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
     private lateinit var accountData: RegisAccountDataRoom
-    private var isVerified:Boolean?=null
-    private var isVerified2:Boolean?=null
+    private var isVerified: Boolean? = null
+    private var isVerified2: Boolean? = null
 
     private val resultCOntract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
             if (result?.resultCode == Activity.RESULT_OK) {
-
+                LoadingUtils.showDialog2(this,true)
 
             }
         }
@@ -100,28 +103,29 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
 
         userDetailViewModel.userData.observe(this) {
-            if(isVerified!=it.isVerified && isVerified!=null){
+            if (isVerified != it.isVerified && isVerified != null) {
                 userDetailViewModel._newUserData.value = newUserData(it)
 
             }
-            isVerified=it.isVerified
+            isVerified = it.isVerified
 
             if (userDetailViewModel._newUserData.value == null) {
                 userDetailViewModel._newUserData.value = newUserData(it)
                 userDetailViewModel.getCities(
                     helperUserDetail.getProvinceID(it.province.toString())
-                )            }
+                )
+            }
             Log.d("TAG", userDetailViewModel._newUserData.value.toString())
             if (userDetailViewModel._newUserData.value != null) setData(it)
 
         }
 
         userDetailViewModel.accountData.observe(this) {
-            if(isVerified2!=it.isVerified && isVerified2!=null){
+            if (isVerified2 != it.isVerified && isVerified2 != null) {
                 userDetailViewModel._newAccountData.value = newAccountData(it)
 
             }
-            isVerified2=it.isVerified
+            isVerified2 = it.isVerified
             if (userDetailViewModel._newAccountData.value == null) {
                 userDetailViewModel._newAccountData.value = newAccountData(it)
                 //userDetailViewModel.tempAccountData = newAccountData(it)
@@ -139,9 +143,12 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             setButtonSaveEnable(userDetailViewModel.isDataDifferent())
         }
 
-        userDetailViewModel.message.observe(this) {
+        userDetailViewModel.message.observeForever(Observer {
             makeToast(it.first, it.second)
-        }
+        })
+
+
+
 
 
 
@@ -198,7 +205,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             if (userDetailViewModel.isDataDifferent()) {
                 showConfirmDialog("verify", userDetailViewModel)
             } else {
-                verifyAccount(userDetailViewModel.userData.value?.uid,userDetailViewModel.userData.value?.isVerified)
+                verifyAccount(
+                    userDetailViewModel.userData.value?.uid,
+                    userDetailViewModel.userData.value?.isVerified
+                )
             }
 
         }
@@ -206,12 +216,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     }
 
-    private fun verifyAccount(uid:String?=null,verified:Boolean?=null){
-        if(uid!=null && verified!= null && verified==false){
-            var intent=Intent(this,VerifyAccountActivity::class.java)
-            intent.putExtra(VerifyAccountActivity.UID,uid)
+
+    private fun verifyAccount(uid: String? = null, verified: Boolean? = null) {
+        if (uid != null && verified != null && verified == false) {
+            var intent = Intent(this, VerifyAccountActivity::class.java)
+            intent.putExtra(VerifyAccountActivity.UID, uid)
             resultCOntract.launch(intent)
-        }else{
+        } else {
             //make toast
         }
 
@@ -258,8 +269,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         if (user is DonorDataRoom) {
             binding.apply {
                 ilPhone.editText?.setText(user.phoneNumber)
-                province = helperUserDetail.toTitleCase(user.province?.let { helperUserDetail.getProvinceName(it)}) ?: "Province"
-                city = helperUserDetail.toTitleCase(user.city )?: "City"
+                province = helperUserDetail.toTitleCase(user.province?.let {
+                    helperUserDetail.getProvinceName(it)
+                }) ?: "Province"
+                city = helperUserDetail.toTitleCase(user.city) ?: "City"
                 user.gender?.let { setAvatar(it) }
 
                 if (user.isVerified == true) {
@@ -450,8 +463,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     private fun resetTemptData(vm: UserDetailViewModel) {
-        vm.searchCityQuery=null
-        vm.searchProvinceQuery=null
+        vm.searchCityQuery = null
+        vm.searchProvinceQuery = null
         vm.userData.value?.let {
             vm._newUserData.value = newUserData(it)
             Log.d("TAG", "renew ud " + vm._newUserData.value)
@@ -470,6 +483,19 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 "Ups",
                 msg,
                 MotionToast.TOAST_ERROR,
+                MotionToast.GRAVITY_BOTTOM,
+                MotionToast.SHORT_DURATION,
+                ResourcesCompat.getFont(
+                    this,
+                    www.sanju.motiontoast.R.font.helvetica_regular
+                )
+            )
+        } else if (msg.contains("request", true)) {
+            MotionToast.Companion.createColorToast(
+                this,
+                "Sent",
+                msg,
+                MotionToast.TOAST_INFO,
                 MotionToast.GRAVITY_BOTTOM,
                 MotionToast.SHORT_DURATION,
                 ResourcesCompat.getFont(
@@ -528,8 +554,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     }
 
-    companion object{
-        const val NEW_NAME="new_name"
-        const val NEW_GENDER="new_gender"
+    companion object {
+        const val NEW_NAME = "new_name"
+        const val NEW_GENDER = "new_gender"
     }
 }

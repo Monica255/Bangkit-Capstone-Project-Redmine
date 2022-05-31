@@ -5,9 +5,11 @@
     <color name="not_so_black">#464646</color>
     <color name="not_so_black_light">#99464646</color>
     <color name="blue">#92BDFF</color>
+    <color name="dark_blue">#4D74AF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_transparent">#00000000</color>
     <color name="grey">#F6F6F6</color>
     <color name="black">#FF000000</color>
     <color name="green">#74F689</color>
+    <color name="dark_green">#399F49</color>
 </resources>

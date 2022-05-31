@@ -1,5 +1,8 @@
 package com.example.redminecapstoneproject.helper
 
+import android.content.Context
+import android.content.res.Resources
+import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.ui.testing.*
 
 object helperBloodDonors {
@@ -69,6 +72,78 @@ object helperBloodDonors {
         } else {
             "$bag bags"
         }
+    }
+
+    fun setColor(x:String,c: Context):Int{
+        var s=0
+        if(x==c.resources.getString(R.string.blood_type_compatible)){
+            s=c.resources.getColor(R.color.dark_green)
+        }else if(x==c.resources.getString(R.string.blood_type_may_be_compatible)){
+            s=c.resources.getColor(R.color.dark_blue)
+        }else if(x==c.resources.getString(R.string.blood_type_not_compatible)){
+            s=c.resources.getColor(R.color.red)
+        }
+        return s
+    }
+
+    fun checkCompatibility(mBloodType: String, recipient: String, c: Context): String {
+        val mBloodType = mBloodType.trim().lowercase()
+        val recipient = recipient.trim().lowercase()
+        var compatibility = ""
+
+        if (mBloodType.contains("-") || mBloodType.contains("+")) {
+            when (mBloodType) {
+                "o-" -> compatibility = c.resources.getString(R.string.blood_type_compatible)
+
+                "o+" -> if (recipient == "o+" || recipient == "a+" || recipient == "b+" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "a-" -> if (recipient == "a-" || recipient == "a+" || recipient == "ab-" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "a+" -> if (recipient == "a+" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "b-" -> if (recipient == "b-" || recipient == "b+" || recipient == "ab-" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "b+" -> if (recipient == "b+" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "ab-" -> if (recipient == "ab-" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "ab+" -> if (recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+            }
+        } else {
+            when (mBloodType) {
+                "o" -> compatibility = c.resources.getString(R.string.blood_type_may_be_compatible)
+
+                "a" -> if (recipient == "a-" || recipient == "a+" || recipient == "ab-" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_may_be_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "b" -> if (recipient == "b-" || recipient == "b+" || recipient == "ab-" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_may_be_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+                "ab" -> if (recipient == "ab-" || recipient == "ab+") {
+                    compatibility = c.resources.getString(R.string.blood_type_may_be_compatible)
+                } else compatibility = c.resources.getString(R.string.blood_type_not_compatible)
+
+
+            }
+        }
+        return compatibility
+
     }
 
 }

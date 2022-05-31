@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/loading_login_signup" />
+        app:lottie_speed="2.5"
+        app:lottie_rawRes="@raw/loading_post" />
 
 </FrameLayout>

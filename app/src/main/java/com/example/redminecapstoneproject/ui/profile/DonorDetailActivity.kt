@@ -45,6 +45,7 @@ class DonorDetailActivity : AppCompatActivity() {
         )[UserDetailViewModel::class.java]
 
         userDetailViewModel.userData.observe(this) {
+            Log.d("TES","ud  "+it.toString())
             if(isVerified!=it.isVerified && isVerified!=null){
                 userDetailViewModel._newUserData.value = newUserData(it)
 
@@ -54,6 +55,7 @@ class DonorDetailActivity : AppCompatActivity() {
                 userDetailViewModel._newUserData.value = newUserData(it)
             }
             if (userDetailViewModel._newUserData.value != null) setData(it)
+            Log.d("TES","nud "+userDetailViewModel._newUserData.value .toString())
         }
 
         userDetailViewModel.message.observe(this) {
@@ -96,9 +98,9 @@ class DonorDetailActivity : AppCompatActivity() {
             userDetailViewModel.updateDonorDataRoom(
                 Pair(
                     when (i) {
-                        R.id.rb_positive -> "positive"
-                        R.id.rb_negative -> "negative"
-                        else -> "dont know"
+                        R.id.rb_positive -> resources.getString(R.string.positive).lowercase()
+                        R.id.rb_negative -> resources.getString(R.string.negative).lowercase()
+                        else -> resources.getString(R.string.dont_know).lowercase()
                     }, "rhesus"
                 )
             )

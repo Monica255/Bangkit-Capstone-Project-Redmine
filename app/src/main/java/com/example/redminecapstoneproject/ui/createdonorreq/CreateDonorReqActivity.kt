@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.CustomDialogFragment
+import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityCreateDonorReqBinding
@@ -104,10 +105,10 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
 
-        createDonorReqViewModel.message.observe(this){
+        /*createDonorReqViewModel.message.observe(this){
             makeToast(it.first,it.second)
         }
-
+*/
         binding.btBack.setOnClickListener {
             finish()
         }
@@ -123,9 +124,6 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
                         it1
                     )
                 }
-                Log.d("DONOR",createDonorReqViewModel.donorReq.toString())
-
-                finish()
             } else {
                 if (!isFieldsEmpty()) {
                     MotionToast.Companion.createColorToast(
@@ -158,6 +156,31 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             }
         }
 
+        createDonorReqViewModel.isLoading.observe(this){
+            if(it){
+                showLoading(true)
+            }else{
+                binding.btPost.postDelayed({
+                    createDonorReqViewModel.message.observe(this){
+                        makeToast(it.first,it.second)
+                        if(!it.first){
+                            showLoading(false)
+                            finish()
+                        }
+                    }
+                },1000)
+            }
+        }
+
+
+    }
+
+    private fun showLoading(show:Boolean){
+        if(show){
+            LoadingUtils.showLoading(this,false)
+        }else{
+            LoadingUtils.hideLoading()
+        }
     }
 
 

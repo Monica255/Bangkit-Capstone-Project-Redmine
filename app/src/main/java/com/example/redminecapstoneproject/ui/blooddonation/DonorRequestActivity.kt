@@ -32,6 +32,7 @@ class DonorRequestActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDonorRequestBinding
     private lateinit var province: String
     private lateinit var city: String
+    private lateinit var bloodType:String
     private var arg = Bundle()
 
     private fun newDialog(title: String): CustomDialogFragment {
@@ -69,6 +70,7 @@ class DonorRequestActivity : AppCompatActivity() {
         loginSignupViewModel.getUserDonorDataDb().observe(this) {
             province = it.province.toString()
             city = it.city.toString()
+            bloodType=helperBloodDonors.toBloodType(it.bloodType,it.rhesus)
             binding.btFilter.text = city?.lowercase()?.replaceFirstChar(Char::titlecase)
             userDetailViewModel.getCities(
                 helperUserDetail.getProvinceID(province)
@@ -84,7 +86,7 @@ class DonorRequestActivity : AppCompatActivity() {
                     bloodDonationViewModel.filterCity.value = city
                     //bloodDonationViewModel.filterProvince=province
                     bloodDonationViewModel.filterCity.observe(this) { it ->
-                        setAdapter(filterList(it, it2))
+                        setAdapter(filterList(it, it2),bloodType)
                     }
                 }
             }
@@ -131,7 +133,7 @@ class DonorRequestActivity : AppCompatActivity() {
         return x
     }
 
-    private fun setAdapter(list: List<DonorRequest>) {
+    private fun setAdapter(list: List<DonorRequest>,mBloodType:String) {
 
         if (list.isEmpty()) {
             binding.ltNoData.visibility = View.VISIBLE
@@ -145,7 +147,7 @@ class DonorRequestActivity : AppCompatActivity() {
 
         binding.rvDonorReq.layoutManager = layoutManager
         binding.rvDonorReq.adapter = null
-        val mAdaper = VerticalDonorReqAdapter(list)
+        val mAdaper = VerticalDonorReqAdapter(list,mBloodType)
         binding.rvDonorReq.adapter = mAdaper
 
         mAdaper.setOnItemClickCallback(object : VerticalDonorReqAdapter.OnItemClickCallback {
@@ -160,7 +162,12 @@ class DonorRequestActivity : AppCompatActivity() {
                         this@DonorRequestActivity,
                         DetailDonorRequestActivity::class.java
                     )
+                    val bt=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
+                    val comp=helperBloodDonors.checkCompatibility(mBloodType,bt,this@DonorRequestActivity)
+                    val compColor=helperBloodDonors.setColor(comp,this@DonorRequestActivity)
                     intent.putExtra(DetailDonorRequestActivity.EXTRA_DONOR_REQ, data)
+                    intent.putExtra(DetailDonorRequestActivity.EXTRA_COMP, comp)
+                    intent.putExtra(DetailDonorRequestActivity.EXTRA_COMP_COLOR, compColor)
                     startActivity(intent)
                 }
 
@@ -169,6 +176,7 @@ class DonorRequestActivity : AppCompatActivity() {
         })
 
     }
+
 
     @SuppressLint("StringFormatMatches")
     private fun setData(data: DonorDataRoom) {

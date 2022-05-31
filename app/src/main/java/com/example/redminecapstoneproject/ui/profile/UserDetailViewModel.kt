@@ -33,6 +33,7 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
     var temptRecoveryDate = provideRepository.getUserDonorDataDb().value?.recoveryDate
 
     val message= provideRepository.message
+
     val isLoading=provideRepository.isLoading
 
     init {

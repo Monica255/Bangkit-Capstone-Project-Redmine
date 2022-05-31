@@ -11,4 +11,5 @@ class MyDonorReqViewModel(private val provideRepository: Repository) :ViewModel(
 
     fun getMyDonorReq()=provideRepository.getMyDonoReq()
 
+    fun getDonorData()=provideRepository.getUserDonorDataDb()
 }

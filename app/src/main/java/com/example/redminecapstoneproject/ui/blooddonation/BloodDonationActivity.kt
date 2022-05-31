@@ -26,6 +26,7 @@ import java.time.LocalDate
 class BloodDonationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBloodDonationBinding
     private lateinit var province: String
+    private lateinit var mBloodType: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBloodDonationBinding.inflate(layoutInflater)
@@ -67,12 +68,13 @@ class BloodDonationActivity : AppCompatActivity() {
 
         loginSignupViewModel.getUserDonorDataDb().observe(this) {
             province = it.province.toString()
+            mBloodType=helperBloodDonors.toBloodType(it.bloodType,it.rhesus)
             setData(it)
 
             bloodDonationViewModel.getDonorReq()
             bloodDonationViewModel.donorReq.observe(this) { it2 ->
                 if (it2 != null) {
-                    setAdapterDonorReq(it2)
+                    setAdapterDonorReq(it2,mBloodType)
                 }
             }
         }
@@ -96,7 +98,7 @@ class BloodDonationActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAdapterDonorReq(list: List<DonorRequest>) {
+    private fun setAdapterDonorReq(list: List<DonorRequest>,mBloodType:String) {
         var s = ArrayList<DonorRequest>()
         var counter = 0
         first@ for (i in list) {
@@ -132,7 +134,12 @@ class BloodDonationActivity : AppCompatActivity() {
                         this@BloodDonationActivity,
                         DetailDonorRequestActivity::class.java
                     )
+                    val bt=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
+                    val comp=helperBloodDonors.checkCompatibility(mBloodType,bt,this@BloodDonationActivity)
+                    val compColor=helperBloodDonors.setColor(comp,this@BloodDonationActivity)
                     intent.putExtra(DetailDonorRequestActivity.EXTRA_DONOR_REQ, data)
+                    intent.putExtra(DetailDonorRequestActivity.EXTRA_COMP, comp)
+                    intent.putExtra(DetailDonorRequestActivity.EXTRA_COMP_COLOR, compColor)
                     startActivity(intent)
                 }
 
