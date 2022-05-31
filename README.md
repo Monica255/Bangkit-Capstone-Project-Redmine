@@ -1,6 +1,6 @@
 # MACHINE-LEARNING
 
-Machine Learning part in this project is to create an OCR for KTP(Id card)'s verification and automation email to user
+Machine Learning part in this project is to create an OCR for KTP(Id card)'s verification, automation email to user and create REST-API for our model
 
 ## OCR KTP(Id Card)
 
@@ -11,4 +11,6 @@ OCR stands for **Optical Character Recognition** or **Optical Character Reader**
 ## Automation Email
 
 We create an automation email for users that just create their account, we will send an OTP code automatically to their email to informed their OTP code, therefore users abble to create their account successfully
+
+## Create REST-API for ocr model
 
