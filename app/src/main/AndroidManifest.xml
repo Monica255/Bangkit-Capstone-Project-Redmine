@@ -15,6 +15,9 @@
         android:theme="@style/Theme.RedmineCapstoneProject"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.verifyaccount.VerifyAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.WebViewActivity"
             android:exported="false" />
         <activity

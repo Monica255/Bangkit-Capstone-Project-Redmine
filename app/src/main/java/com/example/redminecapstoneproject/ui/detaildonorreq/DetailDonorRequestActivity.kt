@@ -43,12 +43,11 @@ class DetailDonorRequestActivity : AppCompatActivity() {
                 )
             }
             tvLocation.text = helperBloodDonors.toLocation(
-                data.city?.lowercase()
-                    ?.replaceFirstChar(Char::titlecase),
-                data.province?.let {
-                    helperUserDetail.getProvinceName(it)?.lowercase()
-                        ?.replaceFirstChar(Char::titlecase)
-                }
+                helperUserDetail.toTitleCase(data.city),
+                helperUserDetail.toTitleCase(data.province?.let {
+                    helperUserDetail.getProvinceName(it)
+                })
+
             )
             tvDonorReqHospitalName.text = data.hospitalName
             tvContactName.text = data.contactName

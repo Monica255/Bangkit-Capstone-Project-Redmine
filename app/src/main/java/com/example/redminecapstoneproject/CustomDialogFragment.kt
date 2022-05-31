@@ -324,7 +324,7 @@ class CustomDialogFragment() : DialogFragment() {
                                     alpha = 0.6F
                                 } else {
                                     val city = userDetailViewModel.userData.value?.city ?: "City"
-                                    text = city.lowercase()?.replaceFirstChar(Char::titlecase)
+                                    text =helperUserDetail.toTitleCase(city)
                                     alpha = 1F
                                 }
 
@@ -358,7 +358,7 @@ class CustomDialogFragment() : DialogFragment() {
 
                     val tv: TextView = requireActivity().findViewById(R.id.tv_province)
                     tv.apply {
-                        text = data.provName.lowercase()?.replaceFirstChar(Char::titlecase)
+                        text = helperUserDetail.toTitleCase(data.provName)
                         alpha = 1F
                     }
 
@@ -390,7 +390,7 @@ class CustomDialogFragment() : DialogFragment() {
 
 
                     tv?.apply {
-                        text = data.cityName.lowercase()?.replaceFirstChar(Char::titlecase)
+                        text = helperUserDetail.toTitleCase(data.cityName)
                         alpha = 1F
                     }
                     dismiss()

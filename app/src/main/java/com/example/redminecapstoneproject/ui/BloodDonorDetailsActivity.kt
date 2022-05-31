@@ -79,9 +79,9 @@ class BloodDonorDetailsActivity : AppCompatActivity() {
     private fun setData(data:BloodDonors){
         binding.apply {
             tvDonorName.text=data.name
-            tvDonorProvince.text= data.province?.let { helperUserDetail.getProvinceName(it) }?.lowercase()?.replaceFirstChar(Char::titlecase)
-            tvDonorCity.text=data.city?.lowercase()?.replaceFirstChar(Char::titlecase)
-            tvDonorGender.text=data.gender?.lowercase()?.replaceFirstChar(Char::titlecase)
+            tvDonorProvince.text= helperUserDetail.toTitleCase(data.province?.let { helperUserDetail.getProvinceName(it) })
+            tvDonorCity.text=helperUserDetail.toTitleCase(data.city)
+            tvDonorGender.text=helperUserDetail.toTitleCase(data.gender)
             tvDonorReqPhoneNumber.text=data.phoneNumber
             data.gender?.let { setAvatar(it) }
             tvBloodType.text=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)

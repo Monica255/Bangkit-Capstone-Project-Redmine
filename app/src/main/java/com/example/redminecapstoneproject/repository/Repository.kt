@@ -57,6 +57,9 @@ class Repository(
     private val _faq = MutableLiveData<List<Faq>>()
     val faq: LiveData<List<Faq>> = _faq
 
+    private val _responseVerification = MutableLiveData<ResponseVerification>()
+    val responseVerification: LiveData<ResponseVerification> = _responseVerification
+
     //private var _userAccountData = MutableLiveData<RegisAccountData>()
     //var userAccountData: LiveData<RegisAccountData> = _userAccountData
 
@@ -151,6 +154,37 @@ class Repository(
                     _message.value = Pair(true, "Failed to post donor request")
                 }
             }
+    }
+
+
+    fun requestVerification(data:Verification){
+        _isLoading.value = true
+        val api = ApiConfig.getApiServiceOCR().postIDCard(data.imagefile,data.uid)
+
+        api.enqueue(object : Callback<ResponseVerification> {
+            override fun onResponse(
+                call: Call<ResponseVerification>,
+                response: Response<ResponseVerification>
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        _responseVerification.value = responseBody!!
+                    }
+                    _message.value = Pair(false,"Your account is now verified")
+
+                } else {
+                    _message.value = Pair(true,"Failed to request account verification")
+                }
+                _isLoading.value = false
+            }
+
+            override fun onFailure(call: Call<ResponseVerification>, t: Throwable) {
+                _isLoading.value = false
+                _message.value = Pair(true,"Failed to request account verification")
+            }
+
+        })
     }
 
     fun getProvinces() {

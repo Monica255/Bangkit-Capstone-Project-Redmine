@@ -7,6 +7,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import okhttp3.MultipartBody
+import java.io.File
 import java.sql.Timestamp
 import java.time.LocalDate
 
@@ -16,6 +18,17 @@ object test {
 
 
 }
+
+data class ResponseVerification(
+    val gender:String,
+    val name:String,
+    val verified:Boolean
+)
+
+data class Verification(
+    val imagefile: MultipartBody.Part,
+    val uid:String
+)
 
 data class TempAccountData(
     var uid: String?=null,

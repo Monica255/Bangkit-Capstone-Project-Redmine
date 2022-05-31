@@ -13,6 +13,7 @@ import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
 import com.example.redminecapstoneproject.ui.mydonorreq.MyDonorReqViewModel
 import com.example.redminecapstoneproject.ui.otp.OtpViewModel
 import com.example.redminecapstoneproject.ui.profile.UserDetailViewModel
+import com.example.redminecapstoneproject.ui.verifyaccount.VerifyAccountViewModel
 
 class RepoViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     companion object {
@@ -64,6 +65,10 @@ class RepoViewModelFactory(private val context: Context) : ViewModelProvider.Fac
             modelClass.isAssignableFrom(FaqViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
                 return FaqViewModel(Injection.provideRepository(context)) as T
+            }
+            modelClass.isAssignableFrom(VerifyAccountViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                return VerifyAccountViewModel(Injection.provideRepository(context)) as T
             }
 
 

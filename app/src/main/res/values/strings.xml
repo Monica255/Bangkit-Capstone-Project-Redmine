@@ -134,6 +134,7 @@
     <string name="discard_changes">Discard changes</string>
     <string name="unsaved_changes">Unsaved changes</string>
     <string name="verify_account">Verify account</string>
+    <string name="verify_account2">Verify Account</string>
     <string name="edit_password">Edit password</string>
     <string name="your_account_not_verified_yet">Your account is not verified yet. Please verify you account in order to be able to donate blood</string>
 
@@ -204,5 +205,10 @@
 
     <!--faq-->
     <string name="faq">Frequently Asked Questions</string>
+
+    <!--verify account-->
+    <string name="input_picture">Please input yg ID card photo</string>
+    <string name="email_null">Can not verify account</string>
+    <string name="choose_picture">Choose picture</string>
 
 </resources>

@@ -1,11 +1,15 @@
 package com.example.redminecapstoneproject.ui.profile
 
+import android.app.Activity
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -19,6 +23,7 @@ import com.example.redminecapstoneproject.databinding.ActivityUserDetailBinding
 import com.example.redminecapstoneproject.helper.helperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
+import com.example.redminecapstoneproject.ui.verifyaccount.VerifyAccountActivity
 import www.sanju.motiontoast.MotionToast
 
 class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
@@ -63,6 +68,14 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     private lateinit var accountData: RegisAccountDataRoom
     private var isVerified:Boolean?=null
     private var isVerified2:Boolean?=null
+
+    private val resultCOntract =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
+            if (result?.resultCode == Activity.RESULT_OK) {
+
+
+            }
+        }
 
     private fun newDialog(title: String): CustomDialogFragment {
         val dialog = CustomDialogFragment()
@@ -177,6 +190,30 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             onBackPressed()
         }
 
+        binding.btVerifyAccount.setOnClickListener {
+            val userDetailViewModel = ViewModelProvider(
+                this,
+                RepoViewModelFactory.getInstance(this)
+            )[UserDetailViewModel::class.java]
+            if (userDetailViewModel.isDataDifferent()) {
+                showConfirmDialog("verify", userDetailViewModel)
+            } else {
+                verifyAccount(userDetailViewModel.userData.value?.uid,userDetailViewModel.userData.value?.isVerified)
+            }
+
+        }
+
+
+    }
+
+    private fun verifyAccount(uid:String?=null,verified:Boolean?=null){
+        if(uid!=null && verified!= null && verified==false){
+            var intent=Intent(this,VerifyAccountActivity::class.java)
+            intent.putExtra(VerifyAccountActivity.UID,uid)
+            resultCOntract.launch(intent)
+        }else{
+            //make toast
+        }
 
     }
 
@@ -221,8 +258,8 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         if (user is DonorDataRoom) {
             binding.apply {
                 ilPhone.editText?.setText(user.phoneNumber)
-                province = user.province?.let { helperUserDetail.getProvinceName(it).lowercase()?.replaceFirstChar(Char::titlecase) } ?: "Province"
-                city = user.city?.lowercase()?.replaceFirstChar(Char::titlecase) ?: "City"
+                province = helperUserDetail.toTitleCase(user.province?.let { helperUserDetail.getProvinceName(it)}) ?: "Province"
+                city = helperUserDetail.toTitleCase(user.city )?: "City"
                 user.gender?.let { setAvatar(it) }
 
                 if (user.isVerified == true) {
@@ -360,6 +397,9 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         } else if (x == "back") {
             builder.setTitle(getString(R.string.unsaved_changes))
             builder.setMessage("Are you sure you want to leave without saving?")
+        } else if (x == "verify") {
+            builder.setTitle(getString(R.string.unsaved_changes))
+            builder.setMessage("Are you sure you want to leave without saving?")
         }
 
 
@@ -375,6 +415,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 resetTemptData(vm)
                 setButtonSaveEnable(false)
                 super.onBackPressed()
+            } else if (x == "verify") {
+                resetTemptData(vm)
+                setButtonSaveEnable(false)
+                verifyAccount()
             } else {
                 val userDetailViewModel = ViewModelProvider(
                     this,
@@ -482,5 +526,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
 
+    }
+
+    companion object{
+        const val NEW_NAME="new_name"
+        const val NEW_GENDER="new_gender"
     }
 }

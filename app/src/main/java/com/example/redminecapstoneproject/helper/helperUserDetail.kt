@@ -21,4 +21,16 @@ object helperUserDetail {
         return "+62${number}".trim()
     }
 
+    fun toTitleCase(data:String?):String{
+        var newString=""
+        if(data!=null){
+            var x=data.trim().split(" ")
+            for (i in x){
+                newString= "$newString ${i?.lowercase()
+                    ?.replaceFirstChar(Char::titlecase)}"
+            }
+        }
+        return newString
+    }
+
 }

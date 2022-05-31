@@ -56,7 +56,7 @@
 
                 <Button
                     android:id="@+id/bt_copy"
-                    style="@style/TitleText"
+                    style="@style/DescriptionText"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="4"

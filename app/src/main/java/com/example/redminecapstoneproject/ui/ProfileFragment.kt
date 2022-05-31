@@ -17,6 +17,7 @@ import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentProfileBinding
 import com.example.redminecapstoneproject.helper.helperBloodDonors
 import com.example.redminecapstoneproject.helper.helperDate
+import com.example.redminecapstoneproject.helper.helperUserDetail
 import com.example.redminecapstoneproject.ui.loginsignup.LoginActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
 import com.example.redminecapstoneproject.ui.mydonorreq.MyDonorReqActivity
@@ -89,11 +90,10 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
 
     @SuppressLint("StringFormatMatches")
     private fun setData(data: Any?, c: Context) {
-        Log.d("TAG", data.toString())
         if (data != null) {
             when (data) {
                 is RegisAccountDataRoom -> {
-                    binding.tvName.text = (data.name).toString()
+                    binding.tvName.text = data.name
                     binding.tvEmail.text = (data.email).toString()
 
                 }
