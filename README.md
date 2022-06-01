@@ -13,8 +13,7 @@ OCR stands for **Optical Character Recognition** or **Optical Character Reader**
 We create an automation email for users that just create their account, we will send an OTP code automatically to their email to informed their OTP code, therefore users abble to create their account successfully
 
 ## Build REST-API for OCR Model
-
-We using flask to build a REST-API for our OCR model. There are also libraries that needed to run the API:
+We decided to used second scenario which make a segmentation model using Unet architecture to build our bounding box and then extract text from the bounding box using pytesseract. We using flask to build a REST-API for our OCR model. Because our model is too big, therefore we use **install_gdown.py** to download segmentation model that we have create from google drive: [bounding_box_segmentation_5.h5](https://drive.google.com/file/d/1wLaE2mVfVsoM5ym9iRCU4VAfuYrKVBlq/view?usp=sharing). There are also libraries that needed to run the API:
 
 * flask
 * pytesseract
