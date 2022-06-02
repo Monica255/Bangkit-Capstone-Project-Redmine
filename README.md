@@ -33,7 +33,7 @@ We also have a dotenv (.env) file to run flask with our specific environment:
 
 and there is run_flask.sh that will run flask model:
 
->>>export FLASK_APP=${HOME}/ocr-ktp/ocr.py 
+>>>export FLASK_APP=${HOME}/ocr/main.py 
   
 >>>export FLASK_ENV=development
   
