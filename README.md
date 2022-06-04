@@ -15,17 +15,21 @@ To align with our app goals, i intend to make a logo involving a drip of blood. 
 [logo-text]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-text.png
 [logo-with-text]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-with-text.png
 [icon]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/app-icon.png
-After several design and revision processes, here i come with the final logo design including the design for app icon.
+After several design and revision processes, here i come with the final logo design along with the design for app icon.
 
 <table>
   <tr>
     <td>logo</td>
      <td>logo-for-discord</td>
      <td>logo-text</td>
+    <td>logo-with-text</td>
+     <td>icon</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo.png" width=300 height=300></td>
-    <td><img src="[logo-for-discord]" width=300 height=300></td>
-    <td><img src=[logo-text] width=300 height=300></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo.png" width=200 height=200></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-for-discord.png" width=200 height=200></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-text.png" width=200 height=200></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-with-text.png" width=200 height=200></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/app-icon.png" width=200 height=200></td>
   </tr>
  </table>
