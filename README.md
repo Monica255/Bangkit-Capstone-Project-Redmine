@@ -17,4 +17,15 @@ To align with our app goals, i intend to make a logo involving a drip of blood. 
 [icon]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/app-icon.png
 After several design and revision processes, here i come with the final logo design including the design for app icon.
 
-![alt text][logo]![alt text][logo-for-discord]![alt text][logo-text]![alt text][logo-with-text]![alt text][icon]
+<table>
+  <tr>
+    <td>logo</td>
+     <td>logo-for-discord</td>
+     <td>logo-text</td>
+  </tr>
+  <tr>
+    <td><img src=[logo] width=300 height=300></td>
+    <td><img src=[logo-for-discord] width=300 height=300></td>
+    <td><img src=[logo-text] width=300 height=300></td>
+  </tr>
+ </table>
