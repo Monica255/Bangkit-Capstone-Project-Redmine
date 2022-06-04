@@ -44,7 +44,7 @@ To ensure that users get the best experience while using our app, i designed the
 For more details, click this [figma][figma-link] link.
 
 ## USER INTERFACE
-For this part, most of the work i did in [figma][figma-link] so please check the link for mode details. Here, i am going to mention a little about the design process. Firstly, i made the low fidelity design for the homepage, blood donor page, blood donation event page and donor request page. Bellow you can see the design.
+For this part, most of the work i did in [figma][figma-link] so please check the link for mode details. Here, i am going to mention a little about the design process. Firstly, i made the low fidelity design for the homepage, blood donor page, blood donation event page and donor request page. Below you can see the design.
 
 
  <table>
@@ -68,7 +68,7 @@ For this part, most of the work i did in [figma][figma-link] so please check the
 [splash2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-splash.png
 [login2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-login.png
 [signup2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-regis.png
-After that, i immediately moved on to the next step that is making the high fidelity design to save time. The first three pages that i designed are splash screen, login screen and registratin screen. At first, i intended to make a soft tone design as can be seen bellow. After a while of considering, i decided to redesign those pages as the soft tone color pallete didn't match our logo.
+After that, i immediately moved on to the next step that is making the high fidelity design to save time. The first three pages that i designed are splash screen, login screen and registratin screen. At first, i intended to make a soft tone design as can be seen bellow. After a while of considering, i decided to redesign those pages as the soft tone color pallete didn't match our logo design.
 
  <table>
   <tr>
