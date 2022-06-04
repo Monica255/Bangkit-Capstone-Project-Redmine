@@ -26,10 +26,10 @@ After several design and revision processes, here i come with the final logo des
      <td>icon</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo.png" width=200 height=200></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-for-discord.png" width=200 height=200></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-text.png" width=200 height=200></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-with-text.png" width=200 height=200></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/app-icon.png" width=200 height=200></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo.png" width=200></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-for-discord.png" width=200 ></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-text.png" width=200 ></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-with-text.png" width=200></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/app-icon.png" width=200 ></td>
   </tr>
  </table>
