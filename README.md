@@ -74,12 +74,13 @@ After that, i immediately moved on to the next step that is making the high fide
      <td>Login screen</td>
      <td>Signup screen</td>
   </tr>
+   <td colspan="3">Before</td>
   <tr>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/Splash.png" ></td>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/Login.png" ></td>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/Signup.png" ></td>
   </tr>
-  
+  <td colspan="3">After</td>
   <tr>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-splash.png"></td>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-login.png"></td>
