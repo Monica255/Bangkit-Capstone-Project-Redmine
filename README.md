@@ -49,7 +49,7 @@ For this part, most of the work i do in [figma][figma-link] so pleas check the l
   <tr>
     <td>Home</td>
      <td>Blood donor</td>
-     <td>logo-text</td>
+  
     <td>Blood donation event</td>
      <td>Donor request</td>
   </tr>
