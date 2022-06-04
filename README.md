@@ -47,16 +47,14 @@ For this part, most of the work i do in [figma][figma-link] so pleas check the l
 
  <table>
   <tr>
-    <td>Home</td>
+     <td>Home</td>
      <td>Blood donor</td>
-  
-    <td>Blood donation event</td>
+     <td>Blood donation event</td>
      <td>Donor request</td>
   </tr>
   <tr>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Home.png"></td>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Donor%20darah.png" ></td>
-  
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Donor%20darah-1.png"></td>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Donor%20darah-2.png"></td>
   </tr>
