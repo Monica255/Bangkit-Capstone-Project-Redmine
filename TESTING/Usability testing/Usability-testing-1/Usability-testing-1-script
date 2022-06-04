@@ -27,20 +27,4 @@ Supposing you are eligible for donating blood, you look for people who are in ne
 You try to log out and register again with your Google account.
 
 
-Bug found
-
-1: When login with invalid data, the loading animation is looped
-File: LoginFragment
-Status: Fixed
-2. When login with invalid data and toast is shown, then go to sign-up- fragment, toast is 
-File: SignupFragment
-shown again.
-Status: Fixed
-3. When sign-up with invalid data and toast is shown, then go to log-in- fragment, toast is shown again.
-File: LoginFragment
-4. Some fragments aren’t attached to an activity
-Status: Fixed
-5. Donor request list in blood donation activity is filtered by province meanwhile in blood donor request activity is filtered by city. 
-File: BloodDonationActivity & DonorRequestActivity
-Status: Fixed
 
