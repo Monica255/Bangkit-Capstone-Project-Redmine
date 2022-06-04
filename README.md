@@ -136,7 +136,7 @@ These are two libraries that i use as image loader
 - implementation 'com.github.bumptech.glide:glide:4.12.0'
     
 3. maps  
-In our app, especially in the detail donation event page, you can see a mini map where the event will be held. To be able to do so, i used google maps API and 
+In our app, especially in the detail donation event page, you can see a mini map where the event will be held. To be able to do so, i use google maps API and 
 implemented these dependencies.
 
 - implementation 'com.google.android.gms:play-services-location:19.0.1'
@@ -158,14 +158,14 @@ to fetch the data all the way from firebase everytime it is needed.
 - kapt 'androidx.room:room-compiler:2.4.2'
     
 6. retrofit  
-For province and city data, CC team already provided me with endpoints so i used retrofit as the REST client. Also, we use API to send the email address to get OTP code and to send the ID card image for verification.
+For province and city data, CC team already provided me with endpoints so i use retrofit as the REST client. Also, we use API to send the email address to get OTP code and to send the ID card image for verification.
 
 - implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 - implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 - implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
 7. loader  
-I used this dependency to show animation loading.
+I use this dependency to show animation loading.
 
 - implementation "com.airbnb.android:lottie:3.4.0"
 
