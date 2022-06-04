@@ -138,7 +138,7 @@ def sendEmail():
 
     for i in range(6):
         random_number = math.floor(random.random() *10)
-        otp += random_number
+        otp += str(random_number)
 
     subject = "REDMINE"
     call_otp = otp
