@@ -25,7 +25,7 @@ After several design and revision processes, here i come with the final logo des
   </tr>
   <tr>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo.png" width=300 height=300></td>
-    <td><img src=[logo-for-discord] width=300 height=300></td>
+    <td><img src="[logo-for-discord]" width=300 height=300></td>
     <td><img src=[logo-text] width=300 height=300></td>
   </tr>
  </table>
