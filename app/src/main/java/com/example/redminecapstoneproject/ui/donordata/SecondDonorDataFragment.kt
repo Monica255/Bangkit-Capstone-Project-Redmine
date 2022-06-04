@@ -8,17 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentSecondDonorDataBinding
-import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.ui.HomeActivity
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.ui.home.HomeActivity
 import www.sanju.motiontoast.MotionToast
 import java.time.LocalDate
 import java.util.*
@@ -31,12 +29,12 @@ class SecondDonorDataFragment : Fragment() {
     private var arg = Bundle()
     private var isProvinceValid = false
         get() {
-            field = binding.tvProvince.text.toString().trim() != "Province"
+            field = binding.tvProvince.text.toString().trim() != getString(R.string.province)
             return field
         }
     private var isCityValid = false
         get() {
-            field = binding.tvCity.text.toString().trim() != "City"
+            field = binding.tvCity.text.toString().trim() != getString(R.string.city)
             return field
         }
     private var isHaveDonatedValid = false
@@ -55,7 +53,6 @@ class SecondDonorDataFragment : Fragment() {
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
         )[DonorDataViewModel::class.java]
-        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         if (donorDataViewModel.donorData.province != null) {
             binding.tvProvince.apply {
                 text = donorDataViewModel.donorData.province
@@ -68,11 +65,9 @@ class SecondDonorDataFragment : Fragment() {
                 alpha = 1F
             }
         }
-        Log.d("TAG", donorDataViewModel.donorData.haveDonated.toString())
         if (donorDataViewModel.donorData.haveDonated != null) {
             val id =
                 if (donorDataViewModel.donorData.haveDonated!!) R.id.rb_haveDonate_yes else R.id.rb_haveDonated_no
-            //binding.rgHaveYouDonated.check(id)
             if (id == R.id.rb_haveDonate_yes) {
                 binding.rbHaveDonateYes.isChecked = true
                 binding.cvPickDateLastDonate.visibility = View.VISIBLE
@@ -98,7 +93,6 @@ class SecondDonorDataFragment : Fragment() {
         if (donorDataViewModel.donorData.hadCovid != null) {
             val id =
                 if (donorDataViewModel.donorData.hadCovid!!) R.id.rb_hadCovid_yes else R.id.rb_hadCovid_no
-            //binding.rgHaveYouDonated.check(id)
             if (id == R.id.rb_hadCovid_yes) {
                 binding.rbHadCovidYes.isChecked = true
                 binding.cvPickDateRecovery.visibility = View.VISIBLE
@@ -192,15 +186,14 @@ class SecondDonorDataFragment : Fragment() {
                 RepoViewModelFactory.getInstance(requireActivity())
             )[DonorDataViewModel::class.java]                //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
             if (isDataValid()) {
-                Log.d("TAG","valid "+donorDataViewModel.donorData.toString())
                 donorDataViewModel.setUserDonorData(donorDataViewModel.donorData)
 
             } else {
                 if (!isFieldsEmpty()) {
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
-                        "Hey careful",
-                        "Please enter you data correctly",
+                        getString(R.string.hey_careful),
+                        getString(R.string.please_enter_data_correctly),
                         MotionToast.TOAST_WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.SHORT_DURATION,
@@ -231,7 +224,7 @@ class SecondDonorDataFragment : Fragment() {
         } else {
             MotionToast.Companion.createColorToast(
                 requireActivity(),
-                "Yey success 😍",
+                getString(R.string.yey_success),
                 msg,
                 MotionToast.TOAST_SUCCESS,
                 MotionToast.GRAVITY_BOTTOM,
@@ -246,20 +239,14 @@ class SecondDonorDataFragment : Fragment() {
 
 
     private fun isFieldsEmpty(): Boolean {
-        return binding.tvProvince.text.toString().trim() == "Province"
-                && binding.tvCity.text.toString().trim() == "City"
+        return binding.tvProvince.text.toString().trim() == getString(R.string.province)
+                && binding.tvCity.text.toString().trim() == getString(R.string.city)
                 && binding.rgHaveYouDonated.checkedRadioButtonId == -1
                 && binding.rgHaveYouHadCovid.checkedRadioButtonId == -1
 
     }
 
     private fun isDataValid(): Boolean {
-        Log.d("TAG", isProvinceValid.toString())
-        Log.d("TAG", isCityValid.toString())
-        Log.d("TAG", isHaveDonatedValid.toString())
-        Log.d("TAG", isHadCovidValid.toString())
-
-
         return isProvinceValid && isCityValid && isHaveDonatedValid && isHadCovidValid
     }
 
@@ -268,7 +255,7 @@ class SecondDonorDataFragment : Fragment() {
         val donorDataViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
-        )[DonorDataViewModel::class.java]            //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        )[DonorDataViewModel::class.java]
         val haveDonated = binding.rgHaveYouDonated.checkedRadioButtonId
         if (haveDonated == -1) {
             isHaveDonatedValid = false
@@ -290,7 +277,7 @@ class SecondDonorDataFragment : Fragment() {
         val donorDataViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
-        )[DonorDataViewModel::class.java]            //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        )[DonorDataViewModel::class.java]
         val hadCovid = binding.rgHaveYouHadCovid.checkedRadioButtonId
         if (hadCovid == -1) {
             isHadCovidValid = false
@@ -307,11 +294,10 @@ class SecondDonorDataFragment : Fragment() {
         }
     }
 
-    private fun newDialog(title: String, isProvinceNotNull: Boolean = false): CustomDialogFragment {
+    private fun newDialog(title: String): CustomDialogFragment {
         val dialog = CustomDialogFragment()
         dialog.show(requireActivity().supportFragmentManager, "mDialog")
         arg.putString("title", title)
-        //arg.putBoolean("isProvinceNotNull", isProvinceNotNull)
         dialog.arguments
         dialog.arguments = arg
         return dialog
@@ -321,7 +307,7 @@ class SecondDonorDataFragment : Fragment() {
         val donorDataViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
-        )[DonorDataViewModel::class.java]            //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        )[DonorDataViewModel::class.java]
 
         val c = Calendar.getInstance()
         var showYear = c.get(Calendar.YEAR)
@@ -331,7 +317,7 @@ class SecondDonorDataFragment : Fragment() {
         try {
             if (dateFor == "last donate" && donorDataViewModel.donorData.lastDonateDate != null) {
                 showYear = donorDataViewModel.donorData.lastDonateDate?.year!!
-                showMonth = helperDate.toNumberMonthFormat(
+                showMonth = HelperDate.toNumberMonthFormat(
                     donorDataViewModel.donorData.lastDonateDate?.month!!,
                     requireActivity()
                 ) - 1
@@ -339,7 +325,7 @@ class SecondDonorDataFragment : Fragment() {
 
             } else if (dateFor == "recovery date" && donorDataViewModel.donorData.recoveryDate != null) {
                 showYear = donorDataViewModel.donorData.recoveryDate?.year!!
-                showMonth = helperDate.toNumberMonthFormat(
+                showMonth = HelperDate.toNumberMonthFormat(
                     donorDataViewModel.donorData.recoveryDate?.month!!,
                     requireActivity()
                 ) - 1
@@ -353,18 +339,13 @@ class SecondDonorDataFragment : Fragment() {
         val dpd = DatePickerDialog(
             requireActivity(),
             { _, year, monthOfYear, dayOfMonth ->
-                val newMonth = monthOfYear + 1
+                monthOfYear + 1
                 if (dateFor == "last donate") {
-                    //donateDate = LocalDate.of(year, newMonth, dayOfMonth)
-                    Log.d(
-                        "TAG",
-                        "donate date " + donorDataViewModel.donorData.lastDonateDate.toString()
-                    )
                     binding.tvDateLastDonate.apply {
                         val newMonth = monthOfYear + 1
                         text = getString(
                             R.string.last_blood_donation,
-                            helperDate.toMonthFormat(newMonth.toString(), requireActivity()),
+                            HelperDate.toMonthFormat(newMonth.toString(), requireActivity()),
                             dayOfMonth.toString(),
                             year.toString()
                         )
@@ -378,12 +359,11 @@ class SecondDonorDataFragment : Fragment() {
                         alpha = 1F
                     }
                 } else {
-                    //recoveryDate = LocalDate.of(year, newMonth, dayOfMonth)
                     binding.tvDateRecovery.apply {
                         val newMonth = monthOfYear + 1
                         text = getString(
                             R.string.recovery_date,
-                            helperDate.toMonthFormat(newMonth.toString(), requireActivity()),
+                            HelperDate.toMonthFormat(newMonth.toString(), requireActivity()),
                             dayOfMonth.toString(),
                             year.toString()
                         )
@@ -420,6 +400,5 @@ class SecondDonorDataFragment : Fragment() {
         return binding.root
     }
 
-    companion object {
-    }
+    companion object
 }

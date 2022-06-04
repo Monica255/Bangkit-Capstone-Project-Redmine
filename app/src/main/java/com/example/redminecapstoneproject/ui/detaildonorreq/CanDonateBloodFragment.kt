@@ -45,7 +45,5 @@ class CanDonateBloodFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-
-    }
+    companion object
 }

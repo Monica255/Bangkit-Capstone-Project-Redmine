@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityDonorDetailBinding
-import com.example.redminecapstoneproject.helper.helperDate
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
-import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import www.sanju.motiontoast.MotionToast
 import java.time.LocalDate
 import java.util.*
@@ -45,7 +45,6 @@ class DonorDetailActivity : AppCompatActivity() {
         )[UserDetailViewModel::class.java]
 
         userDetailViewModel.userData.observe(this) {
-            Log.d("TES","ud  "+it.toString())
             if(isVerified!=it.isVerified && isVerified!=null){
                 userDetailViewModel._newUserData.value = newUserData(it)
 
@@ -98,9 +97,9 @@ class DonorDetailActivity : AppCompatActivity() {
             userDetailViewModel.updateDonorDataRoom(
                 Pair(
                     when (i) {
-                        R.id.rb_positive -> resources.getString(R.string.positive).lowercase()
-                        R.id.rb_negative -> resources.getString(R.string.negative).lowercase()
-                        else -> resources.getString(R.string.dont_know).lowercase()
+                        R.id.rb_positive -> "positive"
+                        R.id.rb_negative -> "negative"
+                        else -> "unknown"
                     }, "rhesus"
                 )
             )
@@ -127,12 +126,11 @@ class DonorDetailActivity : AppCompatActivity() {
                             "lastDonateDate"
                         )
                     )
-                    Log.d("TAG", "tmpt date " + userDetailViewModel.temptLastDonateDate.toString())
                     val mTemptLastDonateDate =
-                        helperDate.stringToDate(userDetailViewModel.temptLastDonateDate!!)
+                        HelperDate.stringToDate(userDetailViewModel.temptLastDonateDate!!)
                     binding.tvDateLastDonate.text = getString(
                         R.string.last_blood_donation,
-                        mTemptLastDonateDate.month.toString(),
+                        HelperDate.monthToString(mTemptLastDonateDate.month,this),
                         mTemptLastDonateDate.dayOfMonth.toString(),
                         mTemptLastDonateDate.year.toString()
                     )
@@ -170,15 +168,13 @@ class DonorDetailActivity : AppCompatActivity() {
                         )
                     )
                     val mTemptRecoveryDate =
-                        helperDate.stringToDate(userDetailViewModel.temptRecoveryDate!!)
-                    Log.d("TAG", "tmpt date2 " + userDetailViewModel.temptRecoveryDate.toString())
+                        HelperDate.stringToDate(userDetailViewModel.temptRecoveryDate!!)
                     binding.tvDateRecovery.text = getString(
                         R.string.recovery_date,
-                        mTemptRecoveryDate.month.toString(),
+                        HelperDate.monthToString(mTemptRecoveryDate.month,this),
                         mTemptRecoveryDate.dayOfMonth.toString(),
                         mTemptRecoveryDate.year.toString()
                     )
-
                 } else {
                     binding.tvDateRecovery.text = getString(
                         R.string.pick_date
@@ -194,7 +190,6 @@ class DonorDetailActivity : AppCompatActivity() {
 
 
         binding.btBack.setOnClickListener {
-            Log.d("LOADING","btn back")
             onBackPressed()
         }
 
@@ -204,7 +199,6 @@ class DonorDetailActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Log.d("LOADING","back back")
         val userDetailViewModel = ViewModelProvider(
             this,
             RepoViewModelFactory.getInstance(this)
@@ -219,10 +213,10 @@ class DonorDetailActivity : AppCompatActivity() {
         val mConfirmDialog = builder.create()
         if (x == "save") {
             builder.setTitle(getString(R.string.save))
-            builder.setMessage("Are you sure you want to save any changes?")
+            builder.setMessage(getString(R.string.save_changes))
         } else if (x == "back") {
             builder.setTitle(getString(R.string.unsaved_changes))
-            builder.setMessage("Are you sure you want to leave without saving?")
+            builder.setMessage(getString(R.string.leave_without_saving))
         }
 
 
@@ -231,16 +225,13 @@ class DonorDetailActivity : AppCompatActivity() {
 
         builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
             if (x == "back") {
-                //vm.tempUserData=vm.InitialuserData
-                Log.d("TAG", "ds " + vm.accountData.value.toString())
                 vm.userData.value?.let {
                     vm._newUserData.value = newUserData(it)
-                    Log.d("TAG", "renew ud " + vm._newUserData.value)
                     setData(it)
                 }
                 setButtonSaveEnable(false)
                 super.onBackPressed()
-            } else {
+            } else if (x == "save"){
                 val userDetailViewModel = ViewModelProvider(
                     this,
                     RepoViewModelFactory.getInstance(this)
@@ -252,8 +243,6 @@ class DonorDetailActivity : AppCompatActivity() {
                     )
                 }
                 setButtonSaveEnable(false)
-                //save data
-
             }
 
         }
@@ -270,29 +259,27 @@ class DonorDetailActivity : AppCompatActivity() {
         if (x && isDataValid()) {
             binding.btSave.isEnabled = true
             binding.btSave.alpha = 1F
-            //binding.btDiscard.visibility = View.VISIBLE
-            Log.d("TAG", "data dif n valid")
         } else if (x) {
             binding.btSave.isEnabled = false
             binding.btSave.alpha = 0.5F
-            //binding.btDiscard.visibility = View.VISIBLE
-            Log.d("TAG", "data dif n invalid")
         } else {
             binding.btSave.isEnabled = false
             binding.btSave.alpha = 0.5F
-            //binding.btDiscard.visibility = View.GONE
-            Log.d("TAG", "data same/ invalid")
         }
     }
 
 
 
     private fun setData(user: DonorDataRoom) {
+        val userDetailViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[UserDetailViewModel::class.java]
         binding.apply {
             if (user.isVerified) {
                 rgGenderUnverified.visibility = View.GONE
                 cvGenderVerifiedAccount.visibility = View.VISIBLE
-                tvGenderVerifiedAccount.text = user.gender
+                tvGenderVerifiedAccount.text = HelperUserDetail.toTitleCase(user.gender)
                 layoutVerifiedAccount.visibility = View.VISIBLE
                 llayoutUnverifiedAccount.visibility = View.GONE
             } else {
@@ -317,14 +304,15 @@ class DonorDetailActivity : AppCompatActivity() {
 
             if (user.haveDonated == true) {
                 rgHaveYouDonated.check(R.id.rb_haveDonate_yes)
-                val mLastDonateDate = user.lastDonateDate?.let { helperDate.stringToDate(it) }
-                val month = mLastDonateDate?.month.toString()
+                val mLastDonateDate = user.lastDonateDate?.let { HelperDate.stringToDate(it) }
+                val month = mLastDonateDate?.month
                 val day = mLastDonateDate?.dayOfMonth.toString()
                 val year = mLastDonateDate?.year.toString()
-
+                userDetailViewModel.temptLastDonateDate=user.lastDonateDate
                 cvPickDateLastDonate.visibility = View.VISIBLE
                 //donateDate = user.lastDonateDate
-                tvDateLastDonate.text = getString(R.string.last_blood_donation, month, day, year)
+                tvDateLastDonate.text = getString(R.string.last_blood_donation,
+                    month?.let { HelperDate.monthToString(it,this@DonorDetailActivity) }, day, year)
             } else {
                 rgHaveYouDonated.check(R.id.rb_haveDonated_no)
                 cvPickDateLastDonate.visibility = View.GONE
@@ -332,14 +320,15 @@ class DonorDetailActivity : AppCompatActivity() {
 
             if (user.hadCovid == true) {
                 rgHaveYouHadCovid.check(R.id.rb_hadCovid_yes)
-                val mRecoveryDate = user.recoveryDate?.let { helperDate.stringToDate(it) }
-                val month = mRecoveryDate?.month.toString()
+                val mRecoveryDate = user.recoveryDate?.let { HelperDate.stringToDate(it) }
+                val month = mRecoveryDate?.month
                 val day = mRecoveryDate?.dayOfMonth.toString()
                 val year = mRecoveryDate?.year.toString()
-
+                userDetailViewModel.temptRecoveryDate=user.recoveryDate
                 //recoveryDate = user.recoveryDate
                 cvPickDateRecovery.visibility = View.VISIBLE
-                tvDateRecovery.text = getString(R.string.recovery_date, month, day, year)
+                tvDateRecovery.text = getString(R.string.recovery_date,
+                    month?.let { HelperDate.monthToString(it,this@DonorDetailActivity) }, day, year)
             } else {
                 cvPickDateRecovery.visibility = View.GONE
                 rgHaveYouHadCovid.check(R.id.rb_hadCovid_no)
@@ -453,12 +442,12 @@ class DonorDetailActivity : AppCompatActivity() {
         )[UserDetailViewModel::class.java]
 
         var donateDate = userDetailViewModel._newUserData.value?.lastDonateDate?.let {
-            helperDate.stringToDate(
+            HelperDate.stringToDate(
                 it
             )
         }
         var recoveryDate = userDetailViewModel._newUserData.value?.recoveryDate?.let {
-            helperDate.stringToDate(
+            HelperDate.stringToDate(
                 it
             )
         }
@@ -470,12 +459,12 @@ class DonorDetailActivity : AppCompatActivity() {
 
         if (dateFor == "last donate" && donateDate != null) {
             showYear = donateDate.year
-            showMonth = helperDate.toNumberMonthFormat(donateDate.month!!, this) - 1
+            showMonth = HelperDate.toNumberMonthFormat(donateDate.month!!, this) - 1
             showDay = donateDate.dayOfMonth
 
         } else if (dateFor == "recovery date" && recoveryDate != null) {
             showYear = recoveryDate.year
-            showMonth = helperDate.toNumberMonthFormat(recoveryDate.month!!, this) - 1
+            showMonth = HelperDate.toNumberMonthFormat(recoveryDate.month!!, this) - 1
             showDay = recoveryDate.dayOfMonth
         }
 
@@ -489,7 +478,7 @@ class DonorDetailActivity : AppCompatActivity() {
                     binding.tvDateLastDonate.apply {
                         text = getString(
                             R.string.last_blood_donation,
-                            helperDate.toMonthFormat(newMonth.toString(), this@DonorDetailActivity),
+                            HelperDate.toMonthFormat(newMonth.toString(), this@DonorDetailActivity),
                             dayOfMonth.toString(),
                             year.toString()
                         )
@@ -502,7 +491,7 @@ class DonorDetailActivity : AppCompatActivity() {
                     binding.tvDateRecovery.apply {
                         text = getString(
                             R.string.recovery_date,
-                            helperDate.toMonthFormat(newMonth.toString(), this@DonorDetailActivity),
+                            HelperDate.toMonthFormat(newMonth.toString(), this@DonorDetailActivity),
                             dayOfMonth.toString(),
                             year.toString()
                         )

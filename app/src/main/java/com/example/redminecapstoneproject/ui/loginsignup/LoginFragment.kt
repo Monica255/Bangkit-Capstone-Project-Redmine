@@ -19,7 +19,7 @@ import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentLoginBinding
-import com.example.redminecapstoneproject.ui.HomeActivity
+import com.example.redminecapstoneproject.ui.home.HomeActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import com.example.redminecapstoneproject.ui.otp.OtpActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -34,8 +34,8 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
     private var isEmailValid: Boolean = false
     private var isPassValid: Boolean = false
     private lateinit var googleSignInClient: GoogleSignInClient
-    private var counter = 0
     private var counter2 = 0
+    private var startIntent = true
 
     private val resultCOntract =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
@@ -50,13 +50,10 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
                 val exception = task.exception
                 if (task.isSuccessful) {
                     try {
-                        // Google Sign In was successful, authenticate with Firebase
                         val account = task.getResult(ApiException::class.java)
                         Log.d("TAG", "firebaseAuthWithGoogle:" + account.id)
                         loginSignupViewModel.firebaseAuthWithGoogle(account.idToken.toString())
-                        //firebaseAuthWithGoogle(account.idToken)
                     } catch (e: ApiException) {
-                        // Google Sign In failed, update UI appropriately
                         Log.w("TAG", "Google sign in failed", e)
                     }
                 } else {
@@ -118,8 +115,8 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
                 if (!isFieldsEmpty()) {
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
-                        "Hey careful",
-                        "Please enter you data correctly",
+                        getString(R.string.hey_careful),
+                        getString(R.string.please_enter_data_correctly),
                         MotionToast.TOAST_WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.SHORT_DURATION,
@@ -133,7 +130,7 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
 
         }
         loginSignupViewModel.message.observe(requireActivity()) {
-            if (activity != null) makeToast(it.first, it.second)
+            if (isAdded) makeToast(it.first, it.second)
         }
 
         //val intent = Intent(activity, LoginActivity::class.java)
@@ -144,67 +141,67 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
 
 
-
-        loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
-            if (fu == null) {
-                //startActivity(intent)
-            } else {
-                if (activity != null) {
-                    loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) { value ->
-                        if (value == null) {
-                            Log.d("TAG", "first acc null data")
-                            counter2++
-                            if (counter2 > 1) {
-                                Log.d("TAG", "acc null")
-                                loginSignupViewModel.setUserAccountData()
-                            }
-                        }else if(value.otpCode==null){
-                            Log.d("TAG","lg otp null")
-                            intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent4)
-                        } else {
-                            Log.d("TAG", "not null  " + value)
-                            loginSignupViewModel.getUserDonorDataDb().observe(requireActivity()) {
-                                //Log.d("TAG","sp "+it.toString())
-                                if (it == null) {
-                                    Log.d("TAG", "first null data")
-                                    counter++
-                                    if(counter>1){
-                                        Log.d("TAG","null data")
-                                        counter=0
-                                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    intent2.putExtra("name", value.name)
-                                    startActivity(intent2)
+        if (startIntent) {
+            loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
+                if (fu == null) {
+                    //startActivity(intent)
+                } else {
+                    if (activity != null) {
+                        loginSignupViewModel.getUserAccountDataDb()
+                            .observe(requireActivity()) { value ->
+                                //Log.d("TES",value.toString())
+                                if (value == null) {
+                                    counter2++
+                                    if (counter2 > 1) {
+                                    loginSignupViewModel.setUserAccountData()
                                     }
+                                } else if (value.otpCode == null) {
+                                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startIntent = false
+                                    startActivity(intent4)
                                 } else {
-                                    Log.d("TAG","going home")
-                                    //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startActivity(intent3)
-                                    if (activity != null) {
-                                        Log.d("TAG","login finish")
-                                        activity?.finish()
-                                    }
+                                    loginSignupViewModel.getUserDonorDataDb()
+                                        .observe(requireActivity()) {
+                                            if (it == null) {
+                                                /*counter++
+                                                if (counter > 1) {
+                                                    counter = 0*/
+                                                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                intent2.putExtra("name", value.name)
+                                                startIntent = false
+                                                startActivity(intent2)
+                                                //}
+                                            } else {
+                                                //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                startIntent = false
+                                                startActivity(intent3)
+                                                if (isAdded) {
+                                                    activity?.finish()
+                                                }
+                                            }
+                                        }
                                 }
                             }
-                        }
                     }
+
+
                 }
-
-
             }
         }
 
-        loginSignupViewModel.isLoading.observe(requireActivity()){
+        loginSignupViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
 
 
     }
 
-    private fun showLoading(show:Boolean){
-        if(show){
-            if(isAdded){ LoadingUtils.showDialog(context, false) }
-        }else{
+    private fun showLoading(show: Boolean) {
+        if (show) {
+            if (isAdded) {
+                LoadingUtils.showDialog(context, false)
+            }
+        } else {
             LoadingUtils.hideDialog()
         }
     }
@@ -212,8 +209,8 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         resultCOntract.launch(signInIntent)
-        //startActivityForResult(signInIntent, RC_SIGN_IN)
     }
+
 
     private fun makeToast(isError: Boolean, msg: String) {
         if (isError) {
@@ -232,7 +229,7 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
         } else {
             MotionToast.Companion.createColorToast(
                 requireActivity(),
-                "Yey success 😍",
+                getString(R.string.yey_success),
                 msg,
                 MotionToast.TOAST_SUCCESS,
                 MotionToast.GRAVITY_BOTTOM,
@@ -316,6 +313,4 @@ class LoginFragment : Fragment(), View.OnFocusChangeListener {
         }
     }
 
-    companion object {
-    }
 }

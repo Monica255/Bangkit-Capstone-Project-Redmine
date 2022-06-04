@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.Faq
+import com.example.redminecapstoneproject.ui.testing.FunFact
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 
-@Database(entities = [RegisAccountDataRoom::class,DonorDataRoom::class, Faq::class], version =2,exportSchema = true)
+@Database(entities = [RegisAccountDataRoom::class,DonorDataRoom::class, Faq::class,FunFact::class], version =2,exportSchema = true)
 abstract class UserRoomDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
     companion object {

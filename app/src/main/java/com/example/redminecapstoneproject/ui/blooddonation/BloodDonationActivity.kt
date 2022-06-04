@@ -4,28 +4,32 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
+import com.example.redminecapstoneproject.adapter.HorizontalDonorEventAdapter
 import com.example.redminecapstoneproject.adapter.HorizontalDonorReqAdapter
 import com.example.redminecapstoneproject.databinding.ActivityBloodDonationBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.ui.DonationEventsActivity
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.ui.blooddonation.DonationEventsActivity
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 import com.example.redminecapstoneproject.ui.detaildonorreq.DetailDonorRequestActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
 import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
+import com.example.redminecapstoneproject.ui.testing.DonorEvent
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
 import com.google.firebase.auth.FirebaseAuth
+import com.google.rpc.Help
 import java.time.LocalDate
 
 class BloodDonationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBloodDonationBinding
-    private lateinit var province: String
+    private lateinit var city: String
     private lateinit var mBloodType: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,14 +71,23 @@ class BloodDonationActivity : AppCompatActivity() {
         }
 
         loginSignupViewModel.getUserDonorDataDb().observe(this) {
-            province = it.province.toString()
-            mBloodType=helperBloodDonors.toBloodType(it.bloodType,it.rhesus)
+            city = it.city.toString()
+            mBloodType = HelperBloodDonors.toBloodType(it.bloodType, it.rhesus)
             setData(it)
 
             bloodDonationViewModel.getDonorReq()
             bloodDonationViewModel.donorReq.observe(this) { it2 ->
                 if (it2 != null) {
-                    setAdapterDonorReq(it2,mBloodType)
+                    setAdapterDonorReq(it2, mBloodType)
+                }
+            }
+
+            bloodDonationViewModel.getDonationEvent()
+            bloodDonationViewModel.donationEvent.observe(this) { v ->
+                if (v != null) {
+                    Log.d("EVT",v.toString())
+
+                    setAdapterDonationEvent(v)
                 }
             }
         }
@@ -98,11 +111,50 @@ class BloodDonationActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAdapterDonorReq(list: List<DonorRequest>,mBloodType:String) {
-        var s = ArrayList<DonorRequest>()
+
+    private fun setAdapterDonationEvent(list: List<DonorEvent>) {
+        val s = ArrayList<DonorEvent>()
         var counter = 0
         first@ for (i in list) {
-            if (i.province == province) {
+            if (i.city.equals(city,true)) {
+                s.add(i)
+                counter++
+            }
+            if (counter == 5) break@first
+        }
+        if (s.isEmpty()) {
+            binding.ltNoDataDonationEvent.visibility = View.VISIBLE
+            binding.rvHorizontalDonorEvents.alpha = 0F
+        } else {
+            binding.ltNoDataDonationEvent.visibility = View.GONE
+            binding.rvHorizontalDonorEvents.alpha = 1F
+        }
+        val layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHorizontalDonorEvents.layoutManager = layoutManager
+
+        val mAdapter = HorizontalDonorEventAdapter(s)
+        binding.rvHorizontalDonorEvents.adapter = mAdapter
+
+        mAdapter.setOnItemClickCallback(object : HorizontalDonorEventAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: DonorEvent) {
+
+                val intent =
+                    Intent(this@BloodDonationActivity, DetailDonationEventsActivity::class.java)
+                intent.putExtra(DetailDonationEventsActivity.EXTRA_DONATION_EVENT, data)
+                startActivity(intent)
+            }
+
+        })
+
+    }
+
+
+    private fun setAdapterDonorReq(list: List<DonorRequest>, mBloodType: String) {
+        val s = ArrayList<DonorRequest>()
+        var counter = 0
+        first@ for (i in list) {
+            if (i.city.equals(city,true) && i.uid != FirebaseAuth.getInstance().currentUser?.uid){
                 s.add(i)
                 counter++
             }
@@ -134,9 +186,13 @@ class BloodDonationActivity : AppCompatActivity() {
                         this@BloodDonationActivity,
                         DetailDonorRequestActivity::class.java
                     )
-                    val bt=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
-                    val comp=helperBloodDonors.checkCompatibility(mBloodType,bt,this@BloodDonationActivity)
-                    val compColor=helperBloodDonors.setColor(comp,this@BloodDonationActivity)
+                    val bt = HelperBloodDonors.toBloodType(data.bloodType, data.rhesus)
+                    val comp = HelperBloodDonors.checkCompatibility(
+                        mBloodType,
+                        bt,
+                        this@BloodDonationActivity
+                    )
+                    val compColor = HelperBloodDonors.setColor(comp, this@BloodDonationActivity)
                     intent.putExtra(DetailDonorRequestActivity.EXTRA_DONOR_REQ, data)
                     intent.putExtra(DetailDonorRequestActivity.EXTRA_COMP, comp)
                     intent.putExtra(DetailDonorRequestActivity.EXTRA_COMP_COLOR, compColor)
@@ -151,37 +207,35 @@ class BloodDonationActivity : AppCompatActivity() {
 
     @SuppressLint("StringFormatMatches")
     private fun setData(data: DonorDataRoom) {
-        if (data != null) {
 
-            val mLastDOnate =
-                if (data?.lastDonateDate != null) helperDate.stringToDate(data.lastDonateDate!!) else null
+        val mLastDOnate =
+            if (data.lastDonateDate != null) HelperDate.stringToDate(data.lastDonateDate!!) else null
 
 
-            binding.tvVerifyState.text =
-                if (data.isVerified) resources.getString(R.string.verified_account) else getString(
-                    R.string.unverified_account
-                )
-            if (mLastDOnate != null) {
-                binding.lastBloodDonation.text = getString(
-                    R.string.date_format,
-                    mLastDOnate!!.month,
-                    mLastDOnate!!.dayOfMonth,
-                    mLastDOnate!!.year
-                )
+        binding.tvVerifyState.text =
+            if (data.isVerified) resources.getString(R.string.verified_account) else getString(
+                R.string.unverified_account
+            )
+        if (mLastDOnate != null) {
+            binding.lastBloodDonation.text = getString(
+                R.string.date_format,
+                HelperDate.monthToString(mLastDOnate.month,this),
+                mLastDOnate.dayOfMonth,
+                mLastDOnate.year
+            )
 
-                val x: LocalDate = helperDate.canDonateAgain(mLastDOnate!!)
-                binding.canDonateAgain.text = getString(
-                    R.string.date_format,
-                    x.month,
-                    x.dayOfMonth,
-                    x.year
-                )
-            } else {
-                binding.lastBloodDonation.text = "--"
-                binding.canDonateAgain.text = "--"
-            }
-            binding.tvBloodType.text = helperBloodDonors.toBloodType(data.bloodType, data.rhesus)
+            val x: LocalDate = HelperDate.canDonateAgain(mLastDOnate)
+            binding.canDonateAgain.text = getString(
+                R.string.date_format,
+                HelperDate.monthToString(x.month,this),
+                x.dayOfMonth,
+                x.year
+            )
+        } else {
+            binding.lastBloodDonation.text = "--"
+            binding.canDonateAgain.text = "--"
         }
+        binding.tvBloodType.text = HelperBloodDonors.toBloodType(data.bloodType, data.rhesus)
     }
 
 }

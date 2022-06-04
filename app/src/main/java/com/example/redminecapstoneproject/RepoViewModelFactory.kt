@@ -9,6 +9,7 @@ import com.example.redminecapstoneproject.ui.blooddonation.BloodDonationViewMode
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqViewModel
 import com.example.redminecapstoneproject.ui.donordata.DonorDataViewModel
 import com.example.redminecapstoneproject.ui.faq.FaqViewModel
+import com.example.redminecapstoneproject.ui.home.HomeViewModel
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
 import com.example.redminecapstoneproject.ui.mydonorreq.MyDonorReqViewModel
 import com.example.redminecapstoneproject.ui.otp.OtpViewModel
@@ -69,6 +70,10 @@ class RepoViewModelFactory(private val context: Context) : ViewModelProvider.Fac
             modelClass.isAssignableFrom(VerifyAccountViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
                 return VerifyAccountViewModel(Injection.provideRepository(context)) as T
+            }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                return HomeViewModel(Injection.provideRepository(context)) as T
             }
 
 

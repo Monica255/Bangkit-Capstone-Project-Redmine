@@ -4,8 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.database.UserRoomDatabase
-import com.example.redminecapstoneproject.helper.helperDate
+import com.example.redminecapstoneproject.helper.HelperDate
 import com.example.redminecapstoneproject.retrofit.ApiConfig
 import com.example.redminecapstoneproject.ui.testing.*
 import com.google.firebase.auth.FirebaseAuth
@@ -13,14 +14,14 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.*
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class Repository(
@@ -31,12 +32,6 @@ class Repository(
     private var mAuth: FirebaseAuth? = null
     private var mDb: FirebaseDatabase? = null
     private var dbRef: DatabaseReference? = null
-    private var msg:Pair<Boolean,String>?=null
-    set(value) {
-        field=value
-            _message.value=value!!
-        Log.d("TES","set "+_message.value.toString())
-    }
 
     private val _message = MutableLiveData<Pair<Boolean, String>>()
     val message: LiveData<Pair<Boolean, String>> = _message
@@ -65,11 +60,20 @@ class Repository(
     private val _donorReq = MutableLiveData<List<DonorRequest>>()
     val donorReq: LiveData<List<DonorRequest>> = _donorReq
 
+    private val _donorEvent = MutableLiveData<List<DonorEvent>>()
+    val donorEvent: LiveData<List<DonorEvent>> = _donorEvent
+
     private val _faq = MutableLiveData<List<Faq>>()
     val faq: LiveData<List<Faq>> = _faq
 
     private val _responseVerification = MutableLiveData<ResponseVerification>()
     val responseVerification: LiveData<ResponseVerification> = _responseVerification
+
+    private val _responseOtp= MutableLiveData<ResponseOtp>()
+    val responseOtp: LiveData<ResponseOtp> = _responseOtp
+
+    private val _ff = MutableLiveData<FunFact>()
+    val ff: LiveData<FunFact> = _ff
 
     //private var _userAccountData = MutableLiveData<RegisAccountData>()
     //var userAccountData: LiveData<RegisAccountData> = _userAccountData
@@ -84,16 +88,43 @@ class Repository(
         _firebaseUser.value = FirebaseAuth.getInstance().currentUser
         dbRef =
             FirebaseDatabase.getInstance(FIREBASE_URL).reference
+
     }
 
     fun deleteDonorReq(id: String) {
         dbRef?.child(REF_DONOR_REQ)?.child(id)?.removeValue()?.addOnCompleteListener {
             if (it.isSuccessful) {
-                _message.value = Pair(false, "Donor request is successfully deleted!")
+                _message.value = Pair(false, c.resources.getString(R.string.msg_delete_donor_req) )
             } else {
-                _message.value = Pair(true, "Failed to delete donor request")
+                _message.value = Pair(true, c.resources.getString(R.string.failed_to_deleted))
             }
         }
+    }
+    fun getDonationEvent() {
+        _isLoading.value = true
+        dbRef?.child(REF_DONATION_EVENTS)?.child("data")?.orderByChild("available")?.equalTo(true)
+            ?.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val donorEvents = ArrayList<DonorEvent>()
+                    if (snapshot.exists()) {
+                        for (i in snapshot.children) {
+                            val donorEvent= i.getValue(DonorEvent::class.java)
+                            if (donorEvent != null) {
+                                Log.d("EVT","repo "+donorEvent.toString())
+                                donorEvents.add(donorEvent)
+                            }
+                        }
+                    }
+                    _donorEvent.value = donorEvents
+                    _isLoading.value = false
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("firebase", error.message)
+                    _isLoading.value = false
+                }
+            })
+        _isLoading.value = false
     }
 
     fun getMyDonoReq() {
@@ -151,20 +182,21 @@ class Repository(
                     _isLoading.value = false
                 }
             })
+        _isLoading.value = false
     }
 
     fun postDonorReq(data: DonorRequest, uid: String) {
 
         _isLoading.value=true
         mDb?.getReference(REF_DONOR_REQ)
-            ?.child(helperDate.getDonorReqRef(uid, data.timestamp))?.setValue(data)
+            ?.child(HelperDate.getDonorReqRef(uid, data.timestamp))?.setValue(data)
             ?.addOnCompleteListener {
                 if (it.isSuccessful) {
                     _isLoading.value = false
-                    _message.value = Pair(false, "Donor request is successfully posted!")
+                    _message.value = Pair(false,c.resources.getString(R.string.msg_donor_req_posted))
                 } else {
                     _isLoading.value = false
-                    _message.value = Pair(true, "Failed to post donor request")
+                    _message.value = Pair(true, c.resources.getString(R.string.failed_to_post_donor_req))
                 }
             }
     }
@@ -175,8 +207,7 @@ class Repository(
         executorService.execute {
             _isLoading.postValue(true)
             val uid = data.uid.toRequestBody("text/plain".toMediaType())
-            Log.d("DD",data.toString())
-            val api = ApiConfig.getApiServiceOCR().postIDCard(data.imagefile,uid)
+            val api = ApiConfig.getApiServiceML().postIDCard(data.imagefile,uid)
             api.enqueue(object : Callback<ResponseVerification> {
                 override fun onResponse(
                     call: Call<ResponseVerification>,
@@ -187,11 +218,8 @@ class Repository(
                         if (responseBody != null) {
                             _responseVerification.postValue(responseBody!!)
                         }
-                        msg=Pair(false,"Your account is now verified")
-                        Log.d("TES", msg.toString())
                        // _message.postValue(Pair(false,"Your account is now verified"))
                     } else {
-                        msg=Pair(true,"${ response.code()}: Failed to request account verification")
                         //_message.postValue(Pair(true,"${ response.code()}: Failed to request account verification"))
                     }
                     _isLoading.postValue(false)
@@ -200,16 +228,49 @@ class Repository(
 
                 override fun onFailure(call: Call<ResponseVerification>, t: Throwable) {
                     _isLoading.postValue(false)
-                    msg=Pair(true,"Failed to request account verification")
                     //_message.postValue(Pair(true,"Failed to request account verification"))
                 }
 
             })
         }
-        Log.d("TES",msg.toString())
-        if(msg!=null)_message.value=msg!!
-        Log.d("TES","2 "+_message.value.toString())
     }
+
+    fun sendOtp(email:String){
+        executorService.execute {
+
+            _isLoading.postValue(true)
+            val email = email.toRequestBody("text/plain".toMediaType())
+            val api = ApiConfig.getApiServiceML().sendOtp(email)
+            api.enqueue(object : Callback<ResponseOtp> {
+                override fun onResponse(
+                    call: Call<ResponseOtp>,
+                    response: Response<ResponseOtp>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+                        if (responseBody != null) {
+                            _responseOtp.postValue(responseBody!!)
+                            Log.d("EVT",responseBody.toString())
+                        }
+                        // _message.postValue(Pair(false,"Your account is now verified"))
+                    } else {
+                        Log.d("EVT",response.code().toString())
+
+                        //_message.postValue(Pair(true,"${ response.code()}: Failed to request account verification"))
+                    }
+                    _isLoading.postValue(false)
+
+                }
+
+                override fun onFailure(call: Call<ResponseOtp>, t: Throwable) {
+                    _isLoading.postValue(false)
+                    //_message.postValue(Pair(true,"Failed to request account verification"))
+                }
+
+            })
+        }
+    }
+
 
     fun getProvinces() {
         _isLoading.value = true
@@ -340,7 +401,6 @@ class Repository(
                             if (key == "otpCode") {
                                 _otpCode.value = otpCode!![key] as String
                                 _isLoading.value = false
-                                Log.d("TAG", _otpCode.value.toString())
                             }
                         }
                     } else {
@@ -360,18 +420,16 @@ class Repository(
     fun registerAccount(email: String, pass: String, name: String) {
         _isLoading.value = true
         mAuth?.createUserWithEmailAndPassword(email, pass)?.addOnCompleteListener {
-            Log.d("TAG", "user created")
 
             if (it.isSuccessful) {
                 _isLoading.value = false
-                _message.value = Pair(false, "Your account is successfully registered!")
+                _message.value = Pair(false, c.resources.getString(R.string.msg_account_registered))
                 _firebaseUser.value = FirebaseAuth.getInstance().currentUser
-                //Log.d("TAG", "registered "+FirebaseAuth.getInstance().currentUser!!.uid)
                 setUserAccountData(name)
 
             } else {
                 _isLoading.value = false
-                _message.value = Pair(true, "Failed to register user")
+                _message.value = Pair(true, c.resources.getString(R.string.msg_failed_to_register))
             }
         }
 
@@ -401,7 +459,6 @@ class Repository(
                     val errorUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
                     FirebaseAuth.getInstance().signOut()
                     errorUser?.delete()
-                    //_message.value = Pair(true, "Failed to register user")
                 }
             }
     }
@@ -429,15 +486,14 @@ class Repository(
         _isLoading.value = true
         mAuth?.signInWithEmailAndPassword(email, pass)?.addOnCompleteListener {
             if (it.isSuccessful) {
-                _isLoading.value = false
+                //_isLoading.value = false
                 getUserAccountData()
                 getUserDonorData()
-                _message.value = Pair(false, "login successfully")
+                _message.value = Pair(false, c.resources.getString(R.string.msg_login_successfully))
                 _firebaseUser.value = FirebaseAuth.getInstance().currentUser
             } else {
                 _isLoading.value = false
-                _message.value = Pair(true, "Failed to login")
-                Log.d("LOADING", _isLoading.value.toString() + " login")
+                _message.value = Pair(true, c.resources.getString(R.string.msg_email_pass_might_be_wrong))
             }
         }
 
@@ -452,35 +508,18 @@ class Repository(
                     if (it.isSuccessful) {
                         _isLoading.value = false
                         executorService.execute { userRoomDatabase.userDao().insertDonorData(data) }
-                        _message.value = Pair(false, "Your data is successfully updated!")
+                        _message.value = Pair(false, c.resources.getString(R.string.msg_your_data_updated))
 
                     } else {
                         _isLoading.value = false
 
-                        _message.value = Pair(true, "Failed to update data")
+                        _message.value = Pair(true, c.resources.getString(R.string.msg_failed_to_update))
 
                     }
                 }
         }
     }
 
-    fun saveFaq(data: List<Faq>) {
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            _isLoading.value = true
-            mDb?.getReference(REF_FAQ)?.setValue(data)
-                ?.addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        _isLoading.value = false
-                        _message.value = Pair(false, "Faq saved")
-
-                    } else {
-                        _isLoading.value = false
-                        _message.value = Pair(true, "Failed to save faq")
-
-                    }
-                }
-        }
-    }
 
     fun saveUserAccountData(data: RegisAccountDataRoom) {
         if (FirebaseAuth.getInstance().currentUser != null) {
@@ -493,10 +532,10 @@ class Repository(
                         executorService.execute {
                             userRoomDatabase.userDao().insertAccountData(data)
                         }
-                        _message.value = Pair(false, "Your data is successfully updated!")
+                        _message.value = Pair(false, c.resources.getString(R.string.msg_your_data_updated))
                     } else {
                         _isLoading.value = false
-                        _message.value = Pair(true, "Failed to update data")
+                        _message.value = Pair(true, c.resources.getString(R.string.msg_failed_to_update))
 
                     }
                 }
@@ -529,11 +568,11 @@ class Repository(
                         _isLoading.value = false
                         getUserDonorData()
                         //executorService.execute { userRoomDatabase.userDao().insertDonorData(user) }
-                        _message.value = Pair(false, "Your user data is successfully saved!")
+                        _message.value = Pair(false, c.resources.getString(R.string.msg_save_data))
 
                     } else {
                         _isLoading.value = false
-                        _message.value = Pair(true, "Failed to save data")
+                        _message.value = Pair(true, c.resources.getString(R.string.msg_save_failed))
                     }
                 }
         }
@@ -542,35 +581,27 @@ class Repository(
 
     fun getUserAccountDataDb(): LiveData<RegisAccountDataRoom> {
         //getUserDonorData()
-        val data = userRoomDatabase.userDao()
-            .getAccountData(FirebaseAuth.getInstance().currentUser?.uid.toString())
         /*if(data.value==null){
             getUserDonorData()
         }*/
-        return data
+        return userRoomDatabase.userDao()
+            .getAccountData(FirebaseAuth.getInstance().currentUser?.uid.toString())
     }
 
     fun getUserDonorDataDb(): LiveData<DonorDataRoom> {
-        //getUserDonorData()
         val data = userRoomDatabase.userDao()
             .getDonorData(FirebaseAuth.getInstance().currentUser?.uid.toString())
-        Log.d("TAG", "crn user " + FirebaseAuth.getInstance().currentUser?.uid.toString())
-        /*if(data.value==null){
-            getUserDonorData()
-            Log.d("DATA","rp "+data.value.toString())
-        }*/
         return data
     }
 
     fun getAllFaqDb(): LiveData<List<Faq>> {
-        val data = userRoomDatabase.userDao()
+        return userRoomDatabase.userDao()
             .getAllFaq()
-        return data
     }
 
-    fun getAllFaq(){
-        //_isLoading.value=true
-        mDb?.getReference(REF_FAQ)?.addValueEventListener(object : ValueEventListener {
+    fun getAllFaq(chind: String){
+        _isLoading.value=true
+        mDb?.getReference(REF_FAQ)?.child(chind)?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val faqList = ArrayList<Faq>()
 
@@ -587,14 +618,52 @@ class Repository(
                         faqList
                     )
                 }
+                _isLoading.value = false
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("firebase", error.message)
+                _isLoading.value=false
+            }
+        })
+    }
+
+    fun getAllFunFactsDb(): LiveData<List<FunFact>> {
+        return userRoomDatabase.userDao()
+            .getAllFunFacts()
+    }
+
+
+    fun getAllFunFact(child: String){
+        //_isLoading.value=true
+        mDb?.getReference(REF_FF)?.child(child)?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val ffList = ArrayList<FunFact>()
+
+                if (snapshot.exists()) {
+                    for (i in snapshot.children) {
+                        val ff = i.getValue(FunFact::class.java)
+                        if (ff != null) {
+                            ffList.add(ff)
+                        }
+                    }
+                }
+                executorService.execute {
+                    userRoomDatabase.userDao().insertFunFacts(
+                        ffList
+                    )
+                }
                 //_isLoading.value = false
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("firebase", error.message)
+                _isLoading.value=false
             }
         })
     }
+
 
 
     fun getUserAccountData() {
@@ -602,7 +671,6 @@ class Repository(
         dbRef?.child(REF_USERS)?.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             ?.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("DATA", "changed")
                     if (snapshot.exists()) {
                         var uid = ""
                         var isVerified = false
@@ -629,9 +697,7 @@ class Repository(
                                 RegisAccountDataRoom(uid, isVerified, name, email, otpCode)
                             )
                         }
-
-                        // Log.d("TAG", "repo " + _userAccountData.value.toString())
-                    }//else _userAccountData.value=null
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -644,7 +710,6 @@ class Repository(
 
     fun getUserDonorData() {
         var userDonorData: HashMap<String, Any>?
-        //var userDonorData2: DonorData? = null
 
         dbRef?.child(REF_USERS_DATA)?.child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             ?.addValueEventListener(object : ValueEventListener {
@@ -673,7 +738,6 @@ class Repository(
                                 "verified" -> {
                                     isVerified =
                                         userDonorData!![key] as Boolean
-                                    Log.d("TAG", "isv " + userDonorData!![key].toString())
                                 }
 
                                 "gender" -> gender = userDonorData!![key] as String
@@ -692,14 +756,9 @@ class Repository(
                                 "hadCovid" -> hadCovid =
                                     userDonorData!![key] as Boolean
                                 "lastDonateDate" -> lastDonateDate =
-                                        //if (userDonorData!![key] != null) helperDate.stringToDate(
                                     userDonorData!![key] as String
-                                //) else null
                                 "recoveryDate" -> recoveryDate =
-                                        //if (userDonorData!![key] != null) helperDate.stringToDate(
                                     userDonorData!![key] as String
-                                //) else null
-
                             }
 
                         }
@@ -741,14 +800,14 @@ class Repository(
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     _isLoading.value = false
-                    _message.value = Pair(false, "Login with google account")
+                    _message.value = Pair(false, c.resources.getString(R.string.msg_login_with_google_acc))
                     //setUserAccountData()
                     getUserAccountData()
                     getUserDonorData()
                     _firebaseUser.value = FirebaseAuth.getInstance().currentUser
                 } else {
                     _isLoading.value = false
-                    _message.value = Pair(true, "Failed to register user")
+                    _message.value = Pair(true, c.resources.getString(R.string.msg_failed_to_register))
                     Log.d("TAG", "signInWithCredential:failure")
                 }
             }
@@ -758,12 +817,17 @@ class Repository(
 
     companion object {
         const val REF_FAQ="faq"
+        const val REF_FAQ_EN="faq_en"
+        const val REF_FAQ_IN="faq_in"
+        const val REF_FF="fun_facts"
+        const val REF_FF_EN="fun_fact_en"
+        const val REF_FF_IN="fun_fact_in"
         const val REF_USERS = "users"
         const val REF_USERS_DATA = "users_data"
         const val REF_DONOR_REQ = "donor_req"
+        const val REF_DONATION_EVENTS= "donation_events"
         const val REF_OTP_CODE = "otp_codes"
-        const val FIREBASE_URL =
-            "https://redmine-350506-default-rtdb.asia-southeast1.firebasedatabase.app"
+        const val FIREBASE_URL = "https://redmine-350506-default-rtdb.asia-southeast1.firebasedatabase.app"
     }
 
 }

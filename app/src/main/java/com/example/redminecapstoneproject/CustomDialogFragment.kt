@@ -17,9 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.example.redminecapstoneproject.adapter.AlertDialogAdapter
-import com.example.redminecapstoneproject.helper.helperUserDetail
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.blooddonation.BloodDonationViewModel
 import com.example.redminecapstoneproject.ui.blooddonation.BloodDonorsActivity
+import com.example.redminecapstoneproject.ui.blooddonation.DonationEventsActivity
 import com.example.redminecapstoneproject.ui.blooddonation.DonorRequestActivity
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqViewModel
@@ -29,9 +30,8 @@ import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
 import com.example.redminecapstoneproject.ui.profile.UserDetailViewModel
 import com.example.redminecapstoneproject.ui.testing.City
 import com.example.redminecapstoneproject.ui.testing.Province
-import kotlinx.coroutines.flow.combine
 
-class CustomDialogFragment() : DialogFragment() {
+class CustomDialogFragment : DialogFragment() {
     private lateinit var dialogView: View
     private lateinit var title: String
     private lateinit var sv: SearchView
@@ -65,7 +65,7 @@ class CustomDialogFragment() : DialogFragment() {
                             userDetailViewModel
                         )
                     } else {
-                        setAlertDialogAdapter(title, mListItemsProvince)
+                        setAlertDialogAdapter(mListItemsProvince)
                     }
                 }
             }
@@ -84,15 +84,23 @@ class CustomDialogFragment() : DialogFragment() {
                                 userDetailViewModel
                             )
                         } else {
-                            if (isAdded) setAlertDialogAdapter(title, mListItemsCity)
+                            if (isAdded) setAlertDialogAdapter(mListItemsCity)
                         }
                     }
                 }
         }
 
-
+        val donorDataViewModel = ViewModelProvider(
+            requireActivity(),
+            RepoViewModelFactory.getInstance(requireActivity())
+        )[DonorDataViewModel::class.java]
         userDetailViewModel.isLoading.observe(requireActivity()){
-            showLoading(it)
+            Log.d("EVT",it.toString())
+            if(activity is DonorDataActivity && donorDataViewModel.donorData.province==null){
+
+            }else{
+                showLoading(it)
+            }
         }
 
 
@@ -141,7 +149,7 @@ class CustomDialogFragment() : DialogFragment() {
             }
         }
 
-        if (isAdded) setAlertDialogAdapter(title, filteredList)
+        if (isAdded) setAlertDialogAdapter(filteredList)
     }
 
 
@@ -187,6 +195,7 @@ class CustomDialogFragment() : DialogFragment() {
         btClose = dialogView.findViewById(R.id.bt_close)
         tvTitle = dialogView.findViewById(R.id.tv_dialog_title)
         tvWarning = dialogView.findViewById(R.id.tv_please_select_province)
+        lottie= dialogView.findViewById(R.id.lt_javrvis)
         rv = dialogView.findViewById(R.id.rv_alert_dialog)
 
         when (activity) {
@@ -196,7 +205,7 @@ class CustomDialogFragment() : DialogFragment() {
                     userDetailViewModel._newUserData.value?.let {
                         it.province?.let { it1 ->
                             userDetailViewModel.getCities(
-                                helperUserDetail.getProvinceID(it1)
+                                HelperUserDetail.getProvinceID(it1)
                             )
                         }
                     }
@@ -211,7 +220,7 @@ class CustomDialogFragment() : DialogFragment() {
                         tvWarning.visibility = View.GONE
                         rv.visibility = View.VISIBLE
                         userDetailViewModel.getCities(
-                            helperUserDetail.getProvinceID(donorDataViewModel.donorData.province.toString())
+                            HelperUserDetail.getProvinceID(donorDataViewModel.donorData.province.toString())
                         )
 
                     }
@@ -226,7 +235,7 @@ class CustomDialogFragment() : DialogFragment() {
                         tvWarning.visibility = View.GONE
                         rv.visibility = View.VISIBLE
                         userDetailViewModel.getCities(
-                            helperUserDetail.getProvinceID(createDonorReqViewModel.donorReq.province.toString())
+                            HelperUserDetail.getProvinceID(createDonorReqViewModel.donorReq.province.toString())
                         )
                     }
                 }
@@ -247,7 +256,6 @@ class CustomDialogFragment() : DialogFragment() {
 
 
     private fun setAlertDialogAdapter(
-        title: String,
         items: List<Any>?
 
     ) {
@@ -287,7 +295,7 @@ class CustomDialogFragment() : DialogFragment() {
                     when (activity) {
                         is DonorDataActivity -> {
                             tvCity.apply {
-                                if (helperUserDetail.toProvNameID(
+                                if (HelperUserDetail.toProvNameID(
                                         data.provName,
                                         data.provId.toString()
                                     ) != donorDataViewModel.donorData.province
@@ -296,7 +304,7 @@ class CustomDialogFragment() : DialogFragment() {
                                     text = "City"
                                     alpha = 0.6F
                                     donorDataViewModel.donorData.province =
-                                        helperUserDetail.toProvNameID(
+                                        HelperUserDetail.toProvNameID(
                                             data.provName,
                                             data.provId.toString()
                                         )
@@ -304,13 +312,13 @@ class CustomDialogFragment() : DialogFragment() {
                             }
 
                             userDetailViewModel.getCities(
-                                helperUserDetail.getProvinceID(donorDataViewModel.donorData.province.toString())
+                                HelperUserDetail.getProvinceID(donorDataViewModel.donorData.province.toString())
                             )
                         }
                         is UserDetailActivity -> {
                             userDetailViewModel.updateDonorDataRoom(
                                 Pair(
-                                    helperUserDetail.toProvNameID(
+                                    HelperUserDetail.toProvNameID(
                                         data.provName,
                                         data.provId.toString()
                                     ), "province"
@@ -319,12 +327,11 @@ class CustomDialogFragment() : DialogFragment() {
                             //userDetailViewModel.provinceId = data.provId
                             tvCity.apply {
                                 if (userDetailViewModel.isProvinceDif()) {
-                                    Log.d("TAG", userDetailViewModel.isProvinceDif().toString())
                                     text = "City"
                                     alpha = 0.6F
                                 } else {
                                     val city = userDetailViewModel.userData.value?.city ?: "City"
-                                    text =helperUserDetail.toTitleCase(city)
+                                    text =HelperUserDetail.toTitleCase(city)
                                     alpha = 1F
                                 }
 
@@ -333,7 +340,7 @@ class CustomDialogFragment() : DialogFragment() {
                         }
                         is CreateDonorReqActivity -> {
                             tvCity.apply {
-                                if (helperUserDetail.toProvNameID(
+                                if (HelperUserDetail.toProvNameID(
                                         data.provName,
                                         data.provId.toString()
                                     ) != createDonorReqViewModel.donorReq.province
@@ -342,7 +349,7 @@ class CustomDialogFragment() : DialogFragment() {
                                     text = "City"
                                     alpha = 0.6F
                                     createDonorReqViewModel.donorReq.province =
-                                        helperUserDetail.toProvNameID(
+                                        HelperUserDetail.toProvNameID(
                                             data.provName,
                                             data.provId.toString()
                                         )
@@ -350,7 +357,7 @@ class CustomDialogFragment() : DialogFragment() {
                             }
 
                             userDetailViewModel.getCities(
-                                helperUserDetail.getProvinceID(createDonorReqViewModel.donorReq.province.toString())
+                                HelperUserDetail.getProvinceID(createDonorReqViewModel.donorReq.province.toString())
                             )
                         }
                     }
@@ -358,7 +365,7 @@ class CustomDialogFragment() : DialogFragment() {
 
                     val tv: TextView = requireActivity().findViewById(R.id.tv_province)
                     tv.apply {
-                        text = helperUserDetail.toTitleCase(data.provName)
+                        text = HelperUserDetail.toTitleCase(data.provName)
                         alpha = 1F
                     }
 
@@ -380,6 +387,9 @@ class CustomDialogFragment() : DialogFragment() {
                         is DonorRequestActivity -> {
                             bloodDonationViewModel.filterCity.value = data.cityName
                         }
+                        is DonationEventsActivity -> {
+                            bloodDonationViewModel.filterCity.value = data.cityName
+                        }
                     }
 
 
@@ -390,7 +400,7 @@ class CustomDialogFragment() : DialogFragment() {
 
 
                     tv?.apply {
-                        text = helperUserDetail.toTitleCase(data.cityName)
+                        text = HelperUserDetail.toTitleCase(data.cityName)
                         alpha = 1F
                     }
                     dismiss()

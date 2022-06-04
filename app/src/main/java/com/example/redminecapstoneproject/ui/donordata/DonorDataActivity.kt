@@ -19,15 +19,17 @@ class DonorDataActivity : AppCompatActivity() {
             RepoViewModelFactory.getInstance(this)
         )[DonorDataViewModel::class.java]
 
-        val mFragmentManager = supportFragmentManager
-        val mFirstDonorDataFragment = FirstDonorDataFragment()
-        val fragment =
-            mFragmentManager.findFragmentByTag(FirstDonorDataFragment::class.java.simpleName)
-
-        donorDataViewModel.name= intent.getStringExtra("name").toString()
+        /*val mFragmentManager = supportFragmentManager
+        FirstDonorDataFragment()
+        mFragmentManager.findFragmentByTag(FirstDonorDataFragment::class.java.simpleName)
+*/
+        donorDataViewModel.name= intent.getStringExtra(EXTRA_NAME).toString()
 
         binding.btBack.setOnClickListener {
             onBackPressed()
         }
+    }
+    companion object{
+        const val EXTRA_NAME="name"
     }
 }

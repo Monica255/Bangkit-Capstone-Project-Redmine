@@ -13,11 +13,9 @@ import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityCreateDonorReqBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.helper.helperUserDetail
-import com.example.redminecapstoneproject.ui.mydonorreq.MyDonorReqActivity
-import com.example.redminecapstoneproject.ui.profile.UserDetailViewModel
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
@@ -83,6 +81,13 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         binding = ActivityCreateDonorReqBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.etPatientName.onFocusChangeListener=this
+        binding.etNumberOfBloodNeeded.onFocusChangeListener=this
+        binding.etHospitalName.onFocusChangeListener=this
+        binding.etDescription.onFocusChangeListener=this
+        binding.etContactName.onFocusChangeListener=this
+        binding.etPhoneNumber.onFocusChangeListener=this
+
         val createDonorReqViewModel =
             ViewModelProvider(
                 this,
@@ -105,10 +110,10 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
 
-        /*createDonorReqViewModel.message.observe(this){
+        createDonorReqViewModel.message.observe(this){
             makeToast(it.first,it.second)
         }
-*/
+
         binding.btBack.setOnClickListener {
             finish()
         }
@@ -116,7 +121,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         binding.btPost.setOnClickListener {
             if (isDataValid()) {
                 createDonorReqViewModel.donorReq.uid=FirebaseAuth.getInstance().currentUser?.uid
-                createDonorReqViewModel.donorReq.time=helperDate.getCurrentTime()
+                createDonorReqViewModel.donorReq.time=HelperDate.getCurrentTime()
                 createDonorReqViewModel.donorReq.timestamp="-${ System.currentTimeMillis() }".toLong()
 
                 FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
@@ -161,9 +166,9 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 showLoading(true)
             }else{
                 binding.btPost.postDelayed({
-                    createDonorReqViewModel.message.observe(this){
-                        makeToast(it.first,it.second)
-                        if(!it.first){
+                    createDonorReqViewModel.message.observe(this){ v->
+                        makeToast(v.first,v.second)
+                        if(!v.first){
                             showLoading(false)
                             finish()
                         }
@@ -190,7 +195,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 this,
                 RepoViewModelFactory.getInstance(this)
             )[CreateDonorReqViewModel::class.java]
-        var donorReqId=helperBloodDonors.toDonorReqId(uid,timeStamp)
+        val donorReqId=HelperBloodDonors.toDonorReqId(uid,timeStamp)
         val builder = AlertDialog.Builder(this)
         val mConfirmDialog = builder.create()
 
@@ -221,7 +226,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             )[CreateDonorReqViewModel::class.java]
         createDonorReqViewModel.donorReq=data
         binding.apply {
-            tvToolbarTitle.text="Donor Request"
+            tvToolbarTitle.text=resources.getString(R.string.donor_req)
             btDelete.visibility=View.VISIBLE
             etPatientName.setText(data.patientName)
             etPatientName.isEnabled=false
@@ -251,7 +256,8 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             rbPositive.isClickable=false
             rbNegative.isClickable=false
 
-            tvProvince.text=helperUserDetail.getProvinceName(data.province.toString()).lowercase()?.replaceFirstChar(Char::titlecase)
+            tvProvince.text= HelperUserDetail.getProvinceName(data.province.toString()).lowercase()
+                .replaceFirstChar(Char::titlecase)
             cvPickProvince.isEnabled=false
             tvProvince.alpha=1F
 
@@ -292,11 +298,12 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             binding.etPhoneNumber.setText(data.phoneNumber)
             createDonorReqViewModel.donorReq.phoneNumber=data.phoneNumber
 
-            binding.tvProvince.text=helperUserDetail.getProvinceName(data.province.toString()).lowercase()?.replaceFirstChar(Char::titlecase)
+            binding.tvProvince.text=
+                HelperUserDetail.toTitleCase(HelperUserDetail.getProvinceName(data.province.toString()))
             createDonorReqViewModel.donorReq.province=data.province
             binding.tvProvince.alpha=1F
 
-            binding.tvCity.text=data.city?.lowercase()?.replaceFirstChar(Char::titlecase)
+            binding.tvCity.text=HelperUserDetail.toTitleCase(data.city)
             createDonorReqViewModel.donorReq.city=data.city
             binding.tvCity.alpha=1F
 
@@ -323,7 +330,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             if(msg.contains("delete",true)){
                 MotionToast.Companion.createColorToast(
                     this,
-                    "Deleted",
+                    getString(R.string.deleted),
                     msg,
                     MotionToast.TOAST_INFO,
                     MotionToast.GRAVITY_BOTTOM,
@@ -337,7 +344,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             }else{
                 MotionToast.Companion.createColorToast(
                     this,
-                    "Yey success 😍",
+                    getString(R.string.yey_success),
                     msg,
                     MotionToast.TOAST_SUCCESS,
                     MotionToast.GRAVITY_BOTTOM,
@@ -376,17 +383,6 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
     }
 
     private fun isDataValid(): Boolean {
-        Log.d("TAG", isPatientNameValid.toString())
-        Log.d("TAG", isNumberOfBloodBagValid.toString())
-        Log.d("TAG", isBloodTypeValid.toString())
-        Log.d("TAG", isRhesusValid.toString())
-        Log.d("TAG", isProvinceValid.toString())
-        Log.d("TAG", isCityValid.toString())
-        Log.d("TAG", isHospitalNameValid.toString())
-        Log.d("TAG", isDescriptionValid.toString())
-        Log.d("TAG", isContactNameValid.toString())
-        Log.d("TAG", isPhoneNumberValid.toString())
-
         return isPatientNameValid && isNumberOfBloodBagValid && isBloodTypeValid && isRhesusValid && isProvinceValid && isCityValid && isHospitalNameValid && isDescriptionValid && isContactNameValid && isPhoneNumberValid
     }
 
@@ -439,7 +435,15 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         } else {
             val radio: RadioButton = this.findViewById(selectedBloodType)
             isBloodTypeValid = true
-            createDonorReqViewModel.donorReq.bloodType = radio.text.toString().lowercase()
+            if(radio.id==R.id.rb_a){
+                createDonorReqViewModel.donorReq.bloodType = "a"
+            }else if (radio.id==R.id.rb_b){
+                createDonorReqViewModel.donorReq.bloodType = "b"
+            }else if (radio.id==R.id.rb_ab){
+                createDonorReqViewModel.donorReq.bloodType = "ab"
+            }else{
+                createDonorReqViewModel.donorReq.bloodType = "o"
+            }
         }
     }
 
@@ -455,8 +459,13 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
         } else {
             val radio: RadioButton = this.findViewById(selectedRhesus)
             isRhesusValid = true
-            createDonorReqViewModel.donorReq.rhesus = radio.text.toString().lowercase()
-        }
+            if(radio.id==R.id.rb_negative){
+                createDonorReqViewModel.donorReq.rhesus = "negative"
+            }else if(radio.id==R.id.rb_positive){
+                createDonorReqViewModel.donorReq.rhesus = "positive"
+            }else{
+                createDonorReqViewModel.donorReq.rhesus = "unknown"
+            }        }
     }
 
     private fun checkHospitalName() {
@@ -535,6 +544,7 @@ class CreateDonorReqActivity : AppCompatActivity(), View.OnFocusChangeListener {
             when (v.id) {
                 R.id.et_patientName -> {
                     if (isFocused) {
+                        Log.d("EVT","name focused")
                         binding.ilPatientName.isErrorEnabled = false
                         binding.ilPatientName.error = ""
                     } else {

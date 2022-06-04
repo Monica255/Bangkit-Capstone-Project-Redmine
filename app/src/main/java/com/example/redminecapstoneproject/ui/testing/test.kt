@@ -1,27 +1,15 @@
 package com.example.redminecapstoneproject.ui.testing
 
 import android.os.Parcelable
-import androidx.lifecycle.MutableLiveData
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import okhttp3.MultipartBody
-import java.io.File
-import java.sql.Timestamp
 import java.time.LocalDate
 
-object test {
 
-
-
-
-}
-data class ResponseMsg(
-    var error: Boolean,
-    var message: String
-)
 data class ResponseVerification(
     var gender: String,
     var name: String,
@@ -130,6 +118,22 @@ data class DonorRequest(
     var timestamp: Long?=null
 ):Parcelable
 
+
+@Parcelize
+data class DonorEvent(
+    val id:String?=null,
+    val name:String?=null,
+    val time:String?=null,
+    val province: String?=null,
+    val city: String?=null,
+    val place:String?=null,
+    val description:String?=null,
+    val lat:Double?=null,
+    val lon:Double?=null,
+    val available:Boolean?=null,
+    val image:String?=null
+):Parcelable
+
 @Parcelize
 data class BloodDonors(
     var uid:String?=null,
@@ -173,4 +177,18 @@ data class Faq(
     val question:String="",
     val answer:String="",
     var expand:Boolean=false
+)
+
+@Entity
+data class FunFact(
+    @PrimaryKey
+    val ff_id:String="",
+    val fact:String="",
+    val language:String=""
+)
+
+data class ResponseOtp(
+    val databaseEmail:String,
+    val email:String,
+    val otpCode:String
 )

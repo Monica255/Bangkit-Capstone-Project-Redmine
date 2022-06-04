@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ui.ProfileFragment">
+    tools:context=".ui.profile.ProfileFragment">
 
 
     <ScrollView
@@ -54,7 +54,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:text="Dimas Ari L."
+                        tools:text="Dimas Ari L."
+                        android:maxLines="1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/img_profile"
                         app:layout_constraintTop_toTopOf="@id/img_profile" />

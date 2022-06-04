@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.databinding.FragmentDonorReqContactBinding
-import com.example.redminecapstoneproject.helper.helperUserDetail
-import com.example.redminecapstoneproject.ui.BloodDonorDetailsActivity
+import com.example.redminecapstoneproject.helper.HelperUserDetail
+import com.example.redminecapstoneproject.ui.blooddonation.BloodDonorDetailsActivity
 
 class DonorReqContactFragment : Fragment() {
     private var _binding: FragmentDonorReqContactBinding? = null
@@ -26,7 +26,7 @@ class DonorReqContactFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (isAdded) {
-            var detailDonorReqViewModel =
+            val detailDonorReqViewModel =
                 ViewModelProvider(requireActivity())[DetailDonorReqViewModel::class.java]
 
             val phoneNumber = detailDonorReqViewModel.phoneNumber
@@ -34,17 +34,16 @@ class DonorReqContactFragment : Fragment() {
 
 
             binding.btCopy.setOnClickListener {
-                phoneNumber?.let { it1 -> copyToClipBoard(it1) }
+                copyToClipBoard(phoneNumber)
             }
 
             binding.btCall.setOnClickListener {
-                Log.d("DR", phoneNumber)
-                phoneNumber?.let { it1 -> dialPhoneNumber(it1) }
+                dialPhoneNumber(phoneNumber)
 
             }
 
             binding.btWa.setOnClickListener {
-                phoneNumber?.let { it1 -> openWhatsApp(it1) }
+                openWhatsApp(phoneNumber)
 
             }
         }
@@ -59,9 +58,8 @@ class DonorReqContactFragment : Fragment() {
         return binding.root
     }
 
-    fun copyToClipBoard(phoneNumber: String) {
-        Log.d("DR", "copy " + phoneNumber)
-        val validPhone = helperUserDetail.toValidPhoneNumber(phoneNumber)
+    private fun copyToClipBoard(phoneNumber: String) {
+        val validPhone = HelperUserDetail.toValidPhoneNumber(phoneNumber)
         val clipboard: ClipboardManager? =
             ContextCompat.getSystemService(requireContext(), ClipboardManager::class.java)
         val clip: ClipData? =
@@ -70,21 +68,21 @@ class DonorReqContactFragment : Fragment() {
         if (clip != null) {
             clipboard?.setPrimaryClip(clip)
             if (isAdded) {
-                Toast.makeText(requireActivity(), "Copied to clipboard", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun openWhatsApp(phoneNumber: String) {
-        val validPhone = helperUserDetail.toValidPhoneNumber(phoneNumber)
-        val url = "https://api.whatsapp.com/send?phone=$validPhone"
+    private fun openWhatsApp(phoneNumber: String) {
+        val validPhone = HelperUserDetail.toValidPhoneNumber(phoneNumber)
+        val url = "https://wa.me/$validPhone"
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         startActivity(i)
     }
 
-    fun dialPhoneNumber(phoneNumber: String) {
-        val validPhone = helperUserDetail.toValidPhoneNumber(phoneNumber)
+    private fun dialPhoneNumber(phoneNumber: String) {
+        val validPhone = HelperUserDetail.toValidPhoneNumber(phoneNumber)
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$validPhone")
         if (activity?.let { intent.resolveActivity(it.packageManager) } != null) {
@@ -92,8 +90,6 @@ class DonorReqContactFragment : Fragment() {
         }
     }
 
-    companion object {
-        const val EXTRA_PHONE_NUMBER = "extra_phone_number"
-    }
+    companion object
 
 }

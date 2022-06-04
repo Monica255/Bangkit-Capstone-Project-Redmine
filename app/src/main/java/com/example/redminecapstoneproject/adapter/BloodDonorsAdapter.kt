@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.redminecapstoneproject.R
-import com.example.redminecapstoneproject.databinding.ItemVerticalAlertDialogBinding
 import com.example.redminecapstoneproject.databinding.ItemVerticalBloodDonorsBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperUserDetail
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.BloodDonors
 
 class BloodDonorsAdapter(private val list: List<BloodDonors>?):
@@ -23,9 +22,10 @@ class BloodDonorsAdapter(private val list: List<BloodDonors>?):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: BloodDonors) {
             binding.tvDonorName.text=data.name
-            binding.tvDonorLocation.text=helperBloodDonors.toLocation(data.city?.lowercase()?.replaceFirstChar(Char::titlecase),
-                data.province?.let { helperUserDetail.getProvinceName(it)?.lowercase()?.replaceFirstChar(Char::titlecase) })
-            binding.tvBloodType.text= helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
+            binding.tvDonorLocation.text=HelperBloodDonors.toLocation(data.city?.lowercase()?.replaceFirstChar(Char::titlecase),
+                data.province?.let { HelperUserDetail.getProvinceName(it).lowercase()
+                    .replaceFirstChar(Char::titlecase) })
+            binding.tvBloodType.text= HelperBloodDonors.toBloodType(data.bloodType,data.rhesus)
 
 
             val x: Int =if(data.gender=="male") R.drawable.img_profile_placeholder_male else R.drawable.img_profile_placeholder_female

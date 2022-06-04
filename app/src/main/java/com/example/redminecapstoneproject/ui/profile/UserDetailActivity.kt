@@ -3,12 +3,10 @@ package com.example.redminecapstoneproject.ui.profile
 import android.app.Activity
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -23,7 +21,7 @@ import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityUserDetailBinding
-import com.example.redminecapstoneproject.helper.helperUserDetail
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import com.example.redminecapstoneproject.ui.verifyaccount.VerifyAccountActivity
@@ -31,7 +29,7 @@ import www.sanju.motiontoast.MotionToast
 
 class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
     private lateinit var binding: ActivityUserDetailBinding
-    var arg = Bundle()
+    private var arg = Bundle()
 
     private var isEmailValid = false
         get() {
@@ -68,7 +66,6 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             binding.tvCity.alpha = 1F
         }
 
-    private lateinit var accountData: RegisAccountDataRoom
     private var isVerified: Boolean? = null
     private var isVerified2: Boolean? = null
 
@@ -112,10 +109,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
             if (userDetailViewModel._newUserData.value == null) {
                 userDetailViewModel._newUserData.value = newUserData(it)
                 userDetailViewModel.getCities(
-                    helperUserDetail.getProvinceID(it.province.toString())
+                    HelperUserDetail.getProvinceID(it.province.toString())
                 )
             }
-            Log.d("TAG", userDetailViewModel._newUserData.value.toString())
+            Log.d("TAG", "user "+userDetailViewModel._newUserData.value.toString())
             if (userDetailViewModel._newUserData.value != null) setData(it)
 
         }
@@ -130,7 +127,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
                 userDetailViewModel._newAccountData.value = newAccountData(it)
                 //userDetailViewModel.tempAccountData = newAccountData(it)
             }
-            Log.d("TAG", userDetailViewModel._newAccountData.value.toString())
+            Log.d("TAG", "nad "+userDetailViewModel._newAccountData.value.toString())
             if (userDetailViewModel._newAccountData.value != null) setData(it)
         }
 
@@ -219,7 +216,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
 
     private fun verifyAccount(uid: String? = null, verified: Boolean? = null) {
         if (uid != null && verified != null && verified == false) {
-            var intent = Intent(this, VerifyAccountActivity::class.java)
+            val intent = Intent(this, VerifyAccountActivity::class.java)
             intent.putExtra(VerifyAccountActivity.UID, uid)
             resultCOntract.launch(intent)
         } else {
@@ -269,13 +266,13 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         if (user is DonorDataRoom) {
             binding.apply {
                 ilPhone.editText?.setText(user.phoneNumber)
-                province = helperUserDetail.toTitleCase(user.province?.let {
-                    helperUserDetail.getProvinceName(it)
-                }) ?: "Province"
-                city = helperUserDetail.toTitleCase(user.city) ?: "City"
+                province = HelperUserDetail.toTitleCase(user.province?.let {
+                    HelperUserDetail.getProvinceName(it)
+                })
+                city = HelperUserDetail.toTitleCase(user.city)
                 user.gender?.let { setAvatar(it) }
 
-                if (user.isVerified == true) {
+                if (user.isVerified) {
                     layoutVerifiedAccount.visibility = View.VISIBLE
                     layoutUnverifiedAccount.visibility = View.GONE
                     layoutVerifyAccount.visibility = View.GONE
@@ -490,10 +487,10 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
                     www.sanju.motiontoast.R.font.helvetica_regular
                 )
             )
-        } else if (msg.contains("request", true)) {
+        } else if (msg.contains(getString(R.string.request), true)) {
             MotionToast.Companion.createColorToast(
                 this,
-                "Sent",
+                getString(R.string.sent),
                 msg,
                 MotionToast.TOAST_INFO,
                 MotionToast.GRAVITY_BOTTOM,
@@ -506,7 +503,7 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         } else {
             MotionToast.Companion.createColorToast(
                 this,
-                "Yey success 😍",
+                getString(R.string.yey_success),
                 msg,
                 MotionToast.TOAST_SUCCESS,
                 MotionToast.GRAVITY_BOTTOM,
@@ -552,10 +549,5 @@ class UserDetailActivity : AppCompatActivity(), View.OnFocusChangeListener {
         }
 
 
-    }
-
-    companion object {
-        const val NEW_NAME = "new_name"
-        const val NEW_GENDER = "new_gender"
     }
 }

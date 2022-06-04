@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DetailDonationEventsActivity">
+    tools:context=".ui.blooddonation.DetailDonationEventsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_banner"
@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+
                     android:paddingBottom="20dp">
 
                     <TextView
@@ -98,6 +99,26 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="20dp"
+                        android:text="@string/location" />
+
+                    <TextView
+                        android:id="@+id/donation_event_location"
+                        style="@style/TitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:maxLines="2"
+                        tools:text="Denpasar,Bali" />
+
+                    <TextView
+                        style="@style/TitleTextBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
                         android:text="@string/place" />
 
                     <TextView
@@ -109,7 +130,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
                         android:maxLines="2"
-                        android:text="PMI Sanglah" />
+                        tools:text="PMI Sanglah" />
 
                     <TextView
                         style="@style/TitleTextBold"
@@ -128,7 +149,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
-                        android:maxLines="2"
+                        android:maxLines="4"
                         android:text="Donor darah di lokasi ini terbuka untuk umum" />
                 </LinearLayout>
 
@@ -136,6 +157,7 @@
 
 
             <androidx.cardview.widget.CardView
+
                 android:id="@+id/cv_map_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,7 +172,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:orientation="vertical">
 
@@ -161,7 +183,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="20dp"
-                        android:text="@string/location" />
+                        android:text="@string/address" />
 
                     <TextView
                         android:id="@+id/tv_donation_event_address"
@@ -172,9 +194,10 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
                         android:maxLines="2"
-                        android:text="Jl. Pulau Riau, Dauh Puri Klod, Kec. Denpasar Bar., Kota Denpasar, Bali 80114" />
+                        tools:text="Jl. Pulau Riau, Dauh Puri Klod, Kec. Denpasar Bar., Kota Denpasar, Bali 80114" />
 
                     <androidx.cardview.widget.CardView
+                        android:visibility="visible"
                         android:id="@+id/cv_map"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"

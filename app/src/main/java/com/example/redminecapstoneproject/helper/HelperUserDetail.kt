@@ -1,15 +1,15 @@
 package com.example.redminecapstoneproject.helper
 
-object helperUserDetail {
+object HelperUserDetail {
 
 
     fun getProvinceName(x:String):String{
-        var name=x.split("#")
+        val name=x.split("#")
         return name[0]
     }
 
     fun getProvinceID(x:String):Int{
-        var name=x.split("#")
+        val name=x.split("#")
         return name[1].toInt()
     }
 
@@ -24,10 +24,12 @@ object helperUserDetail {
     fun toTitleCase(data:String?):String{
         var newString=""
         if(data!=null){
-            var x=data.trim().split(" ")
+            val x=data.trim().split(" ")
             for (i in x){
-                newString= "$newString ${i?.lowercase()
-                    ?.replaceFirstChar(Char::titlecase)}"
+                newString= "$newString ${
+                    i.lowercase()
+                        .replaceFirstChar(Char::titlecase)
+                }"
             }
         }
         return newString

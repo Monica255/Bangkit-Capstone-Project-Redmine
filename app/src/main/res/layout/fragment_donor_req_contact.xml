@@ -66,25 +66,25 @@
                     android:textColor="@color/white" />
             </LinearLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/bt_call"
                 style="@style/TitleText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/blue"
-                android:drawableLeft="@drawable/icon_phone_rezize"
+                android:drawableStart="@drawable/icon_phone_rezize"
                 android:drawableTint="@color/white"
                 android:text="@string/call"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/bt_wa"
                 style="@style/TitleText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:backgroundTint="@color/green"
-                android:drawableLeft="@drawable/icon_whatsapp_resize"
+                android:drawableStart="@drawable/icon_whatsapp_resize"
                 android:drawableTint="@color/white"
                 android:text="@string/whatsapp"
                 android:textAllCaps="false"

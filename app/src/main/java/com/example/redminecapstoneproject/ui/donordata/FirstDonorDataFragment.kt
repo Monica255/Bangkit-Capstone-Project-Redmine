@@ -2,14 +2,12 @@ package com.example.redminecapstoneproject.ui.donordata
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.redminecapstoneproject.R
@@ -47,8 +45,6 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
         super.onViewCreated(view, savedInstanceState)
         binding.etPhoneNumber.onFocusChangeListener = this
 
-        Log.d("TAG","view data created")
-
         val donorDataViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
@@ -58,16 +54,14 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
 
         binding.btContinue.setOnClickListener { view ->
             if (isDataValid()) {
-                //donorDataViewModel.setData(isVerified = false,gender = gender,bloodType = bloodType,rhesus = rhesus,phoneNumber = phoneNumber)
-                Log.d("TAG", donorDataViewModel.donorData.toString())
                 view.findNavController()
                     .navigate(R.id.action_firstDonorDataFragment_to_secondDonorDataFragment)
             } else {
                 if (!isFieldsEmpty()) {
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
-                        "Hey careful",
-                        "Please enter you data correctly",
+                        getString(R.string.hey_careful),
+                        getString(R.string.please_enter_data_correctly),
                         MotionToast.TOAST_WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.SHORT_DURATION,
@@ -88,8 +82,7 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFirstDonorDataBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onDestroy() {
@@ -97,8 +90,7 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
         _binding = null
     }
 
-    companion object {
-    }
+    companion object;
 
     private fun isFieldsEmpty(): Boolean {
         return binding.etPhoneNumber.text.toString().trim() == ""
@@ -116,7 +108,6 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
         )[DonorDataViewModel::class.java]
-        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
         val selectedPhoneNumber = binding.etPhoneNumber.text.toString().trim()
         if (selectedPhoneNumber.isEmpty()) {
             isPhoneNumberValid = false
@@ -133,14 +124,18 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
         val donorDataViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
-        )[DonorDataViewModel::class.java]        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        )[DonorDataViewModel::class.java]
         val selectedGender = binding.rgGender.checkedRadioButtonId
         if (selectedGender == -1) {
             isGenderValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(selectedGender)
             isGenderValid = true
-            donorDataViewModel.donorData.gender = radio.text.toString().lowercase()
+            if(radio.id==R.id.rb_male){
+                donorDataViewModel.donorData.gender ="male"
+            }else{
+                donorDataViewModel.donorData.gender ="female"
+            }
         }
     }
 
@@ -148,14 +143,22 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
         val donorDataViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
-        )[DonorDataViewModel::class.java]        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        )[DonorDataViewModel::class.java]
         val selectedBloodType = binding.rgBloodType.checkedRadioButtonId
         if (selectedBloodType == -1) {
             isBloodTypeValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(selectedBloodType)
             isBloodTypeValid = true
-            donorDataViewModel.donorData.bloodType = radio.text.toString().lowercase()
+            if(radio.id==R.id.rb_a){
+                donorDataViewModel.donorData.bloodType = "a"
+            }else if (radio.id==R.id.rb_b){
+                donorDataViewModel.donorData.bloodType = "b"
+            }else if (radio.id==R.id.rb_ab){
+                donorDataViewModel.donorData.bloodType = "ab"
+            }else{
+                donorDataViewModel.donorData.bloodType = "o"
+            }
         }
     }
 
@@ -163,14 +166,20 @@ class FirstDonorDataFragment : Fragment(), View.OnFocusChangeListener {
         val donorDataViewModel = ViewModelProvider(
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
-        )[DonorDataViewModel::class.java]        //ViewModelProvider(requireActivity())[DonorDataViewModel::class.java]
+        )[DonorDataViewModel::class.java]
         val selectedRhesus = binding.rgRhesus.checkedRadioButtonId
         if (selectedRhesus == -1) {
             isRhesusValid = false
         } else {
             val radio: RadioButton = requireView().findViewById(selectedRhesus)
             isRhesusValid = true
-            donorDataViewModel.donorData.rhesus = radio.text.toString().lowercase()
+            if(radio.id==R.id.rb_negative){
+                donorDataViewModel.donorData.rhesus = "negative"
+            }else if(radio.id==R.id.rb_positive){
+                donorDataViewModel.donorData.rhesus = "positive"
+            }else{
+                donorDataViewModel.donorData.rhesus = "unknown"
+            }
         }
     }
 

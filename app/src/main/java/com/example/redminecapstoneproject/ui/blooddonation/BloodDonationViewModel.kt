@@ -7,7 +7,12 @@ import com.example.redminecapstoneproject.repository.Repository
 class BloodDonationViewModel(private val provideRepository: Repository) :ViewModel() {
     fun getDonorReq()=provideRepository.getDonorReq()
 
+    fun getDonationEvent()=provideRepository.getDonationEvent()
+
+    val donationEvent=provideRepository.donorEvent
+
     val donorReq=provideRepository.donorReq
+
 
     fun getAllVerifiedUsers()=provideRepository.getAllVerifiedUsers()
 
@@ -19,7 +24,6 @@ class BloodDonationViewModel(private val provideRepository: Repository) :ViewMod
 
     val isLoading= provideRepository.isLoading
 
-    lateinit var filterProvince:String
     var filterCity=MutableLiveData<String>()
 
 }

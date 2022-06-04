@@ -1,7 +1,6 @@
 package com.example.redminecapstoneproject.ui.loginsignup
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.redminecapstoneproject.repository.Repository
 import com.google.firebase.auth.FirebaseUser

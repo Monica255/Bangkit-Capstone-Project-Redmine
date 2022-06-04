@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    tools:context="ui.HomeFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Hello"
+                android:text="@string/hello"
                 app:layout_constraintStart_toEndOf="@id/img_profile"
                 app:layout_constraintTop_toTopOf="@id/img_profile" />
 
@@ -57,17 +57,18 @@
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/margin_start_end"
-            android:text="Did you know?"
+            android:text="@string/did_you_know"
             android:textStyle="italic" />
 
         <TextView
+            android:id="@+id/tv_fun_fact"
             style="@style/HeaderTextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start_end"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/margin_start_end"
-            android:text="Setiap delapan detik, ada satu orang yang membutuhkan transfusi darah di Indonesia
+            tools:text="Setiap delapan detik, ada satu orang yang membutuhkan transfusi darah di Indonesia
 (Palang Merah Indonesia)" />
 
         <LinearLayout

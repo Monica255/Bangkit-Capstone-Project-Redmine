@@ -1,13 +1,12 @@
 package com.example.redminecapstoneproject.ui.detaildonorreq
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.databinding.ActivityDetailDonorRequestBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.helper.helperUserDetail
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
 
 class DetailDonorRequestActivity : AppCompatActivity() {
@@ -21,7 +20,7 @@ class DetailDonorRequestActivity : AppCompatActivity() {
 
         donorReq = intent.getParcelableExtra(EXTRA_DONOR_REQ)
 
-        var detailDonorReqViewModel=ViewModelProvider(this)[DetailDonorReqViewModel::class.java]
+        val detailDonorReqViewModel=ViewModelProvider(this)[DetailDonorReqViewModel::class.java]
         detailDonorReqViewModel.phoneNumber= donorReq?.phoneNumber.toString()
 
         donorReq?.let { setData(it) }
@@ -35,24 +34,24 @@ class DetailDonorRequestActivity : AppCompatActivity() {
 
     private fun setData(data: DonorRequest) {
         binding.apply {
-            tvPostTime.text = data.time?.let { helperDate.toPostTime(it, baseContext) }
+            tvPostTime.text = data.time?.let { HelperDate.toPostTime(it, baseContext) }
             tvDonorReqPatientName.text = data.patientName
             tvDonorReqBloodBagNeeded.text = data.numberOfBloodBag?.let {
-                helperBloodDonors.toBagsFormat(
+                HelperBloodDonors.toBagsFormat(
                     it
                 )
             }
-            tvLocation.text = helperBloodDonors.toLocation(
-                helperUserDetail.toTitleCase(data.city),
-                helperUserDetail.toTitleCase(data.province?.let {
-                    helperUserDetail.getProvinceName(it)
+            tvLocation.text = HelperBloodDonors.toLocation(
+                HelperUserDetail.toTitleCase(data.city),
+                HelperUserDetail.toTitleCase(data.province?.let {
+                    HelperUserDetail.getProvinceName(it)
                 })
 
             )
             tvDonorReqHospitalName.text = data.hospitalName
             tvContactName.text = data.contactName
             tvDonorReqDes.text=data.description?:""
-            tvBloodType.text = helperBloodDonors.toBloodType(data.bloodType, data.rhesus)
+            tvBloodType.text = HelperBloodDonors.toBloodType(data.bloodType, data.rhesus)
 
             tvCompatibility.text=intent.getStringExtra(EXTRA_COMP)
             tvCompatibility.setTextColor(intent.getIntExtra(EXTRA_COMP_COLOR,0))

@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 style="@style/TitleText"
                 android:gravity="center"
-                android:text="Your data will be automatically updatedone the process is done"
+                android:text="Your data will be automatically updated once the process is done"
                 android:layout_margin="20dp"
                 />
 

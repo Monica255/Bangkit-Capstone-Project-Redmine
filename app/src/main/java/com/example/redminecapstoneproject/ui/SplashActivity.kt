@@ -12,18 +12,19 @@ import com.example.redminecapstoneproject.databinding.ActivitySplashBinding
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
+import com.example.redminecapstoneproject.ui.home.HomeActivity
 import com.example.redminecapstoneproject.ui.otp.OtpActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private var startSplash: ViewPropertyAnimator? = null
     private lateinit var binding: ActivitySplashBinding
+    private var startIntent=true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //mAuth = FirebaseAuth.getInstance()
         val loginSignupViewModel = ViewModelProvider(
             this,
             RepoViewModelFactory.getInstance(this)
@@ -38,47 +39,48 @@ class SplashActivity : AppCompatActivity() {
             val intent4 = Intent(this, OtpActivity::class.java)
 
 
-            loginSignupViewModel.firebaseUser.observe(this) { fu ->
-                if (fu == null) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                    finish()
-                } else {
 
-                    loginSignupViewModel.getUserAccountDataDb().observe(this) { value ->
-                        if (value == null) {
-                            loginSignupViewModel.setUserAccountData()
-                        }else if(value.otpCode==null){
-                            intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent4)
-                            //onDestroy()
-                            finish()
-                        }
-                        else {
-                            loginSignupViewModel.getUserDonorDataDb().observe(this) {
-                                //Log.d("TAG","sp2 "+it.toString())
-                                //Log.d("TAG","sp "+it.toString())
+                loginSignupViewModel.firebaseUser.observe(this) { fu ->
+                    if (fu == null && startIntent) {
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startIntent=false
+                        startActivity(intent)
+                        finish()
+                    } else {
 
-                                if (it == null) {
-                                    intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    intent2.putExtra("name",value.name)
-                                    startActivity(intent2)
-                                    //onDestroy()
-                                    finish()
-                                } else {
-                                    Log.d("TAG","sp going home")
-                                    //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    startActivity(intent3)
-                                    finish()
-                                    //onDestroy()
+                        loginSignupViewModel.getUserAccountDataDb().observe(this) { value ->
+                            if (value == null) {
+                                loginSignupViewModel.setUserAccountData()
+                            } else if (value.otpCode == null && startIntent) {
+                                intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startIntent=false
+                                startActivity(intent4)
+                                finish()
+                            } else {
+                                loginSignupViewModel.getUserDonorDataDb().observe(this) {
+                                    //Log.d("TAG","sp2 "+it.toString())
+                                    //Log.d("TAG","sp "+it.toString())
+
+                                    if (it == null && startIntent) {
+                                        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        intent2.putExtra("name", value.name)
+                                        startIntent=false
+                                        startActivity(intent2)
+                                        finish()
+                                    } else if (startIntent){
+                                        //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        startIntent=false
+                                        startActivity(intent3)
+                                        finish()
+                                    }
                                 }
                             }
                         }
+
+
                     }
-
-
                 }
-            }
+
 
 
         }

@@ -19,10 +19,10 @@ class AlertDialogAdapter(private val list: List<Any>?):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Any) {
             if(data is Province){
-                binding.tvText.text=data.provName?.lowercase()?.replaceFirstChar(Char::titlecase)
+                binding.tvText.text= data.provName.lowercase().replaceFirstChar(Char::titlecase)
 
             }else if(data is City){
-                binding.tvText.text=data.cityName?.lowercase()?.replaceFirstChar(Char::titlecase)
+                binding.tvText.text= data.cityName.lowercase().replaceFirstChar(Char::titlecase)
 
             }
         }

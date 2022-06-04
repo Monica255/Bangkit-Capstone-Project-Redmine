@@ -1,7 +1,6 @@
 package com.example.redminecapstoneproject
 
 import android.content.Context
-import android.os.Bundle
 
 open class LoadingUtils {
     companion object {

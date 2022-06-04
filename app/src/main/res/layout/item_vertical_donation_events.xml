@@ -41,7 +41,7 @@
                 tools:text="Event name" />
 
             <TextView
-                android:id="@+id/tv_eventTime"
+                android:id="@+id/tv_event_place"
                 style="@style/DescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:maxLines="1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_eventName"
-                tools:text="Buka setiap hari, pukul 08.00-22.00 WITA" />
+                tools:text="Pmi" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,9 +1,7 @@
 package com.example.redminecapstoneproject.helper
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
-import android.util.Log
 import com.example.redminecapstoneproject.R
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -11,7 +9,7 @@ import java.time.Month
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-object helperDate {
+object HelperDate {
 
     fun toMonthFormat(x: String, c:Context): String {
         return when(x){
@@ -48,6 +46,24 @@ object helperDate {
         }
     }
 
+    fun monthToString(x: Month, c:Context): String {
+        return when(x){
+            Month.JANUARY-> c.resources.getString(R.string.jan)
+            Month.FEBRUARY-> c.resources.getString(R.string.feb)
+            Month.MARCH-> c.resources.getString(R.string.mar)
+            Month.APRIL-> c.resources.getString(R.string.apr)
+            Month.MAY-> c.resources.getString(R.string.may)
+            Month.JUNE-> c.resources.getString(R.string.jun)
+            Month.JULY-> c.resources.getString(R.string.jul)
+            Month.AUGUST-> c.resources.getString(R.string.aug)
+            Month.SEPTEMBER-> c.resources.getString(R.string.sep)
+            Month.OCTOBER-> c.resources.getString(R.string.oct)
+            Month.NOVEMBER-> c.resources.getString(R.string.nov)
+            Month.DECEMBER-> c.resources.getString(R.string.des)
+            else -> c.resources.getString(R.string.dont_know)
+        }
+    }
+
     fun canDonateAgain(lastBloodDonation:LocalDate):LocalDate{
         return LocalDate.of(lastBloodDonation.year,lastBloodDonation.month+3,lastBloodDonation.dayOfMonth)
     }
@@ -62,7 +78,6 @@ object helperDate {
     }
 
     fun stringToDate(data:String):LocalDate{
-        Log.d("TAG","Date "+data)
         val x=data.split("-")
         return LocalDate.of(
             x[0].toInt(),
@@ -70,6 +85,8 @@ object helperDate {
             x[2].toInt()
         )
     }
+
+
 
     fun getTimeStamp():Long{
         return System.currentTimeMillis()
@@ -93,30 +110,36 @@ object helperDate {
 
     @SuppressLint("StringFormatMatches")
     fun toPostTime(date:String, context:Context):String{
-        var posted=""
+        val posted: String
         val c = Calendar.getInstance()
 
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)+1
         val day = c.get(Calendar.DAY_OF_MONTH)
         val x=date.split("T")
-        var y= stringToDate(x[0])
+        val y= stringToDate(x[0])
 
         val todayDate=LocalDate.of(year, month, day)
-        var daysBetween=ChronoUnit.DAYS.between( y , todayDate )
+        val daysBetween=ChronoUnit.DAYS.between( y , todayDate )
 
 
 
-        if(x[0]==todayDate.toString()){
-            posted=context.resources.getString(R.string.posted,"today at ${x[1]}")
+        posted = if(x[0]==todayDate.toString()){
+            context.resources.getString(R.string.posted,"${context.resources.getString(R.string.today)}","${x[1]}")
         }else{
-            if(daysBetween.toInt()>7){
-                posted=context.resources.getString(R.string.posted,"${x[0]} at ${x[1]}")
-            }else if(daysBetween.toInt()==1){
-                posted=context.resources.getString(R.string.posted," yesterday")+" at ${x[1]}"
-            }else{
-                posted=context.resources.getString(R.string.posted_days_ago,
-                    "${ChronoUnit.DAYS.between( y , todayDate )}")+" at ${x[1]}"
+            when {
+                daysBetween.toInt()>7 -> {
+                    val r=x[0].split("-")
+                    val date=context.resources.getString(R.string.date_format,r[1],r[2],r[0])
+                    context.resources.getString(R.string.posted,date,"${x[1]}")
+                }
+                daysBetween.toInt()==1 -> {
+                    context.resources.getString(R.string.posted,"${context.resources.getString(R.string.yesterday)}","${x[1]}")
+                }
+                else -> {
+                    context.resources.getString(R.string.posted_days_ago,
+                        "${ChronoUnit.DAYS.between( y , todayDate )}","${x[1]}")
+                }
             }
 
         }

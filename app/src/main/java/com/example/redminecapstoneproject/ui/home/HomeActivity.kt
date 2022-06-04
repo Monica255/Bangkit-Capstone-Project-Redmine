@@ -1,22 +1,42 @@
-package com.example.redminecapstoneproject.ui
+package com.example.redminecapstoneproject.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityHomeBinding
-import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
+import com.example.redminecapstoneproject.repository.Repository
 import com.google.android.material.navigation.NavigationBarView
+import java.util.*
 
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-    lateinit var state:String
+    lateinit var state: String
+    var funfact: String? = null
+    var counter = 0
+
+    override fun onStart() {
+
+        if (counter == 0) {
+            Log.d("EVT", "start " + counter)
+            val sharedPref = this.getSharedPreferences("ff", Context.MODE_PRIVATE) ?: return
+            with(sharedPref.edit()) {
+                putString("fun_fact", null)
+                apply()
+            }
+        }
+        counter = 1
+        super.onStart()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,41 +44,51 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //val navHostFragment = findNavController(R.id.frame_container) as NavHostFragment
+        val sharedPref = this.getSharedPreferences("ff", Context.MODE_PRIVATE) ?: return
+
+        /*with (sharedPref.edit()) {
+            putString("fun_fact", "ff")
+            apply()
+        }*/
+
+        val homeViewModel = ViewModelProvider(
+            this,
+            RepoViewModelFactory.getInstance(this)
+        )[HomeViewModel::class.java]
+
+
         val navController = findNavController(R.id.frame_container)
+
 
         binding.navigation.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
-                    Log.d("STATE","home click from "+state)
-                    if(state== FAQ){
+                    if (state == FAQ) {
                         navController.navigate(R.id.action_faqFragment_to_homeFragment)
-                    }else if(state== PROFILE) {
+                    } else if (state == PROFILE) {
                         navController.navigate(R.id.action_profileFragment_to_homeFragment)
                     }
-                    Log.d("STATE","now state is "+state)
                     return@OnItemSelectedListener true
                 }
                 R.id.menu_profile -> {
-                    Log.d("STATE","profile click from "+state)
-                    if(state== HOME){
+                    if (state == HOME) {
                         navController.navigate(R.id.action_homeFragment_to_profileFragment)
-                    }else if(state== FAQ) {
+                    } else if (state == FAQ) {
                         navController.navigate(R.id.action_faqFragment_to_profileFragment)
                     }
-                    Log.d("STATE","now state is "+state)
                     return@OnItemSelectedListener true
                 }
 
                 R.id.menu_faq -> {
-                    Log.d("STATE","faq click from "+state)
-                    if(state== HOME){
+                    if (state == HOME) {
                         navController.navigate(R.id.action_homeFragment_to_faqFragment)
-                    }else if(state== PROFILE) {
+                    } else if (state == PROFILE) {
                         navController.navigate(R.id.action_profileFragment_to_faqFragment)
                     }
-                    Log.d("STATE","now state is "+state)
                     return@OnItemSelectedListener true
+                }
+
+                R.id.menu_schedule -> {
                 }
             }
             false
@@ -66,10 +96,12 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
-    companion object{
-        const val HOME="home"
-        const val PROFILE="profile"
-        const val FAQ="faq"
+
+
+    companion object {
+        const val HOME = "home"
+        const val PROFILE = "profile"
+        const val FAQ = "faq"
     }
 
 

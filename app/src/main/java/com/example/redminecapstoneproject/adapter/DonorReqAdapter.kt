@@ -1,19 +1,13 @@
 package com.example.redminecapstoneproject.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.redminecapstoneproject.R
-import com.example.redminecapstoneproject.databinding.ItemVerticalAlertDialogBinding
-import com.example.redminecapstoneproject.databinding.ItemVerticalBloodDonorsBinding
 import com.example.redminecapstoneproject.databinding.ItemVerticalDonorReqBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.helper.helperUserDetail
-import com.example.redminecapstoneproject.ui.testing.BloodDonors
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
 
 class DonorReqAdapter(private val list: List<DonorRequest>?):
@@ -29,10 +23,11 @@ class DonorReqAdapter(private val list: List<DonorRequest>?):
         fun bind(data: DonorRequest) {
             binding.tvDonorReqName.text=data.contactName
             binding.tvDonorReqDes.text=data.description
-            binding.tvDonorReqCity.text=helperBloodDonors.toLocation(data.city?.lowercase()?.replaceFirstChar(Char::titlecase),
-                data.province?.let { helperUserDetail.getProvinceName(it)?.lowercase()?.replaceFirstChar(Char::titlecase) })
-            binding.tvBloodType.text= helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
-            binding.tvPostTime.text=helperDate.toPostTime(data.time.toString(),ctx)
+            binding.tvDonorReqCity.text=HelperBloodDonors.toLocation(data.city?.lowercase()?.replaceFirstChar(Char::titlecase),
+                data.province?.let { HelperUserDetail.getProvinceName(it).lowercase()
+                    .replaceFirstChar(Char::titlecase) })
+            binding.tvBloodType.text= HelperBloodDonors.toBloodType(data.bloodType,data.rhesus)
+            binding.tvPostTime.text=HelperDate.toPostTime(data.time.toString(),ctx)
 
         }
     }
@@ -40,7 +35,7 @@ class DonorReqAdapter(private val list: List<DonorRequest>?):
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding =
             ItemVerticalDonorReqBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        var ctx=parent.context
+        val ctx=parent.context
         return ListViewHolder(binding,ctx)
     }
 

@@ -8,8 +8,9 @@ class FaqViewModel(private val provideRepository: Repository) : ViewModel() {
 
     val gelAllFaqDb=provideRepository.getAllFaqDb()
 
-    fun getAllFaq()=provideRepository.getAllFaq()
+    fun getAllFaq(child: String)=provideRepository.getAllFaq(child)
 
-    fun saveFaq(data:List<Faq>)=provideRepository.saveFaq(data)
+    val isLoading=provideRepository.isLoading
+
 
 }

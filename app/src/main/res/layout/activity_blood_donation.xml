@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/placeholder"
+                    android:src="@drawable/im_blood_donor"
 
                     />
 
@@ -220,7 +220,7 @@
                 app:layout_constraintTop_toBottomOf="@id/bt_blood_donor_req" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/lt_no_data_donor_req"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

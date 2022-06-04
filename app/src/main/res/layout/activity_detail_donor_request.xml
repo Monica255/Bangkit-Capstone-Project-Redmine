@@ -92,7 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/blood_type" />
+                        android:text="@string/blood_type2" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

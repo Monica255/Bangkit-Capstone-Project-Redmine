@@ -1,4 +1,4 @@
-package com.example.redminecapstoneproject.ui
+package com.example.redminecapstoneproject.ui.blooddonation
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -11,9 +11,8 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.bumptech.glide.Glide
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.databinding.ActivityBloodDonorDetailsBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperUserDetail
-import com.example.redminecapstoneproject.ui.blooddonation.BloodDonorsActivity
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.BloodDonors
 
 
@@ -47,28 +46,28 @@ class BloodDonorDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun openWhatsApp(phoneNumber: String){
-        var validPhone=helperUserDetail.toValidPhoneNumber(phoneNumber)
-        val url = "https://api.whatsapp.com/send?phone=$validPhone"
+    private fun openWhatsApp(phoneNumber: String){
+        val validPhone=HelperUserDetail.toValidPhoneNumber(phoneNumber)
+        val url = "https://wa.me/$validPhone"
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         startActivity(i)
     }
 
-    fun copyToClipBoard(phoneNumber: String){
-        val validPhone=helperUserDetail.toValidPhoneNumber(phoneNumber)
+    private fun copyToClipBoard(phoneNumber: String){
+        val validPhone=HelperUserDetail.toValidPhoneNumber(phoneNumber)
         val clipboard: ClipboardManager? =
             getSystemService(baseContext, ClipboardManager::class.java)
-        var clip:ClipData?=ClipData.newPlainText(PHONE_NUMBER,validPhone)
+        val clip:ClipData?=ClipData.newPlainText(PHONE_NUMBER,validPhone)
 
         if(clip!=null){
             clipboard?.setPrimaryClip(clip)
-            Toast.makeText(this,"Copied to clipboard",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,getString(R.string.copied_to_clipboard),Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun dialPhoneNumber(phoneNumber: String) {
-        val validPhone= helperUserDetail.toValidPhoneNumber(phoneNumber)
+    private fun dialPhoneNumber(phoneNumber: String) {
+        val validPhone= HelperUserDetail.toValidPhoneNumber(phoneNumber)
         val intent = Intent(Intent.ACTION_DIAL)
         intent.data = Uri.parse("tel:$validPhone")
         if (intent.resolveActivity(packageManager) != null) {
@@ -79,12 +78,12 @@ class BloodDonorDetailsActivity : AppCompatActivity() {
     private fun setData(data:BloodDonors){
         binding.apply {
             tvDonorName.text=data.name
-            tvDonorProvince.text= helperUserDetail.toTitleCase(data.province?.let { helperUserDetail.getProvinceName(it) })
-            tvDonorCity.text=helperUserDetail.toTitleCase(data.city)
-            tvDonorGender.text=helperUserDetail.toTitleCase(data.gender)
+            tvDonorProvince.text= HelperUserDetail.toTitleCase(data.province?.let { HelperUserDetail.getProvinceName(it) })
+            tvDonorCity.text=HelperUserDetail.toTitleCase(data.city)
+            tvDonorGender.text=HelperUserDetail.toTitleCase(data.gender)
             tvDonorReqPhoneNumber.text=data.phoneNumber
             data.gender?.let { setAvatar(it) }
-            tvBloodType.text=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
+            tvBloodType.text=HelperBloodDonors.toBloodType(data.bloodType,data.rhesus)
         }
     }
 

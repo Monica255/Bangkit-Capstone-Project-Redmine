@@ -1,33 +1,27 @@
 package com.example.redminecapstoneproject.ui.verifyaccount
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
-import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityVerifyAccountBinding
-import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
 import com.example.redminecapstoneproject.ui.testing.Verification
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import www.sanju.motiontoast.MotionToast
 import java.io.File
@@ -36,7 +30,6 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlinx.coroutines.coroutineScope as coroutineScope1
 
 class VerifyAccountActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVerifyAccountBinding
@@ -83,23 +76,10 @@ class VerifyAccountActivity : AppCompatActivity() {
             }
         }
 
-        /*verifyAccountViewModel.message.observe(this) {
-            makeToast(it.first, it.second)
-            if (!it.first) {
-                verifyAccountViewModel.responseVerification.observe(this) {
-                    var intent = Intent()
-                    //intent.putExtra(UserDetailActivity.NEW_NAME, it.name)
-                    //intent.putExtra(UserDetailActivity.NEW_GENDER, it.gender)
-                    setResult(Activity.RESULT_OK)
-                }
-                //finish()
-            } else {
-                reset()
-            }
-        }*/
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun reset() {
         binding.imgPhoto.visibility = View.GONE
         binding.imgPhoto.setImageDrawable(getDrawable(R.drawable.placeholder))
@@ -133,7 +113,7 @@ class VerifyAccountActivity : AppCompatActivity() {
         } else {
             MotionToast.Companion.createColorToast(
                 this,
-                "Yey success 😍",
+                getString(R.string.yey_success),
                 msg,
                 MotionToast.TOAST_SUCCESS,
                 MotionToast.GRAVITY_BOTTOM,
@@ -197,13 +177,7 @@ class VerifyAccountActivity : AppCompatActivity() {
     }
 
 
-    fun uploadImage() {
-        /*showLoading(true)
-        binding.btCamera.postDelayed({
-            showLoading(false)
-            finish()
-        },800)*/
-
+    private fun uploadImage() {
         val verifyAccountViewModel = ViewModelProvider(
             this, RepoViewModelFactory.getInstance(this)
         )[VerifyAccountViewModel::class.java]

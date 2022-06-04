@@ -1,5 +1,6 @@
 package com.example.redminecapstoneproject.ui
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import java.util.*
 class WebViewActivity : AppCompatActivity() {
     private lateinit var binding:ActivityWebViewBinding
     var isLoading=MutableLiveData<Boolean>()
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         binding= ActivityWebViewBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
@@ -31,9 +33,7 @@ class WebViewActivity : AppCompatActivity() {
                 Toast.makeText(this@WebViewActivity, getString(R.string.load_web_success), Toast.LENGTH_LONG).show()
             }
         }
-        //binding.wvDonorRequirement.loadUrl(getString(R.string.web_url))
         binding.wvDonorRequirement.loadUrl(getString(R.string.web_url))
-        Log.d("EMPTY",Locale.getDefault().language)
 
         isLoading.observe(this){
             showLoading(it)

@@ -10,9 +10,9 @@ import com.example.redminecapstoneproject.CustomDialogFragment
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.adapter.BloodDonorsAdapter
 import com.example.redminecapstoneproject.databinding.ActivityBloodDonorsBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperUserDetail
-import com.example.redminecapstoneproject.ui.BloodDonorDetailsActivity
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperUserDetail
+import com.example.redminecapstoneproject.ui.blooddonation.BloodDonorDetailsActivity
 import com.example.redminecapstoneproject.ui.profile.UserDetailViewModel
 import com.example.redminecapstoneproject.ui.testing.BloodDonors
 import com.google.firebase.auth.FirebaseAuth
@@ -24,10 +24,11 @@ class BloodDonorsActivity : AppCompatActivity() {
     private lateinit var city: String
     private var arg = Bundle()
 
+
     private fun newDialog(title: String): CustomDialogFragment {
         val dialog = CustomDialogFragment()
         dialog.show(supportFragmentManager, "mDialog")
-        arg.putString("title", title)
+        arg.putString(EXTRA_TITLE, title)
         dialog.arguments
         dialog.arguments = arg
         return dialog
@@ -51,10 +52,10 @@ class BloodDonorsActivity : AppCompatActivity() {
         bloodDonationViewModel.getAllVerifiedDonorDataUsers()
         province = intent.getStringExtra(EXTRA_PROVINCE).toString()
         city = intent.getStringExtra(EXTRA_CITY).toString()
-        binding.btFilter.text = city?.lowercase()?.replaceFirstChar(Char::titlecase)
+        binding.btFilter.text = HelperUserDetail.toTitleCase(city)
 
         userDetailViewModel.getCities(
-            helperUserDetail.getProvinceID(province)
+            HelperUserDetail.getProvinceID(province)
         )
 
         bloodDonationViewModel.validAccUsers.observe(this) { value ->
@@ -62,15 +63,15 @@ class BloodDonorsActivity : AppCompatActivity() {
                 bloodDonationViewModel.validDonorDataUsers.observe(this) {
                     if (it != null) {
                         FirebaseAuth.getInstance().currentUser?.uid?.let { it1 ->
-                            listValidDOnors = helperBloodDonors.toValidBloodDonorsList(
+                            listValidDOnors = HelperBloodDonors.toValidBloodDonorsList(
                                 value, it,
                                 it1
                             )
                         }
                         bloodDonationViewModel.filterCity.value = city
                         //bloodDonationViewModel.filterProvince=province
-                        bloodDonationViewModel.filterCity.observe(this) {
-                            setAdapter(filterList(it, listValidDOnors))
+                        bloodDonationViewModel.filterCity.observe(this) {v->
+                            setAdapter(filterList(v, listValidDOnors))
                         }
                     }
                 }
@@ -101,8 +102,8 @@ class BloodDonorsActivity : AppCompatActivity() {
         }
     }
 
-    fun filterList(filterCity: String, list: List<BloodDonors>): List<BloodDonors> {
-        var x = ArrayList<BloodDonors>()
+    private fun filterList(filterCity: String, list: List<BloodDonors>): List<BloodDonors> {
+        val x = ArrayList<BloodDonors>()
         for (i in list) {
             if (i.city == filterCity) {
                 x.add(i)
@@ -129,7 +130,7 @@ class BloodDonorsActivity : AppCompatActivity() {
 
         mAdaper.setOnItemClickCallback(object : BloodDonorsAdapter.OnItemClickCallback {
             override fun onItemClicked(data: BloodDonors) {
-                var intent =
+                val intent =
                     Intent(this@BloodDonorsActivity, BloodDonorDetailsActivity::class.java)
                 intent.putExtra(EXTRA_BLOOD_DONOR, data)
                 startActivity(intent)
@@ -141,6 +142,7 @@ class BloodDonorsActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val EXTRA_TITLE="title"
         const val EXTRA_PROVINCE = "extra_province"
         const val EXTRA_CITY = "extra_city"
         const val EXTRA_BLOOD_DONOR = "extra_blood_donor"

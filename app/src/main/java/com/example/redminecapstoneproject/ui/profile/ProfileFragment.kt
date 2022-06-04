@@ -1,10 +1,10 @@
-package com.example.redminecapstoneproject.ui
+package com.example.redminecapstoneproject.ui.profile
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +15,12 @@ import com.bumptech.glide.Glide
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentProfileBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.helper.helperUserDetail
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.ui.home.HomeActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
 import com.example.redminecapstoneproject.ui.mydonorreq.MyDonorReqActivity
-import com.example.redminecapstoneproject.ui.profile.DonorDetailActivity
-import com.example.redminecapstoneproject.ui.profile.UserDetailActivity
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import java.time.LocalDate
@@ -37,7 +35,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         super.onStart()
         if(isAdded){
             val activity= activity as HomeActivity
-            activity.state=HomeActivity.PROFILE
+            activity.state= HomeActivity.PROFILE
         }
     }
 
@@ -63,7 +61,6 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         loginSignupViewModel.getUserDonorDataDb().observe(requireActivity()) {
             if (it != null) {
                 userDonorData = it
-                Log.d("TAG", userDonorData.toString())
                 if (activity != null) setData(userDonorData, requireActivity())
 
             }
@@ -100,19 +97,19 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
                 is DonorDataRoom -> {
                     data.gender?.let { setAvatar(it) }
                     val mLastBloodDOnation =
-                        if (data.lastDonateDate != null) helperDate.stringToDate(data.lastDonateDate!!) else null
-                    if (mLastBloodDOnation != null) {
+                        if (data.lastDonateDate != null) HelperDate.stringToDate(data.lastDonateDate!!) else null
+                    if (mLastBloodDOnation != null && isAdded) {
                         binding.lastBloodDonation.text = getString(
                             R.string.date_format,
-                            mLastBloodDOnation.month,
+                            HelperDate.monthToString(mLastBloodDOnation.month, requireActivity()),
                             mLastBloodDOnation.dayOfMonth,
                             mLastBloodDOnation.year
                         )
 
-                        val x: LocalDate = helperDate.canDonateAgain(mLastBloodDOnation)
+                        val x: LocalDate = HelperDate.canDonateAgain(mLastBloodDOnation)
                         binding.canDonateAgain.text = getString(
                             R.string.date_format,
-                            x.month,
+                            HelperDate.monthToString(x.month, requireActivity()),
                             x.dayOfMonth,
                             x.year
                         )
@@ -125,7 +122,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
                             R.string.unverified_account
                         )
                     binding.tvBloodType.text =
-                        helperBloodDonors.toBloodType(data.bloodType, data.rhesus)
+                        HelperBloodDonors.toBloodType(data.bloodType, data.rhesus)
                 }
             }
         }
@@ -147,7 +144,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
             requireActivity(),
             RepoViewModelFactory.getInstance(requireActivity())
         )[LoginSignupViewModel::class.java]
-        binding.cvUserProfile.setOnClickListener { view ->
+        binding.cvUserProfile.setOnClickListener {
             startActivity(Intent(activity, UserDetailActivity::class.java))
         }
 
@@ -160,7 +157,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         }
 
         binding.cvLanguageSetting.setOnClickListener {
-
+            startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
         }
 
         binding.cvContactUs.setOnClickListener {
@@ -181,7 +178,7 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         val builder = AlertDialog.Builder(requireActivity())
         val mConfirmDialog = builder.create()
         builder.setTitle(getString(R.string.sign_out))
-        builder.setMessage("Are you sure you want to sign out?")
+        builder.setMessage(getString(R.string.sure_sign_out))
         builder.create()
 
         builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
@@ -203,13 +200,10 @@ class ProfileFragment : Fragment(), View.OnFocusChangeListener {
         return binding.root
     }
 
-    companion object {
-
-
-    }
+    companion object;
 
 
     override fun onFocusChange(p0: View?, p1: Boolean) {
-        TODO("Not yet implemented")
+        false
     }
 }

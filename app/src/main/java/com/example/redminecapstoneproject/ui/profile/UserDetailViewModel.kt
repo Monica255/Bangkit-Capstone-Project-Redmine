@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.redminecapstoneproject.repository.Repository
 import com.example.redminecapstoneproject.ui.testing.DonorDataRoom
 import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
-import com.example.redminecapstoneproject.ui.testing.test
 
 class UserDetailViewModel(private val provideRepository: Repository) : ViewModel() {
     var mProvince=provideRepository.listProvinces
@@ -40,7 +39,6 @@ class UserDetailViewModel(private val provideRepository: Repository) : ViewModel
         _newUserData.value = _userData.value
         _newAccountData.value = _accountData.value
         provideRepository.getProvinces()
-        //Log.d("TAG",)
     }
 
     fun saveUserDonorData(data:DonorDataRoom)=provideRepository.saveUserDonorData(data)

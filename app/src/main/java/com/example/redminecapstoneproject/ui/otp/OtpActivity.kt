@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.ActivityOtpBinding
-import com.example.redminecapstoneproject.ui.HomeActivity
+import com.example.redminecapstoneproject.ui.home.HomeActivity
 import com.example.redminecapstoneproject.ui.donordata.DonorDataActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginActivity
 import com.example.redminecapstoneproject.ui.loginsignup.LoginSignupViewModel
@@ -23,22 +24,22 @@ import com.example.redminecapstoneproject.ui.testing.RegisAccountDataRoom
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import www.sanju.motiontoast.MotionToast
-import java.util.*
 
 class OtpActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOtpBinding
     private var otpCode = ""
     private lateinit var mAccountData: RegisAccountDataRoom
+    private var startIntent=true
+    private var sendOtp=true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityOtpBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setListener()
 
-        initFocuse()
 
-        dummySendCode("123456")
+        //dummySendCode("123456")
         val otpViewModel = ViewModelProvider(
             this,
             RepoViewModelFactory.getInstance(this)
@@ -50,34 +51,46 @@ class OtpActivity : AppCompatActivity() {
         )[LoginSignupViewModel::class.java]
 
         otpViewModel.getOtpCOde()
-
         otpViewModel.otpCode.observe(this) {
-            Log.d("TAG", "otp code " + it)
             if (it != null) {
-                DUMMY_CODE = it
+                OTP_CODE = it
             } else {
                 otpViewModel.getOtpCOde()
             }
         }
 
 
+        otpViewModel.responseOtp.observe(this){
+            if (it!=null){
+                OTP_CODE=it.otpCode
+            }
+        }
 
         otpViewModel.isLoading.observe(this) {
-            Log.d("TAG", "loading " + it.toString())
-            setLoadingVisible(it)
+            if(it){
+                setLoadingVisible(true)
+            }else{
+                binding.etOtpOne.postDelayed({
+                    setLoadingVisible(false)
+                },900)
+            }
+
         }
 
         loginSignupViewModel.getUserAccountDataDb().observe(this) {
             if (it != null) {
                 mAccountData = it
-                if (it.otpCode == null) {
+                if (it.otpCode == null && sendOtp) {
                     binding.tvEmail.text = it.email
-                } else {
+                    it.email?.let { it1 -> otpViewModel.sendOtpCOde(it1)
+                    sendOtp=false
+                    }
+                } else if (it.otpCode != null){
                     val intent2 = Intent(this, DonorDataActivity::class.java)
                     val intent3 = Intent(this, HomeActivity::class.java)
-                    loginSignupViewModel.getUserDonorDataDb().observe(this) {
+                    loginSignupViewModel.getUserDonorDataDb().observe(this) {v->
 
-                        if (it == null) {
+                        if (v == null && startIntent) {
                             /*Log.d("TAG", "first null data")
                             counter++
                             if(counter>1){
@@ -85,10 +98,12 @@ class OtpActivity : AppCompatActivity() {
                                 counter=0*/
                             intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent2.putExtra("name", mAccountData.name)
+                            startIntent=false
                             startActivity(intent2)
                             //}
-                        } else {
+                        } else if(startIntent) {
                             intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startIntent=false
                             startActivity(intent3)
 
                         }
@@ -113,48 +128,12 @@ class OtpActivity : AppCompatActivity() {
 
     }
 
-    private fun setFocus() {
-        val inputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (binding.etOtpOne.isEnabled) {
-            binding.etOtpSix.requestFocus()
-            Log.d("TAG", "1 " + binding.etOtpOne.isEnabled.toString())
-            inputMethodManager.showSoftInput(binding.etOtpOne, InputMethodManager.SHOW_FORCED)
-        } else if (binding.etOtpTwo.isEnabled) {
-            //binding.etOtpFive.requestFocus()
-            Log.d("TAG", "2 " + binding.etOtpTwo.isEnabled.toString())
-
-            inputMethodManager.showSoftInput(binding.etOtpTwo, InputMethodManager.SHOW_FORCED)
-        } else if (binding.etOtpThree.isEnabled) {
-            //binding.etOtpFour.requestFocus()
-            Log.d("TAG", "3 " + binding.etOtpThree.isEnabled.toString())
-
-            inputMethodManager.showSoftInput(binding.etOtpThree, InputMethodManager.SHOW_FORCED)
-        } else if (binding.etOtpFour.isEnabled) {
-            //binding.etOtpThree.requestFocus()
-            Log.d("TAG", "4 " + binding.etOtpFour.isEnabled.toString())
-
-            inputMethodManager.showSoftInput(binding.etOtpFour, InputMethodManager.SHOW_FORCED)
-        } else if (binding.etOtpFive.isEnabled) {
-            Log.d("TAG", "5 " + binding.etOtpFive.isEnabled.toString())
-
-            inputMethodManager.showSoftInput(binding.etOtpFive, InputMethodManager.SHOW_FORCED)
-            //binding.etOtpTwo.requestFocus()
-        } else {
-            Log.d("TAG", "6 " + binding.etOtpSix.isEnabled.toString())
-
-            inputMethodManager.showSoftInput(binding.etOtpSix, InputMethodManager.SHOW_FORCED)
-            //binding.etOtpOne.requestFocus()
-        }
-    }
 
 
     private fun setListener() {
         binding.layoutFrameRoot.setOnClickListener {
             val inputManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputManager.hideSoftInputFromWindow(binding.layoutFrameRoot.windowToken, 0)
-
-
         }
 
         setTextChangeListener(fromEditText = binding.etOtpOne, targetEditText = binding.etOtpTwo)
@@ -163,9 +142,6 @@ class OtpActivity : AppCompatActivity() {
         setTextChangeListener(fromEditText = binding.etOtpFour, targetEditText = binding.etOtpFive)
         setTextChangeListener(fromEditText = binding.etOtpFive, targetEditText = binding.etOtpSix)
         setTextChangeListener(fromEditText = binding.etOtpSix, done = {
-            //Timer("Check", false).schedule(1000) {
-                //verifyOTPCode()
-            //}
             binding.etOtpSix.postDelayed({
                 verifyOTPCode()
             }, 500)
@@ -181,9 +157,15 @@ class OtpActivity : AppCompatActivity() {
     }
 
     private fun setLoadingVisible(isVisible: Boolean) {
-        binding.layoutLoading.visibility = if (isVisible) View.VISIBLE else View.GONE
-        binding.layoutOtp.visibility = if (isVisible) View.GONE else View.VISIBLE
-
+        if(isVisible){
+            binding.layoutLoading.visibility=View.VISIBLE
+            binding.layoutOtp.visibility=View.GONE
+        }else{
+            binding.layoutLoading.visibility=View.GONE
+            binding.layoutOtp.visibility=View.VISIBLE
+            setListener()
+            initFocuse()
+        }
     }
 
     private fun initFocuse() {
@@ -282,8 +264,9 @@ class OtpActivity : AppCompatActivity() {
             return
         }
 
-        if (otpCode == DUMMY_CODE) {
-            makeToast(false, "Verification successful!!")
+        if (otpCode == OTP_CODE) {
+            Log.d("EVT","same")
+            makeToast(false, getString(R.string.verification_successful))
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(binding.layoutFrameRoot.windowToken, 0)
             mAccountData.otpCode = otpCode
@@ -291,7 +274,7 @@ class OtpActivity : AppCompatActivity() {
             return
         }
 
-        makeToast(true, "Code invalid")
+        makeToast(true, getString(R.string.code_invalid))
         //binding.etOtpOne.isEnabled=true
         reset()
 
@@ -314,7 +297,7 @@ class OtpActivity : AppCompatActivity() {
         } else {
             MotionToast.Companion.createColorToast(
                 this,
-                "Yey success 😍",
+                getString(R.string.yey_success),
                 msg,
                 MotionToast.TOAST_SUCCESS,
                 MotionToast.GRAVITY_BOTTOM,
@@ -327,17 +310,17 @@ class OtpActivity : AppCompatActivity() {
         }
     }
 
-    private fun dummySendCode(code: String) {
+    private fun dummySendCode(mCode: String) {
         if (FirebaseAuth.getInstance().currentUser != null) {
             //_isLoading.value = true
-            val code = hashMapOf("otpCode" to code)
+            val code = hashMapOf("otpCode" to mCode)
             FirebaseAuth.getInstance().currentUser?.email?.let {
                 val mEmail = it.replace(".", "")
                 FirebaseDatabase.getInstance("https://redmine-350506-default-rtdb.asia-southeast1.firebasedatabase.app")
                     .getReference("otp_codes")
                     .child(mEmail).setValue(code)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
+                    .addOnCompleteListener {task->
+                        if (task.isSuccessful) {
                             //_isLoading.value = false
                             makeToast(false, "Code sent successfully")
 
@@ -356,7 +339,7 @@ class OtpActivity : AppCompatActivity() {
 
 
     companion object {
-        var DUMMY_CODE = ""
+        var OTP_CODE = ""
     }
 
 }

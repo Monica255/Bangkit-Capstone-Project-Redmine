@@ -13,6 +13,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.example.redminecapstoneproject.LoadingUtils
 import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
 import com.example.redminecapstoneproject.databinding.FragmentSignupBinding
@@ -83,12 +84,6 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
 
         loginSignupViewModel.message.observe(requireActivity()) {
             makeToast(it.first, it.second)
-
-            /*if (!it.first) {
-                val intent = Intent(activity, DonorDataActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-            }*/
         }
 
         //val intent = Intent(activity, LoginActivity::class.java)
@@ -100,38 +95,39 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         //intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
-            if (fu == null) {
-                //startActivity(intent)
-            } else {
-                Log.d("TAG", "fu not null")
-                loginSignupViewModel.getUserAccountDataDb().observe(requireActivity()) { value ->
+        if(isAdded){
+            loginSignupViewModel.firebaseUser.observe(requireActivity()) { fu ->
+                if (fu == null) {
+                    //startActivity(intent)
+                } else {
 
-                    if (value == null) {
-                        /*Log.d("TAG", "first acc null data")
-                        counter2++
-                        if (counter2 > 1) {
-                        Log.d("TAG", "acc null")
-                        loginSignupViewModel.setUserAccountData()
-                        }*/
-                    } else if(value.otpCode==null){
-                        intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent4)
-                        activity?.finish()
-                    }else {
-                        Log.d("TAG", "not null  " + value)
-                        intent2.putExtra("name", value.name)
-                        startActivity(intent2)
-                        activity?.finish()
+                    if(isAdded){
+                        loginSignupViewModel.getUserAccountDataDb()
+                            .observe(requireActivity()) { value ->
+
+                                if (value == null) {
+                                    /*Log.d("TAG", "first acc null data")
+                                    counter2++
+                                    if (counter2 > 1) {
+                                    Log.d("TAG", "acc null")
+                                    loginSignupViewModel.setUserAccountData()
+                                    }*/
+                                } else if (value.otpCode == null) {
+                                    intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startActivity(intent4)
+                                    activity?.finish()
+                                } else {
+                                    startActivity(intent2)
+                                    activity?.finish()
+                                }
+                            }
                     }
+
+
                 }
-
-
             }
         }
 
-
-        Log.d("TAG", "is focused " + binding.etEmail.isFocused)
         binding.cbSeePassword.setOnClickListener {
             if (binding.cbSeePassword.isChecked) {
                 binding.etPassword.transformationMethod =
@@ -157,31 +153,13 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
                 name = binding.etName.text.toString().trim()
                 email = binding.etEmail.text.toString().trim()
                 pass = binding.etPassword.text.toString().trim()
-/*
-                MotionToast.Companion.createColorToast(
-                    requireActivity(),
-                    "Yey success 😍",
-                    "Your account is successfully registered!",
-                    MotionToast.TOAST_SUCCESS,
-                    MotionToast.GRAVITY_BOTTOM,
-                    MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(
-                        requireActivity(),
-                        www.sanju.motiontoast.R.font.helvetica_regular
-                    )
-                )
-
-                val intent = Intent(activity, DonorDataActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)*/
-                //registerAccount()
                 loginSignupViewModel.registerAccount(email, pass, name)
             } else {
                 if (!isFieldsEmpty()) {
                     MotionToast.Companion.createColorToast(
                         requireActivity(),
-                        "Hey careful ",
-                        "Please enter you data correctly",
+                        getString(R.string.hey_careful),
+                        getString(R.string.please_enter_data_correctly),
                         MotionToast.TOAST_WARNING,
                         MotionToast.GRAVITY_BOTTOM,
                         MotionToast.SHORT_DURATION,
@@ -195,35 +173,51 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
             }
         }
 
+        loginSignupViewModel.isLoading.observe(requireActivity()) {
+            showLoading(it)
+        }
+
+    }
+
+    private fun showLoading(show: Boolean) {
+        if (show) {
+            if (isAdded) {
+                LoadingUtils.showDialog(context, false)
+            }
+        } else {
+            LoadingUtils.hideDialog()
+        }
     }
 
     private fun makeToast(isError: Boolean, msg: String) {
-        if (isError) {
-            MotionToast.Companion.createColorToast(
-                requireActivity(),
-                "Ups",
-                msg,
-                MotionToast.TOAST_ERROR,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.SHORT_DURATION,
-                ResourcesCompat.getFont(
+        if(isAdded){
+            if (isError) {
+                MotionToast.Companion.createColorToast(
                     requireActivity(),
-                    www.sanju.motiontoast.R.font.helvetica_regular
+                    "Ups",
+                    msg,
+                    MotionToast.TOAST_ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(
+                        requireActivity(),
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
                 )
-            )
-        } else {
-            MotionToast.Companion.createColorToast(
-                requireActivity(),
-                "Yey success 😍",
-                msg,
-                MotionToast.TOAST_SUCCESS,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.SHORT_DURATION,
-                ResourcesCompat.getFont(
+            } else {
+                MotionToast.Companion.createColorToast(
                     requireActivity(),
-                    www.sanju.motiontoast.R.font.helvetica_regular
+                    getString(R.string.yey_success),
+                    msg,
+                    MotionToast.TOAST_SUCCESS,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(
+                        requireActivity(),
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -255,13 +249,6 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     }
 
     private fun isDataValid(): Boolean {
-        //clearAllFocus()
-        Log.d("TAG", isNameValid.toString())
-        Log.d("TAG", isEmailValid.toString())
-        Log.d("TAG", isPassValid.toString())
-        Log.d("TAG", iscPassValid.toString())
-
-
         return isNameValid && isEmailValid && isPassValid && iscPassValid
     }
 
@@ -314,10 +301,6 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
     private fun checkConfirmPass() {
         val cpass = binding.etCpassword.text.toString().trim()
         val pass = binding.etPassword.text.toString().trim()
-
-        Log.d("TAG", "p  " + pass)
-        Log.d("TAG", "cp " + cpass)
-
         if (cpass.isEmpty()) {
             iscPassValid = false
             binding.ilCpassword.error = getString(R.string.cpass_required)
@@ -331,16 +314,13 @@ class SignupFragment : Fragment(), View.OnFocusChangeListener {
         }
     }
 
-    companion object {
-
-    }
+    companion object;
 
     override fun onFocusChange(v: View?, isFocused: Boolean) {
         if (v != null) {
             when (v.id) {
                 R.id.et_email -> {
                     if (isFocused) {
-                        Log.d("TAG", "is email focused")
                         binding.ilEmail.isErrorEnabled = false
                         binding.ilEmail.error = ""
                     } else {

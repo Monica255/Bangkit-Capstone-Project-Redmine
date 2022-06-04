@@ -5,15 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.databinding.ItemVerticalDonorReqBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
-import com.example.redminecapstoneproject.helper.helperDate
-import com.example.redminecapstoneproject.helper.helperUserDetail
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperDate
+import com.example.redminecapstoneproject.helper.HelperUserDetail
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
 import com.google.firebase.auth.FirebaseAuth
 
-class VerticalDonorReqAdapter(private val list: List<DonorRequest>?,val mBloodType:String):
+class VerticalDonorReqAdapter(private val list: List<DonorRequest>?, private val mBloodType:String):
     RecyclerView.Adapter<VerticalDonorReqAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -26,22 +25,22 @@ class VerticalDonorReqAdapter(private val list: List<DonorRequest>?,val mBloodTy
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DonorRequest) {
             binding.tvDonorReqName.text=data.contactName
-            binding.tvDonorReqCity.text=helperBloodDonors.toLocation(data.city?.lowercase()?.replaceFirstChar(Char::titlecase),
-                data.province?.let { helperUserDetail.getProvinceName(it).lowercase()
+            binding.tvDonorReqCity.text=HelperBloodDonors.toLocation(data.city?.lowercase()?.replaceFirstChar(Char::titlecase),
+                data.province?.let { HelperUserDetail.getProvinceName(it).lowercase()
                     .replaceFirstChar(Char::titlecase) })
-            val bt=helperBloodDonors.toBloodType(data.bloodType,data.rhesus)
+            val bt=HelperBloodDonors.toBloodType(data.bloodType,data.rhesus)
             binding.tvBloodType.text= bt
             binding.tvDonorReqDes.text=data.description
-            binding.tvPostTime.text= data.time?.let { helperDate.toPostTime(it,ctx) }
+            binding.tvPostTime.text= data.time?.let { HelperDate.toPostTime(it,ctx) }
 
             if(data.uid==FirebaseAuth.getInstance().currentUser?.uid){
                 /*binding.tvCompatibility.text="Your own donor request"
                 binding.tvCompatibility.setTextColor(ctx.resources.getColor(R.color.not_so_black))*/
                 binding.tvCompatibility.visibility= View.GONE
             }else{
-                val txt=helperBloodDonors.checkCompatibility(mBloodType,bt,ctx)
+                val txt=HelperBloodDonors.checkCompatibility(mBloodType,bt,ctx)
                 binding.tvCompatibility.text=txt
-                binding.tvCompatibility.setTextColor(helperBloodDonors.setColor(txt,ctx))
+                binding.tvCompatibility.setTextColor(HelperBloodDonors.setColor(txt,ctx))
             }
 
         }

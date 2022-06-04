@@ -2,20 +2,16 @@ package com.example.redminecapstoneproject.ui.mydonorreq
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.redminecapstoneproject.R
 import com.example.redminecapstoneproject.RepoViewModelFactory
-import com.example.redminecapstoneproject.adapter.DonorReqAdapter
 import com.example.redminecapstoneproject.adapter.VerticalDonorReqAdapter
 import com.example.redminecapstoneproject.databinding.ActivityMyDonorReqBinding
-import com.example.redminecapstoneproject.helper.helperBloodDonors
+import com.example.redminecapstoneproject.helper.HelperBloodDonors
 import com.example.redminecapstoneproject.ui.createdonorreq.CreateDonorReqActivity
 import com.example.redminecapstoneproject.ui.testing.DonorRequest
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MyDonorReqActivity : AppCompatActivity() {
@@ -35,12 +31,11 @@ class MyDonorReqActivity : AppCompatActivity() {
 
 
         myDonorReqViewModel.getDonorData().observe(this){
-            mBloodType=helperBloodDonors.toBloodType(it.bloodType,it.rhesus)
+            mBloodType=HelperBloodDonors.toBloodType(it.bloodType,it.rhesus)
             myDonorReqViewModel.getMyDonorReq()
-            myDonorReqViewModel.donorReq.observe(this){
-                if(it!=null){
-                    Log.d("EMPTY",it.toString())
-                    setAdapter(it,mBloodType)
+            myDonorReqViewModel.donorReq.observe(this){v->
+                if(v!=null){
+                    setAdapter(v,mBloodType)
                 }
             }
         }
@@ -52,7 +47,6 @@ class MyDonorReqActivity : AppCompatActivity() {
         }
 
         myDonorReqViewModel.isLoading.observe(this){
-            Log.d("LOADING",it.toString())
             showLoading(it)
         }
 
@@ -69,7 +63,7 @@ class MyDonorReqActivity : AppCompatActivity() {
         }
     }
 
-    private fun reverseListOrder(status: MutableList<DonorRequest>): List<DonorRequest>? {
+    private fun reverseListOrder(status: MutableList<DonorRequest>): List<DonorRequest> {
         val it: MutableIterator<DonorRequest> = status.iterator()
         val destination: ArrayList<DonorRequest> = ArrayList()
         while (it.hasNext()) {
@@ -93,14 +87,13 @@ class MyDonorReqActivity : AppCompatActivity() {
             binding.rvMyDonorReq.layoutManager = layoutManager
 
             binding.rvMyDonorReq.adapter = null
-            Log.d("TESS", reverseListOrder(list.toMutableList()).toString())
             val mAdaper = VerticalDonorReqAdapter(reverseListOrder(list.toMutableList()),mBloodType)
             binding.rvMyDonorReq.adapter = mAdaper
 
             mAdaper.setOnItemClickCallback(object : VerticalDonorReqAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: DonorRequest) {
 
-                    var intent = Intent(this@MyDonorReqActivity, CreateDonorReqActivity::class.java)
+                    val intent = Intent(this@MyDonorReqActivity, CreateDonorReqActivity::class.java)
                     intent.putExtra(CreateDonorReqActivity.EXTRA_DONOR_REQ, data)
                     startActivity(intent)
 
