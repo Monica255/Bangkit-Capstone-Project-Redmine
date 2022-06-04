@@ -66,7 +66,7 @@ For this part, most of the work i did in [figma][figma-link] so please check the
 [splash2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-splash.png
 [login2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-login.png
 [signup2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-regis.png
-After that, i immediately moved on to the next step that is making the high fidelity design to save time. The three first pages that i designed are splash screen, login screen and registratin screen. At first, i intended to make a soft tone design as can be seen bellow. After a while of considering, i decided to redesign those pages as the soft tone color pallete didn't match our logo.
+After that, i immediately moved on to the next step that is making the high fidelity design to save time. The first three pages that i designed are splash screen, login screen and registratin screen. At first, i intended to make a soft tone design as can be seen bellow. After a while of considering, i decided to redesign those pages as the soft tone color pallete didn't match our logo.
 
  <table>
   <tr>
@@ -90,22 +90,22 @@ After that, i immediately moved on to the next step that is making the high fide
  
  ## RESOURCES
  Here all the resources that i use in our app. For assets that I didn't make myself, below i attached the link where i got it.
- ..* [svgrepo.com](https://www.svgrepo.com/)
- ..* [unsplash.com](https://unsplash.com/)
- ..* [freepik.com](https://www.freepik.com/home)
- ..* [lottiefiles.com](https://lottiefiles.com/) (for lottie animation)
+ ..* [svgrepo.com](https://www.svgrepo.com/)..
+ ..* [unsplash.com](https://unsplash.com/)..
+ ..* [freepik.com](https://www.freepik.com/home)..
+ ..* [lottiefiles.com](https://lottiefiles.com/) (for lottie animation)..
  
  ## DATA
 In our app we need some data like FaQ data, funfact data regarding blood donation or just blood in general and blood donation requrements.
 Here are the links where i got those data:
 
 1. Blood donation requirements
-...[ayodonor.pmi.or.id](http://ayodonor.pmi.or.id/about.php)
-...[redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/eligibility-requirements.html)
+...[ayodonor.pmi.or.id](http://ayodonor.pmi.or.id/about.php)..
+...[redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/eligibility-requirements.html)..
 2. Funfact
-...[lifelinebloodserv.org](https://www.lifelinebloodserv.org/blood-facts)
-...[redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/how-blood-donations-help/blood-needs-blood-supply.html)
-...[buleleng.bulelengkab.go.id](https://buleleng.bulelengkab.go.id/informasi/detail/artikel/35-kenali-manfaat-rutin-donor-darah-bagi-kesehatan)
+...[lifelinebloodserv.org](https://www.lifelinebloodserv.org/blood-facts)..
+...[redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/how-blood-donations-help/blood-needs-blood-supply.html)..
+...[buleleng.bulelengkab.go.id](https://buleleng.bulelengkab.go.id/informasi/detail/artikel/35-kenali-manfaat-rutin-donor-darah-bagi-kesehatan)..
 3. FaQ
-...[redcrossblood.org](https://www.redcrossblood.org/faq.html)
+...[redcrossblood.org](https://www.redcrossblood.org/faq.html)..
 
