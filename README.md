@@ -90,10 +90,10 @@ After that, i immediately moved on to the next step that is making the high fide
  
  ## RESOURCES
  Here all the resources that i use in our app. For assets that I didn't make myself, below i attached the link where i got it.
- ⋅⋅* [svgrepo.com](https://www.svgrepo.com/)
- ⋅⋅* [unsplash.com](https://unsplash.com/)
- ⋅⋅* [freepik.com](https://www.freepik.com/home)
- ⋅⋅* [lottiefiles.com](https://lottiefiles.com/) (for lottie animation)
+- [svgrepo.com](https://www.svgrepo.com/)
+- [unsplash.com](https://unsplash.com/)
+- [freepik.com](https://www.freepik.com/home)
+- [lottiefiles.com](https://lottiefiles.com/) (for lottie animation)
  
  ## DATA
 In our app we need some data like FaQ data, funfact data regarding blood donation or just blood in general and blood donation requrements.
@@ -109,10 +109,4 @@ Here are the links where i got those data:
 3. FaQ
 ⋅⋅⋅[redcrossblood.org](https://www.redcrossblood.org/faq.html)⋅⋅
 
-1. First ordered list item
-2. Another item
-⋅⋅* Unordered sub-list. 
-1. Actual numbers don't matter, just that it's a number
-⋅⋅1. Ordered sub-list
-4. And another item.
 
