@@ -118,7 +118,7 @@ In the application development part, i used Android Studio as the IDE and wrote 
 
 ### Depedencies
 Here are all the dependencies i use in Redmine application:
-1. firebase
+1. firebase  
 We decided to use firebase for authentication, storage and real-time database.
 
 - implementation 'com.google.firebase:firebase-auth:19.2.0'
