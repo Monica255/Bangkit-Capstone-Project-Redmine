@@ -100,13 +100,13 @@ In our app we need some data like FaQ data, funfact data regarding blood donatio
 Here are the links where i got those data:
 
 1. Blood donation requirements
--ayodonor.pmi.or.id](http://ayodonor.pmi.or.id/about.php)
--[redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/eligibility-requirements.html)
+- [ayodonor.pmi.or.id](http://ayodonor.pmi.or.id/about.php)
+- [redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/eligibility-requirements.html)
 2. Funfact
--[lifelinebloodserv.org](https://www.lifelinebloodserv.org/blood-facts)
--[redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/how-blood-donations-help/blood-needs-blood-supply.html)
--[buleleng.bulelengkab.go.id](https://buleleng.bulelengkab.go.id/informasi/detail/artikel/35-kenali-manfaat-rutin-donor-darah-bagi-kesehatan)
+- [lifelinebloodserv.org](https://www.lifelinebloodserv.org/blood-facts)
+- [redcrossblood.org](https://www.redcrossblood.org/donate-blood/how-to-donate/how-blood-donations-help/blood-needs-blood-supply.html)
+- [buleleng.bulelengkab.go.id](https://buleleng.bulelengkab.go.id/informasi/detail/artikel/35-kenali-manfaat-rutin-donor-darah-bagi-kesehatan)
 3. FaQ
--[redcrossblood.org](https://www.redcrossblood.org/faq.html)
+- [redcrossblood.org](https://www.redcrossblood.org/faq.html)
 
 
