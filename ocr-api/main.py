@@ -133,12 +133,12 @@ def sendEmail():
     for string in user_email:
         if "." == string:
             db_email = user_email.replace(string, "")
-
-    digits = "0123456789"
+            
     otp = ""
 
     for i in range(6):
-        otp += digits[math.floor(random.random() * 10)]
+        random_number = math.floor(random.random() *10)
+        otp += random_number
 
     subject = "REDMINE"
     call_otp = otp
