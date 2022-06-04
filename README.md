@@ -1,6 +1,6 @@
 # MACHINE-LEARNING
 
-Machine Learning part in this project is to create an OCR for KTP(Id card)'s verification, automation email to user and create REST-API for our model
+Machine Learning part in this project is to create an OCR for KTP(Id card)'s verification, automation email to user and create REST-API for our model. We put our model in google drive: [ML-model](https://drive.google.com/drive/folders/1rmI9K7_hZGSo4O98WZJ9EQ1qqJOCq-BM?usp=sharing) because most of all models have a large size.
 
 ## OCR KTP(Id Card)
 
