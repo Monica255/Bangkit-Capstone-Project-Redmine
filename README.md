@@ -4,7 +4,7 @@ The MD part is responsible to make the functional android app. Redmine app will 
 Those menus are home, FaQ (Frequesntly Asked Questions), Schedule (TBA), and Profile. On the homepage, There will be 3 main features namely, 
 Donate Blood, Look for Blood Donor, and Create Donor Request.
 
-## Logo
+## LOGO
 [logo-brainstorm]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/Logo%20brainstorm.png
 To align with our app goals, i intend to make a logo involving a drip of blood. I come up with 3 main concepts to be later voted by our team members. 
 ![alt text][logo-brainstorm]
@@ -31,5 +31,33 @@ After several design and revision processes, here i come with the final logo des
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-text.png" width=200 ></td>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-with-text.png" width=200></td>
     <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/app-icon.png" width=200 ></td>
+  </tr>
+ </table>
+ 
+ 
+## USER EXPERIENCE
+[figma-link]:https://www.figma.com/file/6sh69Ed1cLSW0lbDceIK8P/Redmine?node-id=0%3A1
+To ensure that users get the best experience while using our app, i design the user flow and the use case. As for the use case, there are 2 actors on the Redmine system namely blood donor and people who need blood donor. Blood donors are people who are willing to donate their blood while the latter are people who are in need of blood donor.
+
+For more details, click this [figma][figma-link] link.
+
+## USER INTERFACE
+For this part, most of the work i do in [figma][figma-link] so pleas check the link for mode details. Here, i am going to mention a little about the design process. Firstly, i make the low fidelity design for the homepage, blood donor page, blood donation event page and donor request page. Bellow you can see the design.
+
+
+ <table>
+  <tr>
+    <td>Home</td>
+     <td>Blood donor</td>
+     <td>logo-text</td>
+    <td>Blood donation event</td>
+     <td>Donor request</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Home.png"></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Donor%20darah.png" ></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo-text.png"></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Donor%20darah-1.png"></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/lofi/Donor%20darah-2.png"></td>
   </tr>
  </table>
