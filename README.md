@@ -4,12 +4,12 @@ The MD part is responsible to make the functional android app. Redmine app will 
 Those menus are home, FaQ (Frequesntly Asked Questions), Schedule (TBA), and Profile. On the homepage, There will be 3 main features namely, 
 Donate Blood, Look for Blood Donor, and Create Donor Request.
 Below you can see the milestone that i made particularly for MD.
-![alt text](https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/MD%20milestone.png)
+![MD milestone](https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/MD%20milestone.png)
 
 ## LOGO
 [logo-brainstorm]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/Logo%20brainstorm.png
 To align with our app goals, i intended to make a logo involving a drip of blood. I came up with 3 main concepts to be later voted by our team members. 
-![alt text][logo-brainstorm]
+![logo brainstorm][logo-brainstorm]
 
 ### Logo Deliverable
 [logo]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/logo.png
@@ -92,6 +92,7 @@ After that, i immediately moved on to the next step that is making the high fide
  
  ## RESOURCES
  Here are all the resources that i use in our app. For assets that I didn't make myself, below i attached the link where i got it.
+ ![resources](https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/resources.png)
 - [svgrepo.com](https://www.svgrepo.com/)
 - [unsplash.com](https://unsplash.com/)
 - [freepik.com](https://www.freepik.com/home)
@@ -112,7 +113,7 @@ Here are the links where i got those data:
 - [redcrossblood.org](https://www.redcrossblood.org/faq.html)
 
 
-## ANDROID DEVELOPMENT
+## APPLICATION DEVELOPMENT
 In the application development part, i used Android Studio as the IDE and wrote all the codes in kotlin language. For all the processes that i have gone through in making this application, you can simply check the [commits that i made in this repository](https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/commits/android-developer?after=7410839e1bc502af17129b713784c0e00fe18fcb+34&branch=android-developer&qualified_name=refs%2Fheads%2Fandroid-developer)
 
 ### Depedencies
@@ -128,13 +129,13 @@ We decided to use firebase for authentication, storage and real-time database.
 - implementation platform('com.google.firebase:firebase-bom:30.0.0')
 - implementation 'com.google.firebase:firebase-storage-ktx'
     
-2. image
+2. image  
 These are two libraries that i use as image loader
 
 - implementation 'de.hdodenhof:circleimageview:3.1.0'
 - implementation 'com.github.bumptech.glide:glide:4.12.0'
     
-3. maps
+3. maps  
 In our app, especially in the detail donation event page, you can see a mini map where the event will be held. To be able to do so, i used google maps API and 
 implemented these dependencies.
 
@@ -142,12 +143,12 @@ implemented these dependencies.
 - implementation 'com.google.android.gms:play-services-places:17.0.0'
 - implementation 'com.google.android.gms:play-services-maps:18.0.2'
     
-4. toast
+4. toast  
 To show fancy toasts, i use this depencdency
 
 - implementation 'com.github.Spikeysanju:MotionToast:1.3.3.4'
     
-5. room
+5. room  
 After user is successfully loged in, the user data, funfact data, and FaQ data, will be saved in room database. The reason is that the application doesn't have
 to fetch the data all the way from firebase everytime it is needed.
 
@@ -156,14 +157,14 @@ to fetch the data all the way from firebase everytime it is needed.
 - implementation 'androidx.room:room-runtime:2.4.2'
 - kapt 'androidx.room:room-compiler:2.4.2'
     
-6. retrofit
+6. retrofit  
 For province and city data, CC team already provided me with endpoints so i used retrofit as the REST client. Also, we use API to send the email address to get OTP code and to send the ID card image for verification.
 
 - implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 - implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 - implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
-7. loader
+7. loader  
 I used this dependency to show animation loading.
 
 - implementation "com.airbnb.android:lottie:3.4.0"
