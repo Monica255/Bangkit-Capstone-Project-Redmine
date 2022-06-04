@@ -63,7 +63,6 @@ These are links that we used as our reference to build OCR model:
 * [OCR: Part 1 — Dataset Generation](https://medium.com/@vijendra1125/ocr-part-1-generate-dataset-69509fbce9c1)
 * [OCR: Part 2 — OCR using CNN](https://medium.com/@vijendra1125/ocr-part-2-ocr-using-cnn-f43f0cee8016)
 * [4 Simple steps in building OCR](https://medium.datadriveninvestor.com/4-simple-steps-in-building-ocr-1f41c66099c1)
-* [Building a Complete OCR Engine From Scratch In Python](https://medium.com/geekculture/building-a-complete-ocr-engine-from-scratch-in-python-be1fd184753b)
 
 ## Unet Architecture
 
