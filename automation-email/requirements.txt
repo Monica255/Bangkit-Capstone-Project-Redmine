@@ -1,0 +1,7 @@
+flask
+firebase_admin
+smtplib
+ssl
+math
+random
+email
