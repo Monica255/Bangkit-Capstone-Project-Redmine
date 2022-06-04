@@ -75,14 +75,14 @@ After that, i immediately moved on to the next step that is making the high fide
      <td>Signup screen</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hofi/Splash.png" width=250 ></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hofi/Login.png" width=250></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hofi/Signup.png" width=250></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/Splash.png" width=250 ></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/Login.png" width=250></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/Signup.png" width=250></td>
   </tr>
   
   <tr>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hofi/new-splash.png" width=250 ></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hofi/new-lLogin.png" width=250></td>
-    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hofi/new-signup.png" width=250></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-splash.png" width=250 ></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-lLogin.png" width=250></td>
+    <td><img src="https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-signup.png" width=250></td>
   </tr>
  </table>
