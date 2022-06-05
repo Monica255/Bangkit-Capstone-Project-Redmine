@@ -1,7 +1,7 @@
 # MOBILE-DEVELOPMENT
 
 The MD part is responsible to make the functional android app. Redmine app will have 4 main menus but with only three of which is selectable.
-Those menus are home, FaQ (Frequesntly Asked Questions), Schedule (TBA), and Profile. On the homepage, There will be 3 main features namely, 
+Those menus are Home, FaQ (Frequesntly Asked Questions), Schedule (TBA), and Profile. On the homepage, There will be 3 main features namely, 
 Donate Blood, Look for Blood Donor, and Create Donor Request.
 Below you can see the milestone that i made particularly for MD.
 ![MD milestone](https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/MD%20milestone.png)
@@ -68,7 +68,7 @@ For this part, most of the work i did in [figma][figma-link] so please check the
 [splash2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-splash.png
 [login2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-login.png
 [signup2]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/hifi/new-regis.png
-After that, i immediately moved on to the next step that is making the high fidelity design to save time. The first three pages that i designed are splash screen, login screen and registratin screen. At first, i intended to make a soft tone design as can be seen bellow. After a while of considering, i decided to redesign those pages as the soft tone color pallete didn't match our logo design.
+After that, i immediately moved on to the next step that is making the high fidelity design to save time. The first three pages that i designed are splash screen, login screen and registratin screen. At first, i intended to make a soft tone design as can be seen below. After a while of considering, i decided to redesign those pages as the soft tone color pallete didn't match our logo design.
 
  <table>
   <tr>
@@ -91,7 +91,7 @@ After that, i immediately moved on to the next step that is making the high fide
  </table>
  
  ## RESOURCES
- Here are all the resources that i use in our app. For assets that I didn't make myself, below i attached the link where i got it.
+ Here are all the resources that i use in our app. For assets that I didn't make myself, below i attached the links where i got it.
  ![resources](https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/resources.png)
 - [svgrepo.com](https://www.svgrepo.com/)
 - [unsplash.com](https://unsplash.com/)
