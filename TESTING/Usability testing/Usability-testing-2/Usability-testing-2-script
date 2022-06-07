@@ -1,4 +1,14 @@
-Usability testing 2 script 7 June
+Usability testing #2 Redmine App (June 7, 2022)
 
-Remember that not all feature in Redmine is functional. We worked on ths core features due to time restriction. 
-Apart from that, this app is considered to be done and ready to deliver.
+Remember that not all features in Redmine are functional. We worked on ths core features due to time restriction. 
+Apart from that, this app is considered to be done and ready to deliver. But before that, we want to ensure that everything works as intended
+
+•	Task 1: Register Account
+This is your first time using Redmine app, so you open Redmine app and try to register an account using email and password. 
+Please use your existing email account to receive OTP code.
+
+•	Task 2: Donate Blood
+Supposing you want to donate blood, you look for people in need of blood donors that is compatible with your blood type.
+
+•	Task 3: Verify Account
+You want to be in the list of eligible blood donors, so you have to verify your account using your ID card.
