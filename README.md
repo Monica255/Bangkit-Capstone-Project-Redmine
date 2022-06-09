@@ -1,3 +1,0 @@
-# REDMINE
-
-## About Redmine
