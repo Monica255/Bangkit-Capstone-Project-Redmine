@@ -3,8 +3,6 @@
 The MD part is responsible to make the functional android app. Redmine app will have 4 main menus but with only three of which is selectable.
 Those menus are Home, FaQ (Frequesntly Asked Questions), Schedule (TBA), and Profile. On the homepage, There will be 3 main features namely, 
 Donate Blood, Look for Blood Donor, and Create Donor Request.
-Below you can see the milestone that i made particularly for MD.
-![MD milestone](https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/UIUX/MD%20milestone.png)
 
 ## LOGO
 [logo-brainstorm]:https://github.com/Monica255/Bangkit-Capstone-Project-Redmine/blob/android-developer/LOGO/Logo%20brainstorm.png
