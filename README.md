@@ -10,7 +10,7 @@ Our android app needed to display both provinces and cities for user data. We de
 
 ### Building The API
 
-To start, we need to initialize a firebase project with npm using the command ==firebase init==. After the project was setup, we need to install needed packages such as express, mysql, and body-parser. To install the packages we can use the command ==npm install express mysql body-parser==. After the packages is installed, all code should be working fine. There are currently 2 routes in the API that do a select MySQL query. The first route is /getprovinsi which will run the query ```"SELECT * FROM provinces"```
+To start, we need to initialize a firebase project with npm using the command ```firebase init```. After the project was setup, we need to install needed packages such as express, mysql, and body-parser. To install the packages we can use the command ```npm install express mysql body-parser```. After the packages is installed, all code should be working fine. There are currently 2 routes in the API that do a select MySQL query. The first route is /getprovinsi which will run the query ```"SELECT * FROM provinces"```
 
 ### Deploying Database
 
