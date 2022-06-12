@@ -53,4 +53,23 @@ We then need to add the proxy (forwarding) rule for Flask in NGINX settings. Mor
  +               proxy_set_header Host $host;  # preserve HTTP header for proxy requests
  +       }
 ```
+To automatically run flask as a service we need to create the flask.service file with ```sudo nano /etc/systemd/system/flask.service```. The we need to fill the file with the following.
+``` 
+[Unit]
+Description=Flask Service
+After=network.target
 
+[Service]
+User=dimasbagus
+WorkingDirectory=/home/dimasbagus/flask
+ExecStart=/bin/bash /home/dimasbagus/flask/run_flask.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+After that we can just reload and start the service with these command in the terminal.
+```
+sudo systemctl daemon-reload
+sudo systemctl start flask
+ ```
