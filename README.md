@@ -18,7 +18,7 @@ To deploy the database we first create a Cloud SQL intance and choosing MySQL. A
 
 ### Deploying API to Firebase Cloud Function
 
-To deploy the API to Fribase Cloud Function we hneed to run the command from the API directory terminal. In the terminal we can run ```firebase deploy```. After it was succesfully deployed we can get the url endpoint from firebase in this case it was https://us-central1-redmine-350506.cloudfunctions.net/expressAPI
+To deploy the API to Firebase Cloud Function we need to run the command from the API directory terminal. In the terminal we can run ```firebase deploy```. After it was succesfully deployed we can get the url endpoint from firebase in this case it was https://us-central1-redmine-350506.cloudfunctions.net/expressAPI
 
 ### Deploying ML Scripts
 
