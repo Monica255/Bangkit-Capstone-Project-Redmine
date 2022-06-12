@@ -60,9 +60,9 @@ Description=Flask Service
 After=network.target
 
 [Service]
-User=dimasbagus
-WorkingDirectory=/home/dimasbagus/flask
-ExecStart=/bin/bash /home/dimasbagus/flask/run_flask.sh
+User=m7364j2910
+WorkingDirectory=/home/m7364j2910/flask
+ExecStart=/bin/bash /home/m7364j2910/flask/run_flask.sh
 Restart=always
 
 [Install]
