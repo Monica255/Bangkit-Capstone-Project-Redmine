@@ -20,3 +20,7 @@ To deploy the database we first create a Cloud SQL intance and choosing MySQL. A
 
 To deploy the API to Fribase Cloud Function we hneed to run the command from the API directory terminal. In the terminal we can run ```firebase deploy```. After it was succesfully deployed we can get the url endpoint from firebase in this case it was https://us-central1-redmine-350506.cloudfunctions.net/expressAPI
 
+### Deploying ML Scripts
+
+To deploy the ML Script we need to create a Virtual Machine instance. To create the VM, we can go to the Compute Engine tab then choose VM Instances and from there just click Create Instance. For the settings, we chose asia-southeast2-a as the zone because it was closer, We then chose n1-standard-1 as our machine because we feel that it was powerful enough and yet not too expensive. We checked both Allow HTTP traffic and Allow HTTPS traffic to allow traffic for both protocol and also put http-server and https-server as the network tags for the firewall rule which will be created later. With all the settings done we created the VM. We need to create a firewall rule to allow http and https. 
+
