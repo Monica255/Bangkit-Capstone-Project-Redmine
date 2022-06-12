@@ -24,3 +24,33 @@ To deploy the API to Fribase Cloud Function we hneed to run the command from the
 
 To deploy the ML Script we need to create a Virtual Machine instance. To create the VM, we can go to the Compute Engine tab then choose VM Instances and from there just click Create Instance. For the settings, we chose asia-southeast2-a as the zone because it was closer, We then chose n1-standard-1 as our machine because we feel that it was powerful enough and yet not too expensive. We checked both Allow HTTP traffic and Allow HTTPS traffic to allow traffic for both protocol and also put http-server and https-server as the network tags for the firewall rule which will be created later. With all the settings done we created the VM. We need to create a firewall rule to allow http and https. We will create two firewall rules, default-allow-http and default-allow-https. The settings for default-allow-http are put http-server on the network tags, the put the public IP 0.0.0.0/0 on the Source IPv4 ranges, then on Protocols and ports choose Specified protocols and ports and tick TCP then put 80 on TCP. The settings for default-allow-https are similar to default-allow-https which is  put http-server on the network tags, the put the public IP 0.0.0.0/0 on the Source IPv4 ranges, then on Protocols and ports choose Specified protocols and ports and tick TCP then put 443 on TCP. Now we can deploy the ML script
 
+To deploy the script we need to connect to the VM via SSH. In the VM, We need to set up NGINX on the Compute Engine VM. to do that we can run these commands in the terminal
+```
+sudo apt update
+sudo apt install nginx
+```
+After it was succesfully installed we can checked that NGINX is running buy entering the external IP of our VM into the browser.Next we need to clone the ML scripts from github into the VM. Then we need to install the necessary packages and download the models with these commands in the terminal.
+```
+sudo apt install python3-pip python3-dev build-essential \
+                    libssl-dev libffi-dev python3-setuptools
+
+sudo python3 -m pip install -U pip wheel
+sudo python3 -m pip install -U pip python-dotenv
+sudo python3 -m pip install gdown
+sudo python3 -m pip install -r requirements.txt --ignore-installed httplib2
+
+sudo apt-get install ffmpeg libsm6 libxext6  -y
+```
+We then need to add the proxy (forwarding) rule for Flask in NGINX settings. More specifically, edit “/etc/nginx/sites-available/default”, with ```sudo nano /etc/nginx/sites-available/default``` Then add the following lines.
+```         location / {
+                 # First attempt to serve request as file, then
+                 # as directory, then fall back to displaying a 404.
+                 try_files $uri $uri/ =404;
+         }
+          #add these line below
+ +       location ^~ /api {
+ +               proxy_pass http://127.0.0.1:5000;
+ +               proxy_set_header Host $host;  # preserve HTTP header for proxy requests
+ +       }
+```
+
